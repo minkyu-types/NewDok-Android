@@ -45,8 +45,8 @@ dependencies {
     implementation(project(":domain"))
 
     // Social login
-    implementation(libs.kakao.login)
-    implementation(libs.naver.login)
+//    implementation(libs.kakao.login)
+//    implementation(libs.naver.login)
 
     // Coroutine
     implementation(libs.coroutine)
