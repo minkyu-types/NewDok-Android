@@ -53,6 +53,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt)
+    implementation(libs.constraintlayout)
     ksp(libs.hilt.compiler)
 
     // Navigation
