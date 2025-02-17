@@ -10,11 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
+//        maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 
-rootProject.name = "BaseCleanArchitecture"
+rootProject.name = "NewDok-Android"
 include(":app")
 include(":presentation")
 include(":domain")
