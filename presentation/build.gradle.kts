@@ -45,14 +45,15 @@ dependencies {
     implementation(project(":domain"))
 
     // Social login
-    implementation(libs.kakao.login)
-    implementation(libs.naver.login)
+//    implementation(libs.kakao.login)
+//    implementation(libs.naver.login)
 
     // Coroutine
     implementation(libs.coroutine)
 
     // Hilt
     implementation(libs.hilt)
+    implementation(libs.constraintlayout)
     ksp(libs.hilt.compiler)
 
     // Navigation
