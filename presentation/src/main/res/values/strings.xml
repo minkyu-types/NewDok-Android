@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">NewDok</string>
+
+    <string name="register">회원가입</string>
+    <string name="login">로그인</string>
+    <string name="onboarding_title_1">너무 많은 뉴스레터 브랜드</string>
+    <string name="onboarding_title_2">복잡하게 쌓여가는 메일함은 안녕!</string>
+    <string name="onboarding_title_3">번거로운 구독 관리도</string>
+    <string name="onboarding_subtitle_1">일일이 찾아볼 필요 없이\n내게 필요한 뉴스레터만 쏙쏙</string>
+    <string name="onboarding_subtitle_2">다른 메일과 섞이지 않고\n오늘 받은 뉴스레터만 한눈에</string>
+    <string name="onboarding_subtitle_3">뉴독에서는 버튼 하나로\n쉽고 빠르게!</string>
+    <string name="onboarding_login_desc">이미 계정이 있나요?</string>
 </resources>
