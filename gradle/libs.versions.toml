@@ -10,6 +10,8 @@ material = "1.12.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 ksp = "1.9.0-1.0.11"
 
+jetpack-compose = "1.5.0"
+hilt-navigation = "1.0.0"
 kakao-login = "2.20.6"
 naver-oauth = "5.10.0"
 hilt = "2.48"
@@ -39,6 +41,12 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "jetpack-compose" }
+compose-ui-preview = { group = "androidx.compose.material", name = "material", version.ref = "jetpack-compose" }
+compose-material = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "jetpack-compose" }
+compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "jetpack-compose" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
 
 kakao-login = { group = "com.kakao.sdk", name = "v2-all", version.ref = "kakao-login" }
 naver-login = { group = "com.navercorp.nid", name = "oauth", version.ref = "naver-oauth" }

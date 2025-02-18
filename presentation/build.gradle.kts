@@ -29,6 +29,7 @@ android {
         }
     }
     buildFeatures {
+        compose = true
         buildConfig = true
         dataBinding = true
     }
@@ -47,6 +48,13 @@ dependencies {
     // Social login
 //    implementation(libs.kakao.login)
 //    implementation(libs.naver.login)
+
+    // Compose
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.preview)
+    implementation(libs.compose.material)
+    implementation(libs.compose.livedata)
+    implementation(libs.hilt.navigation)
 
     // Coroutine
     implementation(libs.coroutine)
