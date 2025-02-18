@@ -6,18 +6,20 @@ junit = "4.13.2"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 appcompat = "1.7.0"
-material = "1.12.0"
+material = "1.8.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 ksp = "1.9.0-1.0.11"
 
-jetpack-compose = "1.5.0"
-hilt-navigation = "1.0.0"
+activity-compose = "1.9.3"
+compose-bom = "2024.06.00"
+material3 = "1.2.0"
 kakao-login = "2.20.6"
 naver-oauth = "5.10.0"
 hilt = "2.48"
 coroutine = "1.6.4"
 glide = "4.13.2"
-navigation = "2.5.3"
+navigation = "2.5.0"
+navigation-hilt = "1.2.0"
 safe-args = "2.5.0"
 paging = "3.1.1"
 retrofit = "2.9.0"
@@ -33,6 +35,7 @@ ktx-preference = "1.2.0"
 constraintlayout = "2.1.4"
 datastore-preferences = "1.1.1"
 ted-permission = "3.3.0"
+pager-indicator = "0.32.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -42,11 +45,19 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "jetpack-compose" }
-compose-ui-preview = { group = "androidx.compose.material", name = "material", version.ref = "jetpack-compose" }
-compose-material = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "jetpack-compose" }
-compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "jetpack-compose" }
-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3"}
+material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref="material3"}
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+navigation-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "navigation-hilt" }
+pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "pager-indicator" }
 
 kakao-login = { group = "com.kakao.sdk", name = "v2-all", version.ref = "kakao-login" }
 naver-login = { group = "com.navercorp.nid", name = "oauth", version.ref = "naver-oauth" }
