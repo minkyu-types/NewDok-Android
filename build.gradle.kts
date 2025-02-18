@@ -1,6 +1,7 @@
 buildscript {
     extra.apply {
         set("kotlin_version", "1.9.0")
+        set("compose_version", "1.5.0")
     }
     dependencies {
         classpath(libs.safe.args)
