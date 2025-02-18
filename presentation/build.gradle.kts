@@ -29,6 +29,7 @@ android {
         }
     }
     buildFeatures {
+        compose = true
         buildConfig = true
         dataBinding = true
     }
@@ -39,6 +40,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.0"
+    }
 }
 
 dependencies {
@@ -47,6 +51,18 @@ dependencies {
     // Social login
 //    implementation(libs.kakao.login)
 //    implementation(libs.naver.login)
+
+    // Compose
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    implementation(libs.material3.window.size)
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.hilt)
+    implementation(libs.pager.indicator)
 
     // Coroutine
     implementation(libs.coroutine)
@@ -90,4 +106,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }
