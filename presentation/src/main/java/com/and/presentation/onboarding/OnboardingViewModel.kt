@@ -1,4 +1,4 @@
-package com.and.presentation.ui.onboarding
+package com.and.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.and.presentation.ui.onboarding
+package com.and.presentation.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -20,9 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,15 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
+import com.and.presentation.ui.whiteColorScheme
 
-private val whiteColorScheme = lightColorScheme(
-    primary = Color(0xFF6200EE),
-    onPrimary = Color.White,
-    background = Color.White,
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
-)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,34 +47,29 @@ fun OnboardingScreen(
 ) {
     val pagerState = rememberPagerState() { 3 }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OnboardingHeader(modifier = Modifier, pagerState = pagerState)
-                OnboardingIndicator(modifier = Modifier, pagerState = pagerState)
-            }
-            OnboardingImageViewPager(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                pagerState
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OnboardingRegisterButton(modifier = Modifier)
-                OnBoardingLoginText(modifier = Modifier)
-            }
+            OnboardingHeader(modifier = Modifier, pagerState = pagerState)
+            OnboardingIndicator(modifier = Modifier, pagerState = pagerState)
+        }
+        OnboardingImageViewPager(
+            modifier =
+            Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            pagerState
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OnboardingRegisterButton(modifier = Modifier)
+            OnBoardingLoginText(modifier = Modifier)
         }
     }
 }
