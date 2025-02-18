@@ -1,10 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="neutral_0">#FFFFFF</color>
+    <color name="neutral_1">#F7F7F7</color>
+    <color name="neutral_2">#C6C6C6</color>
+    <color name="neutral_3">#A6A6A6</color>
+    <color name="neutral_4">#969696</color>
+    <color name="neutral_5">#767676</color>
+    <color name="neutral_6">#464646</color>
+    <color name="neutral_7">#363636</color>
+    <color name="neutral_8">#262626</color>
+    <color name="neutral_9">#161616</color>
+    <color name="neutral_10">#000000</color>
+
+    <color name="tint_0">#2866D3</color>
+    <color name="tint_1">#3D75D7</color>
+    <color name="tint_2">#5184DB</color>
+    <color name="tint_3">#6893E0</color>
+    <color name="tint_4">#7FA3E4</color>
+    <color name="tint_5">#93B2E9</color>
+    <color name="tint_6">#AAC1ED</color>
+    <color name="tint_7">#BFD1F1</color>
+    <color name="tint_8">#D4E0F6</color>
+    <color name="tint_9">#E9EFFA</color>
+    <color name="tint_10">#FFFFFF</color>
+
+    <color name="shades_0">#2866D3</color>
+    <color name="shades_1">#245BBD</color>
+    <color name="shades_2">#2051A8</color>
+    <color name="shades_3">#1D4793</color>
+    <color name="shades_4">#193D7E</color>
+    <color name="shades_5">#143369</color>
+    <color name="shades_6">#102854</color>
+    <color name="shades_7">#0B1E3F</color>
+    <color name="shades_8">#08142A</color>
+    <color name="shades_9">#040A15</color>
+    <color name="shades_10">#000000</color>
+
+    <color name="primary_0">#2866D3</color>
+    <color name="primary_1">#245BBD</color>
+    <color name="primary_2">#2051A8</color>
+    <color name="primary_3">#2866D30D</color>
+    <color name="primary_4">#2866D31F</color>
+
+    <color name="caption_0">#161616</color>
+    <color name="caption_1">#363636</color>
+    <color name="caption_2">#565656</color>
+    <color name="caption_3">#767676</color>
+    <color name="caption_4">#969696</color>
+    <color name="caption_5">#C0C0C0</color>
+
+    <color name="opacity_0">#00000000</color>
+    <color name="opacity_1">#0000000D</color>
+    <color name="opacity_2">#00000014</color>
+    <color name="opacity_3">#0000001F</color>
+    <color name="opacity_4">#00000029</color>
+    <color name="opacity_5">#00000038</color>
+    <color name="opacity_6">#00000047</color>
+    <color name="opacity_7">#00000059</color>
+    <color name="opacity_8">#0000006E</color>
+    <color name="opacity_9">#00000085</color>
+    <color name="opacity_10">#0000009C</color>
+    <color name="opacity_11">#000000BD</color>
+    <color name="opacity_12">#000000E0</color>
+    <color name="opacity_13">#000000F7</color>
+    <color name="opacity_14">#000000</color>
+
 </resources>
