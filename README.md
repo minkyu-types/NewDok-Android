@@ -1,2 +1,2 @@
-# BaseCleanArchitecture
-Template repository for clean architecture based projects
+# NewDok
+NewDok 안드로이드
