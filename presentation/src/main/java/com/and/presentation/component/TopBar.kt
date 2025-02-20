@@ -29,7 +29,7 @@ fun TopBar(
         title = {
             Box(
                 modifier = Modifier
-                    .fillMaxHeight(),
+                    .height(height = 56.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
