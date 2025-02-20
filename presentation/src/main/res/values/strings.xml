@@ -1,13 +1,28 @@
 <resources>
     <string name="app_name">NewDok</string>
 
+    <string name="next">다음</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
     <string name="logo_image">로고 이미지</string>
     <string name="back">뒤로가기</string>
     <string name="register">회원가입</string>
     <string name="login">로그인</string>
+    <string name="auth_request">인증요청</string>
+    <string name="auth_number">인증번호</string>
+    <string name="phone_number_title">휴대폰 번호</string>
 
+    <!-- 다이얼로그 -->
+    <string name="auth_fail_title">인증 실패</string>
+    <string name="auth_fail_body">인증 횟수를 초과했습니다.\n처음부터 다시 진행해주세요</string>
+    <string name="auth_fail_button">처음으로</string>
+
+    <string name="auth_request_fail_title">이미 가입된 정보입니다</string>
+    <string name="auth_request_fail_body">한 번호로 최대 3개의 계정을 만들 수 있어요</string>
+    <string name="auth_request_fail_button_left">계속 진행하기</string>
+    <string name="auth_request_fail_button_right">로그인</string>
+
+    <!-- 온보딩 -->
     <string name="onboarding_title_1">너무 많은 뉴스레터 브랜드</string>
     <string name="onboarding_title_2">복잡하게 쌓여가는 메일함은 안녕!</string>
     <string name="onboarding_title_3">번거로운 구독 관리도</string>
@@ -16,10 +31,22 @@
     <string name="onboarding_subtitle_3">뉴독에서는 버튼 하나로\n쉽고 빠르게!</string>
     <string name="onboarding_login_desc">이미 계정이 있나요?</string>
 
+    <!-- 로그인 -->
     <string name="login_id_hint">아이디를 입력해주세요</string>
     <string name="login_password_hint">비밀번호를 입력해주세요</string>
     <string name="login_id_error">등록되지 않은 계정이거나, 아이디를 다시 확인해주세요</string>
     <string name="login_password_error">비밀번호가 일치하지 않습니다</string>
     <string name="login_without_register">비회원으로 이용하기</string>
     <string name="login_find_id_password">아이디/비밀번호 찾기</string>
+
+    <!-- 회원가입 -->
+    <string name="register_phone_auth_title_1">본인 확인을 위해</string>
+    <string name="register_phone_auth_title_2">휴대폰 번호를 입력해주세요</string>
+    <string name="register_phone_auth_placeholder">\'-\' 구분 없이 입력</string>
+    <string name="register_phone_auth_retry_desc">재전송은 3회까지만 가능해요</string>
+
+    <string name="register_phone_auth_number_placeholder">6자리 숫자 입력</string>
+    <string name="register_phone_auth_number_hint">문자가 오지 않는다면 \'재전송' 버튼을 눌러주세요</string>
+    <string name="register_phone_auth_number_error_1">인증번호를 다시 확인해주세요</string>
+    <string name="register_phone_auth_number_error_2">인증번호를 재전송해주세요</string>
 </resources>
