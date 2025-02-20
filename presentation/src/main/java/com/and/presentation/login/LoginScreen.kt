@@ -68,8 +68,6 @@ fun LoginScreen(
             onNavigationIconClick = {
                 navController.popBackStack()
             },
-            modifier = Modifier
-                .height(height = 56.dp)
         )
         Column(
             modifier = Modifier
