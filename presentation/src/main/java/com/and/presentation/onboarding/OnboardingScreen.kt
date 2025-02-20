@@ -39,7 +39,6 @@ import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
 import com.and.presentation.ui.whiteColorScheme
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
