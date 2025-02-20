@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,34 +46,29 @@ fun OnboardingScreen(
 ) {
     val pagerState = rememberPagerState() { 3 }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OnboardingHeader(modifier = Modifier, pagerState = pagerState)
-                OnboardingIndicator(modifier = Modifier, pagerState = pagerState)
-            }
-            OnboardingImageViewPager(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                pagerState
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OnboardingRegisterButton(modifier = Modifier)
-                OnBoardingLoginText(modifier = Modifier)
-            }
+            OnboardingHeader(modifier = Modifier, pagerState = pagerState)
+            OnboardingIndicator(modifier = Modifier, pagerState = pagerState)
+        }
+        OnboardingImageViewPager(
+            modifier =
+            Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            pagerState
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OnboardingRegisterButton(modifier = Modifier)
+            OnBoardingLoginText(modifier = Modifier)
         }
     }
 }
