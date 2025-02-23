@@ -1,6 +1,5 @@
-package com.and.presentation.register
+package com.and.presentation.screen.register
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,37 +31,30 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
 import com.and.presentation.component.PhoneAuthTextField
-import com.and.presentation.component.ProgressTopBar
-import com.and.presentation.component.TopBar
 import com.and.presentation.ui.whiteColorScheme
 import kotlinx.coroutines.delay
 
+/**
+ * (1) 사용자 전화번호를 입력받고
+ * (2) 해당 전화번호로 인증 문자를 전송하고
+ * (3) 입력 받은 인증 문자를 검증하는 화면
+ */
 @Composable
-fun RegisterScreen(
-    navController: NavController,
+fun RegisterStep1Screen(
+    onNext: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val phoneNumber by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var authCode by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
     ) {
-        ProgressTopBar(
-            title = stringResource(id = R.string.register),
-            currentProgress = 1,
-            maxProgress = 5,
-            onNavigationIconClick = {
-                navController.popBackStack()
-            },
-        )
-
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -71,17 +62,14 @@ fun RegisterScreen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = stringResource(R.string.register_phone_auth_title_1),
-                fontSize = 20.sp
-            )
-            Text(
-                text = stringResource(R.string.register_phone_auth_title_2),
-                fontSize = 20.sp
+                text = stringResource(R.string.register_phone_auth_title),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(48.dp))
 
             PhoneAuthTextField(
-                value = "",
+                value = phoneNumber,
                 isError = false,
                 onAuthButtonClick = {
                     // 인증 요청
@@ -89,17 +77,15 @@ fun RegisterScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
-                onValueChange = {
-
-                }
+                onValueChange = { phoneNumber = it }
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            AuthTextField(
-                value = "",
-                isError = false,
-                onValueChange = {
 
-                }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            AuthTextField(
+                value = authCode,
+                isError = false,
+                onValueChange = { authCode = it }
             )
         }
 
@@ -220,7 +206,7 @@ fun NextButton(
             .padding(horizontal = 16.dp, vertical = 20.dp)
             .height(56.dp),
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, color = Color.Gray),
+//        border = BorderStroke(1.dp, color = Color.Gray),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFD9D9D9),
         )
@@ -228,7 +214,7 @@ fun NextButton(
         Text(
             text = stringResource(id = R.string.next),
             color = colorResource(id = R.color.neutral_10),
-            fontSize = 16.sp
+            fontSize = 16.sp,
         )
     }
 }
@@ -242,14 +228,19 @@ fun RegisterTheme(content: @Composable () -> Unit) {
 }
 
 @Preview(
-    name = "RegisterScreen Preview",
+    name = "RegisterStep1Screen Preview",
     showBackground = true
 )
 @Composable
-fun RegisterScreenPreview() {
-    val navController: NavHostController = rememberNavController()
-
+fun RegisterStep1ScreenPreview() {
     RegisterTheme {
-        RegisterScreen(navController)
+        RegisterStep1Screen(
+            onNext = {
+                
+            },
+            onBack = {
+
+            }
+        )
     }
 }

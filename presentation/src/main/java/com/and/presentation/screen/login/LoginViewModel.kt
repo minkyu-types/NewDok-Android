@@ -1,4 +1,4 @@
-package com.and.presentation.login
+package com.and.presentation.screen.login
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
