@@ -1,4 +1,4 @@
-package com.and.presentation.login
+package com.and.presentation.screen.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

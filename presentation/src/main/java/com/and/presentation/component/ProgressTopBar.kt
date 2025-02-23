@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
-import com.and.presentation.login.LoginTheme
+import com.and.presentation.screen.login.LoginTheme
 
 @Composable
 fun ProgressTopBar(

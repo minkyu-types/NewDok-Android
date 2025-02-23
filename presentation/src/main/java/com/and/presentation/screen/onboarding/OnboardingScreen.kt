@@ -1,4 +1,4 @@
-package com.and.presentation.onboarding
+package com.and.presentation.screen.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

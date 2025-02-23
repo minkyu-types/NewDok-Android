@@ -20,12 +20,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.and.presentation.R
+import com.and.presentation.ui.Primary0
 
 @Composable
 fun HintErrorSecureTextField(
@@ -43,21 +44,28 @@ fun HintErrorSecureTextField(
         Text(
             text = valueTitle,
             fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 6.dp)
         )
     }
-
+    Spacer(modifier = Modifier.height(8.dp))
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        placeholder = { Text(text = valueHint) },
-        modifier = modifier,
+        placeholder = {
+            Text(
+                text = valueHint,
+                color = Color.Gray
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         isError = isError,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if (isError) Color.Red else MaterialTheme.colorScheme.primary,
+            focusedBorderColor = if (isError) Color.Red else Primary0,
             unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
             errorBorderColor = Color.Red,
+            cursorColor = Primary0
         ),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None // 보이기
