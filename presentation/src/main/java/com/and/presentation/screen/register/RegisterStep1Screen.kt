@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,7 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.and.presentation.R
 import com.and.presentation.component.PhoneAuthTextField
-import com.and.presentation.ui.whiteColorScheme
+import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.ui.DefaultWhiteTheme
 import kotlinx.coroutines.delay
 
 /**
@@ -89,11 +89,12 @@ fun RegisterStep1Screen(
             )
         }
 
-        NextButton(
+        ConditionalNextButton(
             enabled = false,
             onClick = {
                 // 다음 단계로 이동
             },
+            modifier = Modifier.padding(16.dp)
         )
     }
 }
@@ -192,48 +193,13 @@ fun AuthTextField(
     }
 }
 
-@Composable
-fun NextButton(
-    enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 20.dp)
-            .height(56.dp),
-        shape = RoundedCornerShape(15.dp),
-//        border = BorderStroke(1.dp, color = Color.Gray),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFD9D9D9),
-        )
-    ) {
-        Text(
-            text = stringResource(id = R.string.next),
-            color = colorResource(id = R.color.neutral_10),
-            fontSize = 16.sp,
-        )
-    }
-}
-
-@Composable
-fun RegisterTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = whiteColorScheme,
-        content = content
-    )
-}
-
 @Preview(
     name = "RegisterStep1Screen Preview",
     showBackground = true
 )
 @Composable
 fun RegisterStep1ScreenPreview() {
-    RegisterTheme {
+    DefaultWhiteTheme {
         RegisterStep1Screen(
             onNext = {
                 
