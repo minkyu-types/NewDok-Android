@@ -1,50 +1,67 @@
 package com.and.presentation.screen.register
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
 import com.and.presentation.component.ProgressTopBar
-import com.and.presentation.util.RegisterStep
 
 @Composable
-fun RegisterFlowScreen(
-    currentStep: RegisterStep,
-    onStepChange: (Int) -> Unit
-) {
+fun RegisterFlowScreen() {
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute: String = currentBackStackEntry?.destination?.route ?: RegisterStep.STEP_1_AUTH.route
+    val currentProgress: Int = RegisterStep.getStepByRoute(currentRoute)
+
     Scaffold(
         topBar = {
             ProgressTopBar(
                 title = stringResource(id = R.string.register),
-                currentProgress = currentStep.step,
+                currentProgress = currentProgress,
                 maxProgress = 5,
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            when (currentStep) {
-                RegisterStep.STEP_1_AUTH -> RegisterStep1Screen(
-                    onNext = { onStepChange(2) },
+        NavHost(
+            navController = navController,
+            startDestination = RegisterStep.STEP_1_AUTH.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(RegisterStep.STEP_1_AUTH.route) {
+                RegisterStep1Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_2_PASSWORD.route) },
                     onBack = {
                         // 온보딩 화면 이동
                     }
                 )
-                RegisterStep.STEP_2_PASSWORD -> RegisterStep2Screen(
-                    onNext = { onStepChange(3) },
-                    onBack = { onStepChange(1) }
+            }
+            composable(RegisterStep.STEP_2_PASSWORD.route) {
+                RegisterStep2Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_3_USER_INFO.route) },
+                    onBack = { navController.popBackStack() }
                 )
-                RegisterStep.STEP_3_USER_INFO -> RegisterStep3Screen(
-                    onNext = { onStepChange(4) },
-                    onBack = { onStepChange(2) }
+            }
+            composable(RegisterStep.STEP_3_USER_INFO.route) {
+                RegisterStep3Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_4_TERMS.route) },
+                    onBack = { navController.popBackStack() }
                 )
-                RegisterStep.STEP_4_TERMS -> RegisterStep4Screen(
-                    onNext = { onStepChange(5) },
-                    onBack = { onStepChange(3) }
+            }
+            composable(RegisterStep.STEP_4_TERMS.route) {
+                RegisterStep4Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_5_COMPLETE.route) },
+                    onBack = { navController.popBackStack() }
                 )
-                RegisterStep.STEP_5_COMPLETE -> RegisterStep5Screen(
+            }
+            composable(RegisterStep.STEP_5_COMPLETE.route) {
+                RegisterStep5Screen(
                     onNext = {
                         // 홈 화면 이동
                     }
