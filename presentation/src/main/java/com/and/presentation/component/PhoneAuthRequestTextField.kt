@@ -48,6 +48,7 @@ fun PhoneAuthTextField(
         Text(
             text = stringResource(id = R.string.phone_number_title),
             fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .padding(start = 8.dp)
         )
