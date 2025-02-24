@@ -41,6 +41,7 @@ import com.and.presentation.component.HintErrorSecureTextField
 import com.and.presentation.component.HintErrorTextField
 import com.and.presentation.component.TopBar
 import com.and.presentation.ui.whiteColorScheme
+import com.and.presentation.util.ID_MAX_LENGTH
 
 /**
  * @author Loki
@@ -78,11 +79,11 @@ fun LoginScreen(
             LoginLogoView()
             Spacer(modifier = Modifier.height(36.dp))
             HintErrorTextField(
+                maxLength = ID_MAX_LENGTH,
                 value = userId,
                 valueTitle = stringResource(id = R.string.id),
                 valueHint = stringResource(id = R.string.login_id_hint),
                 isError = loginFailed,
-                errorMessage = stringResource(id = R.string.login_id_error),
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 12.dp)
                     .fillMaxWidth()
