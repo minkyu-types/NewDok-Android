@@ -36,32 +36,41 @@ fun RegisterFlowScreen() {
         ) {
             composable(RegisterStep.STEP_1_AUTH.route) {
                 RegisterStep1Screen(
-                    onNext = { navController.navigate(RegisterStep.STEP_2_PASSWORD.route) },
+                    onNext = { navController.navigate(RegisterStep.STEP_2_ID.route) },
                     onBack = {
                         // 온보딩 화면 이동
                     }
                 )
             }
-            composable(RegisterStep.STEP_2_PASSWORD.route) {
+            composable(RegisterStep.STEP_2_ID.route) {
                 RegisterStep2Screen(
-                    onNext = { navController.navigate(RegisterStep.STEP_3_USER_INFO.route) },
-                    onBack = { navController.popBackStack() }
+                    onNext = { navController.navigate(RegisterStep.STEP_3_PASSWORD.route) },
+                    onBack = { navController.popBackStack() },
+                    onCheckDuplicate = {
+                        true
+                    }
                 )
             }
-            composable(RegisterStep.STEP_3_USER_INFO.route) {
+            composable(RegisterStep.STEP_3_PASSWORD.route) {
                 RegisterStep3Screen(
-                    onNext = { navController.navigate(RegisterStep.STEP_4_TERMS.route) },
+                    onNext = { navController.navigate(RegisterStep.STEP_4_USER_INFO.route) },
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable(RegisterStep.STEP_4_TERMS.route) {
+            composable(RegisterStep.STEP_4_USER_INFO.route) {
                 RegisterStep4Screen(
-                    onNext = { navController.navigate(RegisterStep.STEP_5_COMPLETE.route) },
+                    onNext = { navController.navigate(RegisterStep.STEP_5_TERMS.route) },
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable(RegisterStep.STEP_5_COMPLETE.route) {
+            composable(RegisterStep.STEP_5_TERMS.route) {
                 RegisterStep5Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_6_COMPLETE.route) },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable(RegisterStep.STEP_6_COMPLETE.route) {
+                RegisterStep6Screen(
                     onNext = {
                         // 홈 화면 이동
                     }
