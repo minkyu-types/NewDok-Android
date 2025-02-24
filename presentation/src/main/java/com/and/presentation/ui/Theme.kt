@@ -1,6 +1,8 @@
 package com.and.presentation.ui
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val whiteColorScheme = lightColorScheme(
@@ -11,3 +13,11 @@ val whiteColorScheme = lightColorScheme(
     surface = Color.White,
     onSurface = Color.Black,
 )
+
+@Composable
+fun DefaultWhiteTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = whiteColorScheme,
+        content = content
+    )
+}

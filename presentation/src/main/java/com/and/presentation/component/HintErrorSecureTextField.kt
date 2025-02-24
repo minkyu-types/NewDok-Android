@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -28,6 +27,9 @@ import androidx.compose.ui.unit.sp
 import com.and.presentation.R
 import com.and.presentation.ui.Primary0
 
+/**
+ * 힌트, 에러, 마스킹을 지원하는 TextField
+ */
 @Composable
 fun HintErrorSecureTextField(
     value: String,
@@ -47,55 +49,55 @@ fun HintErrorSecureTextField(
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 6.dp)
         )
-    }
-    Spacer(modifier = Modifier.height(8.dp))
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = {
-            Text(
-                text = valueHint,
-                color = Color.Gray
-            )
-        },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        isError = isError,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if (isError) Color.Red else Primary0,
-            unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
-            errorBorderColor = Color.Red,
-            cursorColor = Primary0
-        ),
-        visualTransformation = if (isPasswordVisible) {
-            VisualTransformation.None // 보이기
-        } else {
-            PasswordVisualTransformation() // 마스킹
-        },
-        trailingIcon = {
-            val iconRes = if (isPasswordVisible) {
-                R.drawable.ic_line_close_eye // 눈 감은 아이콘
-            } else {
-                R.drawable.ic_line_eye     // 눈 뜬 아이콘
-            }
-
-            IconButton(
-                onClick = { isPasswordVisible = !isPasswordVisible }
-            ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = null
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = valueHint,
+                    color = Color.Gray
                 )
-            }
-        }
-    )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            isError = isError,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = if (isError) Color.Red else Primary0,
+                unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
+                errorBorderColor = Color.Red,
+                cursorColor = Primary0
+            ),
+            visualTransformation = if (isPasswordVisible) {
+                VisualTransformation.None // 보이기
+            } else {
+                PasswordVisualTransformation() // 마스킹
+            },
+            trailingIcon = {
+                val iconRes = if (isPasswordVisible) {
+                    R.drawable.ic_line_close_eye // 눈 감은 아이콘
+                } else {
+                    R.drawable.ic_line_eye     // 눈 뜬 아이콘
+                }
 
-    if (isError && !errorMessage.isNullOrEmpty()) {
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = errorMessage,
-            color = Color.Red,
-            fontSize = 12.sp
+                IconButton(
+                    onClick = { isPasswordVisible = !isPasswordVisible }
+                ) {
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = null
+                    )
+                }
+            }
         )
+
+        if (isError && !errorMessage.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 12.sp
+            )
+        }
     }
 }
