@@ -138,7 +138,7 @@ fun RegisterStep2Screen(
                     text = message,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(top = 6.dp),
+                    modifier = Modifier.padding(top = 6.dp, start = 6.dp),
                     color = messageColor
                 )
             }
