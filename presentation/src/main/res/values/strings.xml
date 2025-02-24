@@ -2,8 +2,15 @@
     <string name="app_name">NewDok</string>
 
     <string name="next">다음</string>
+    <string name="select">선택</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
+    <string name="nickname">닉네임</string>
+    <string name="birth_year">출생연도</string>
+    <string name="gender">성별</string>
+    <string name="gender_male">남자</string>
+    <string name="gender_female">여자</string>
+    <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
     <string name="back">뒤로가기</string>
     <string name="register">회원가입</string>
@@ -39,9 +46,8 @@
     <string name="login_without_register">비회원으로 이용하기</string>
     <string name="login_find_id_password">아이디/비밀번호 찾기</string>
 
-    <!-- 회원가입 -->
-    <string name="register_phone_auth_title_1">본인 확인을 위해</string>
-    <string name="register_phone_auth_title_2">휴대폰 번호를 입력해주세요</string>
+    <!-- 회원가입 Step1 -->
+    <string name="register_phone_auth_title">본인 확인을 위해\n휴대폰 번호를 입력해주세요</string>
     <string name="register_phone_auth_placeholder">\'-\' 구분 없이 입력</string>
     <string name="register_phone_auth_retry_desc">재전송은 3회까지만 가능해요</string>
 
@@ -49,4 +55,24 @@
     <string name="register_phone_auth_number_hint">문자가 오지 않는다면 \'재전송' 버튼을 눌러주세요</string>
     <string name="register_phone_auth_number_error_1">인증번호를 다시 확인해주세요</string>
     <string name="register_phone_auth_number_error_2">인증번호를 재전송해주세요</string>
+
+    <!-- 회원가입 Step1 -->
+    <string name="register_id_title">아이디를\n설정해주세요</string>
+    <string name="register_id_placeholder">6~12자, 영문/숫자 조합</string>
+    <string name="register_id_duplicate_check">아이디 중복 여부를 확인해주세요</string>
+    <string name="register_id_error">6~12자, 영문/숫자 조합으로 입력해주세요</string>
+    <string name="register_id_valid">사용 가능한 아이디입니다</string>
+    <string name="register_id_invalid">이미 사용중인 아이디입니다</string>
+
+    <!-- 회원가입 Step3 -->
+    <string name="register_password_title">비밀번호를\n설정해주세요</string>
+    <string name="register_password_placeholder">8자 이상, 영문/숫자 조합</string>
+    <string name="register_password_error_length">8자 이상의 비밀번호를 입력해주세요</string>
+    <string name="register_password_error_combination">영문/숫자 조합으로 구성해주세요</string>
+
+    <!-- 회원가입 Step4 -->
+    <string name="register_nickname_title">프로필 설정을 위해\n회원정보를 입력해주세요</string>
+    <string name="register_nickname_placeholder">12자 이내, 특수문자 사용 불가</string>
+    <string name="register_birth_year_desc">출생연도는 뉴스레터 추천에 활용돼요</string>
+    <string name="register_nickname_invalid">특수문자는 사용할 수 없어요</string>
 </resources>
