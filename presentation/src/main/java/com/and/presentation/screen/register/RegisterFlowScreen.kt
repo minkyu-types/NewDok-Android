@@ -71,9 +71,16 @@ fun RegisterFlowScreen() {
             }
             composable(RegisterStep.STEP_6_COMPLETE.route) {
                 RegisterStep6Screen(
+                    onNext = { navController.navigate(RegisterStep.STEP_7_ADDITIONAL_INFO.route) },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable(RegisterStep.STEP_7_ADDITIONAL_INFO.route) {
+                RegisterStep7Screen(
                     onNext = {
-                        // 홈 화면 이동
-                    }
+                        // 홈 화면으로 이동
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
         }

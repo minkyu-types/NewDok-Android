@@ -6,7 +6,8 @@ enum class RegisterStep(val route: String, val step: Int) {
     STEP_3_PASSWORD("step2_password", 3),
     STEP_4_USER_INFO("step3_user_info", 4),
     STEP_5_TERMS("step4_terms", 5),
-    STEP_6_COMPLETE("step5_complete", 6);
+    STEP_6_COMPLETE("step5_complete", 6),
+    STEP_7_ADDITIONAL_INFO("step6_additional_info", 7);
 
     companion object {
         fun getStepByRoute(route: String): Int {
