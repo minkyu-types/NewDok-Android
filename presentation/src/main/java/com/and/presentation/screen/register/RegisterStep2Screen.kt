@@ -35,7 +35,7 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Neutral10
 import com.and.presentation.ui.Neutral2
 import com.and.presentation.ui.Neutral5
-import com.and.presentation.ui.Primary0
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.ID_MAX_LENGTH
 import com.and.presentation.util.ID_MIN_LENGTH
 
@@ -131,7 +131,7 @@ fun RegisterStep2Screen(
                     }
                     else -> {
                         message = stringResource(R.string.register_id_valid)
-                        messageColor = Primary0
+                        messageColor = Primary_Normal
                     }
                 }
                 Text(

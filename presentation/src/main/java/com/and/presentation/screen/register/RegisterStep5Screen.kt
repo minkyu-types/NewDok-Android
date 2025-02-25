@@ -34,7 +34,7 @@ import com.and.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Neutral1
-import com.and.presentation.ui.Primary0
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
 
 @Composable
@@ -141,7 +141,7 @@ fun RegisterTermAgreeButton(
                     .size(18.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(
-                        if (initialChecked) Primary0 else Color.White
+                        if (initialChecked) Primary_Normal else Color.White
                     )
                     .border(
                         width = if (initialChecked) 0.dp else 1.dp,
@@ -197,7 +197,7 @@ fun RegisterTermAgreeAllButton(
                     .size(18.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(
-                        if (initialChecked) Primary0 else Color.White
+                        if (initialChecked) Primary_Normal else Color.White
                     )
                     .border(
                         width = if (initialChecked) 0.dp else 1.dp,
