@@ -8,17 +8,22 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.and.presentation.R
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Line0
 import com.and.presentation.ui.Neutral10
-import com.and.presentation.ui.Primary0
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.Tint10
 
 /**
  * 조건에 따라 enable 여부가 변경되는 버튼
+ *
+ * 텍스트 색상
+ * enabled -> Tint10
+ * disabled -> Neutral10
  *
  * @param buttonText "다음"이 아닌 다른 버튼 텍스트를 사용해야 하는 경우
  */
@@ -35,16 +40,17 @@ fun ConditionalNextButton(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(4.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if(enabled) Primary0 else Color(0xFFD9D9D9),
+            containerColor = if(enabled) Primary_Normal else Line0,
         )
     ) {
         Text(
             text = buttonText,
+            style = Body2Normal,
+            fontWeight = FontWeight.Bold,
             color = if (enabled) Tint10
-                else Neutral10,
-            fontSize = 16.sp,
+                else Neutral10
         )
     }
 }

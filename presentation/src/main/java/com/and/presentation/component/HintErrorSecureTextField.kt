@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.and.presentation.R
-import com.and.presentation.ui.Primary0
+import com.and.presentation.ui.Primary_Normal
 
 /**
  * 힌트, 에러, 마스킹을 지원하는 TextField
@@ -63,10 +63,10 @@ fun HintErrorSecureTextField(
             shape = RoundedCornerShape(12.dp),
             isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) Color.Red else Primary0,
+                focusedBorderColor = if (isError) Color.Red else Primary_Normal,
                 unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
                 errorBorderColor = Color.Red,
-                cursorColor = Primary0
+                cursorColor = Primary_Normal
             ),
             visualTransformation = if (isPasswordVisible) {
                 VisualTransformation.None // 보이기

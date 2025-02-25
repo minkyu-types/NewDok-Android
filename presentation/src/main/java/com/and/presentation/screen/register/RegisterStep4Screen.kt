@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,7 +32,7 @@ import com.and.presentation.R
 import com.and.presentation.component.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Primary0
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.NICKNAME_MAX_LENGTH
 import com.and.presentation.util.nicknameValidation
 import com.and.presentation.util.type.Gender
@@ -180,7 +179,7 @@ fun RegisterGenderRadioGroup(
                     .weight(1f),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (userGender == Gender.MALE) Primary0
+                    containerColor = if (userGender == Gender.MALE) Primary_Normal
                     else Color(0xFFD9D9D9),
                 )
             ) {
@@ -197,7 +196,7 @@ fun RegisterGenderRadioGroup(
                     .weight(1f),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (userGender == Gender.FEMALE) Primary0
+                    containerColor = if (userGender == Gender.FEMALE) Primary_Normal
                     else Color(0xFFD9D9D9),
                 )
             ) {
