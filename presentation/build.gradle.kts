@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.and.presentation"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 28
