@@ -74,9 +74,14 @@ val Opacity_97 = Color(0x000000F7)
 val Opacity_100 = Color(0xFF000000)
 
 // Line Colors
-val Line0 = Color(0xFFC0C0C0)
-val Line1 = Color(0xFFDADADA)
-val Line2 = Color(0xFFEBEBEB)
+val Line_Disabled = Color(0xFFC0C0C0)
+val Line_Alternative = Color(0xFFDADADA)
+val Line_Neutral = Color(0xFFEBEBEB)
+val Line_Blue_100 = Color(0xFFCCDFFF)
 
-// Gray
+// Error Colors
+val Error_Caption = Color(0xFFE32727)
+val Error_Fill = Color(0xFFFEE6E6)
+val Error_Stroke = Color(0xFF43439C)
+
 val Gray50 = Color(0xFFFAFAFA)
