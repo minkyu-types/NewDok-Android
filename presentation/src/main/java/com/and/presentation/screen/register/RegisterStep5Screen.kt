@@ -2,7 +2,6 @@ package com.and.presentation.screen.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,11 +29,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.and.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.ui.Body1Normal
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Heavy
+import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Neutral1
+import com.and.presentation.ui.Heading2
+import com.and.presentation.ui.Line_Alternative
+import com.and.presentation.ui.Line_Blue_100
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
 
@@ -58,36 +63,47 @@ fun RegisterStep5Screen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = stringResource(R.string.register_terms_title),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                style = Heading2,
+                fontWeight = FontWeight.Bold,
+                color = Caption_Heavy,
+                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_1),
                 initialChecked = isTerm1Checked,
                 onCheckChange = { isTerm1Checked = it }
             )
+            Spacer(modifier = Modifier.height(16.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_2),
                 initialChecked = isTerm2Checked,
                 onCheckChange = { isTerm2Checked = it }
             )
+            Spacer(modifier = Modifier.height(16.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_3),
                 initialChecked = isTerm3Checked,
                 onCheckChange = { isTerm3Checked = it }
             )
+            Spacer(modifier = Modifier.height(16.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_4),
                 initialChecked = isTerm4Checked,
                 onCheckChange = { isTerm4Checked = it }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth()
+                    .padding(end = 8.dp)
+            )
             RegisterTermAgreeAllButton(
                 initialChecked = isAllTermsChecked,
                 onCheckChange = { newState ->
@@ -121,9 +137,8 @@ fun RegisterTermAgreeButton(
                 onCheckChange(!initialChecked)
             }
             .fillMaxWidth()
-            .height(56.dp)
             .background(Color.White)
-            .padding(start = 8.dp, end = 16.dp),
+            .padding(end = 8.dp),
         contentAlignment = Alignment.CenterStart,
     ) {
         Row(
@@ -132,29 +147,30 @@ fun RegisterTermAgreeButton(
         ) {
             Text(
                 text = title,
-                fontSize = 16.sp,
-                color = Color.Gray,
+                style = Body2Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Strong,
                 modifier = Modifier.weight(1f)
             )
             Box(
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(24.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(
-                        if (initialChecked) Primary_Normal else Color.White
-                    )
+                    .background(Color.White)
                     .border(
-                        width = if (initialChecked) 0.dp else 1.dp,
+                        width = (1.2).dp,
                         shape = RoundedCornerShape(5.dp),
-                        color = Color.Gray
+                        color = if (initialChecked) Line_Blue_100 else Line_Alternative
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_checkmark),
-                    contentDescription = null,
-                    tint = if (initialChecked) Color.White else Color.Gray
-                )
+                if (initialChecked) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_checkmark),
+                        contentDescription = null,
+                        tint = Primary_Normal
+                    )
+                }
             }
         }
     }
@@ -168,14 +184,9 @@ fun RegisterTermAgreeAllButton(
 ) {
     Box(
         modifier = Modifier
+            .removeRippleEffect { onCheckChange(!initialChecked) }
             .fillMaxWidth()
-            .height(58.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(Neutral1)
-            .clickable {
-                onCheckChange(!initialChecked)
-            }
-            .padding(start = 8.dp, end = 16.dp),
+            .padding(end = 8.dp),
         contentAlignment = Alignment.CenterStart,
     ) {
         Row(
@@ -185,32 +196,34 @@ fun RegisterTermAgreeAllButton(
         ) {
             Text(
                 text = stringResource(R.string.register_terms_term_all),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Gray,
+                style = Body1Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Heavy,
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
+                    .padding(top = 20.dp, bottom = 20.dp)
                     .weight(1f)
             )
             Box(
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(24.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(
                         if (initialChecked) Primary_Normal else Color.White
                     )
                     .border(
-                        width = if (initialChecked) 0.dp else 1.dp,
+                        width = if (initialChecked) 0.dp else (1.2).dp,
                         shape = RoundedCornerShape(5.dp),
-                        color = Color.Gray
+                        color = Line_Alternative
                     ),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_checkmark),
-                    contentDescription = null,
-                    tint = if (initialChecked) Color.White else Color.Gray
-                )
+                if (initialChecked) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_checkmark),
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
             }
         }
     }

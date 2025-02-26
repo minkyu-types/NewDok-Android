@@ -40,7 +40,7 @@ fun RegisterStep7Screen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(

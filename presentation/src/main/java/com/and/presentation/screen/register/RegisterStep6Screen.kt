@@ -26,7 +26,9 @@ import com.and.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Gray50
 import com.and.presentation.ui.Heading2
@@ -46,13 +48,14 @@ fun RegisterStep6Screen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.register_complete_title),
                 style = Heading2,
                 fontWeight = FontWeight.Bold,
+                color = Caption_Heavy,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
@@ -65,6 +68,7 @@ fun RegisterStep6Screen(
                 text = stringResource(R.string.register_complete_body),
                 style = Body2Normal.copy(textAlign = TextAlign.Center),
                 fontWeight = FontWeight.Medium,
+                color = Caption_Strong,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
@@ -81,6 +85,7 @@ fun RegisterStep6Screen(
                 Text(
                     text = stringResource(R.string.subscription_email),
                     style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
                     color = Caption_Neutral,
                 )
                 Spacer(modifier = Modifier.height(8.dp))

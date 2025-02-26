@@ -1,12 +1,11 @@
 package com.and.presentation.screen.register
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,9 +30,12 @@ import androidx.compose.ui.unit.sp
 import com.and.presentation.R
 import com.and.presentation.component.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Disabled
+import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Neutral10
-import com.and.presentation.ui.Neutral2
+import com.and.presentation.ui.Heading2
+import com.and.presentation.ui.Line_Disabled
 import com.and.presentation.ui.Neutral5
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.ID_MAX_LENGTH
@@ -58,23 +60,25 @@ fun RegisterStep2Screen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.register_id_title),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                style = Heading2,
+                fontWeight = FontWeight.Bold,
+                color = Caption_Heavy,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
             ) {
                 HintErrorTextField(
                     maxLength = ID_MAX_LENGTH,
+                    icon = R.drawable.ic_line_user,
                     value = userId,
                     onValueChange = {
                         if (isIdNotDuplicated) isIdNotDuplicated = false
@@ -85,7 +89,6 @@ fun RegisterStep2Screen(
                     isError = userId.isNotBlank() && !isIdValid,
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxHeight()
                         .padding(top = 12.dp)
                 )
                 Button(
@@ -95,22 +98,27 @@ fun RegisterStep2Screen(
                         // 중복이라면 중복 확인 다시 클릭하도록 error 발생시켜주기
                         isIdNotDuplicated = result
                     },
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .height(56.dp)
-                        .align(Alignment.Bottom),
+                        .height(48.dp)
+                        .align(Alignment.Bottom)
+                        .border(
+                            width = if (isIdNotDuplicated) 0.dp else 1.dp,
+                            shape = RoundedCornerShape(5.dp),
+                            color = Line_Disabled
+                        ),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Neutral2,
+                        containerColor = Color.White,
                     ),
                     contentPadding = PaddingValues(horizontal = 20.dp)
                 )
                 {
                     Text(
                         text = "중복 확인",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Neutral10,
+                        style = Body2Normal,
+                        fontWeight = FontWeight.Bold,
+                        color = Caption_Disabled,
                         maxLines = 1
                     )
                 }
@@ -134,11 +142,12 @@ fun RegisterStep2Screen(
                         messageColor = Primary_Normal
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = message,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(top = 6.dp, start = 6.dp),
+                    modifier = Modifier.padding(start = 4.dp),
                     color = messageColor
                 )
             }

@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.and.presentation.R
 import com.and.presentation.component.HintErrorSecureTextField
 import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
+import com.and.presentation.ui.Heading2
 import com.and.presentation.util.PASSWORD_MIN_LENGTH
 import com.and.presentation.util.passwordValidation
 
@@ -55,17 +57,20 @@ fun RegisterStep3Screen(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.register_password_title),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                style = Heading2,
+                fontWeight = FontWeight.Bold,
+                color = Caption_Heavy,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
 
             HintErrorSecureTextField(
+                icon = R.drawable.ic_line_lock,
                 value = userPassword,
                 onValueChange = { userPassword = it },
                 valueTitle = stringResource(id = R.string.password),
@@ -81,13 +86,14 @@ fun RegisterStep3Screen(
                     stringResource(id = R.string.register_password_error_length)
                 },
                 modifier = Modifier
-                    .padding(top = 12.dp, bottom = 12.dp)
+                    .padding(top = 20.dp, bottom = 20.dp)
                     .fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             HintErrorSecureTextField(
+                icon = R.drawable.ic_line_lock,
                 value = userPasswordConfirm,
                 onValueChange = { userPasswordConfirm = it },
                 valueTitle = stringResource(id = R.string.password_confirm),
@@ -99,7 +105,7 @@ fun RegisterStep3Screen(
                 },
                 errorMessage = stringResource(id = R.string.login_password_error),
                 modifier = Modifier
-                    .padding(top = 12.dp, bottom = 12.dp)
+                    .padding(top = 20.dp, bottom = 12.dp)
                     .fillMaxWidth()
             )
         }
