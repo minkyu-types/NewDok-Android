@@ -1,3 +1,144 @@
 <resources>
     <string name="app_name">NewDok</string>
+
+    <string name="next">다음</string>
+    <string name="select">선택</string>
+    <string name="id">아이디</string>
+    <string name="password">비밀번호</string>
+    <string name="nickname">닉네임</string>
+    <string name="birth_year">출생연도</string>
+    <string name="gender">성별</string>
+    <string name="gender_male">남자</string>
+    <string name="gender_female">여자</string>
+    <string name="password_confirm">비밀번호 확인</string>
+    <string name="logo_image">로고 이미지</string>
+    <string name="back">뒤로가기</string>
+    <string name="register">회원가입</string>
+    <string name="login">로그인</string>
+    <string name="auth_request">인증요청</string>
+    <string name="auth_number">인증번호</string>
+    <string name="phone_number_title">휴대폰 번호</string>
+    <string name="subscription_email">구독 이메일</string>
+    <string name="subscribe">구독하기</string>
+    <string name="move_to_main">메인으로</string>
+    <string name="industry_category">종사산업</string>
+    <string name="profile_setting">프로필 설정</string>
+
+    <!-- 다이얼로그 -->
+    <string name="auth_fail_title">인증 실패</string>
+    <string name="auth_fail_body">인증 횟수를 초과했습니다.\n처음부터 다시 진행해주세요</string>
+    <string name="auth_fail_button">처음으로</string>
+
+    <string name="auth_request_fail_title">이미 가입된 정보입니다</string>
+    <string name="auth_request_fail_body">한 번호로 최대 3개의 계정을 만들 수 있어요</string>
+    <string name="auth_request_fail_button_left">계속 진행하기</string>
+    <string name="auth_request_fail_button_right">로그인</string>
+
+    <!-- 온보딩 -->
+    <string name="onboarding_title_1">너무 많은 뉴스레터 브랜드</string>
+    <string name="onboarding_title_2">복잡하게 쌓여가는 메일함은 안녕!</string>
+    <string name="onboarding_title_3">번거로운 구독 관리도</string>
+    <string name="onboarding_subtitle_1">일일이 찾아볼 필요 없이\n내게 필요한 뉴스레터만 쏙쏙</string>
+    <string name="onboarding_subtitle_2">다른 메일과 섞이지 않고\n오늘 받은 뉴스레터만 한눈에</string>
+    <string name="onboarding_subtitle_3">뉴독에서는 버튼 하나로\n쉽고 빠르게!</string>
+    <string name="onboarding_login_desc">이미 계정이 있나요?</string>
+
+    <!-- 로그인 -->
+    <string name="login_id_hint">아이디 입력</string>
+    <string name="login_password_hint">비밀번호 입력</string>
+    <string name="login_id_error">등록되지 않은 계정이거나, 아이디를 다시 확인해주세요</string>
+    <string name="login_password_error">비밀번호가 일치하지 않습니다</string>
+    <string name="login_without_register">비회원으로 이용하기</string>
+    <string name="login_find_id_password">아이디/비밀번호 찾기</string>
+
+    <!-- 회원가입 Step1 -->
+    <string name="register_phone_auth_title">본인 확인을 위해\n휴대폰 번호를 입력해주세요</string>
+    <string name="register_phone_auth_placeholder">- 구분 없이 입력</string>
+    <string name="register_phone_auth_retry_desc">재전송은 3회까지만 가능해요</string>
+
+    <string name="register_phone_auth_number_placeholder">6자리 숫자 입력</string>
+    <string name="register_phone_auth_number_hint">문자가 오지 않는다면 재전송 버튼을 눌러주세요</string>
+    <string name="register_phone_auth_number_error_1">인증번호를 다시 확인해주세요</string>
+    <string name="register_phone_auth_number_error_2">인증번호를 재전송해주세요</string>
+
+    <!-- 회원가입 Step1 -->
+    <string name="register_id_title">아이디를\n설정해주세요</string>
+    <string name="register_id_placeholder">6~12자, 영문/숫자 조합</string>
+    <string name="register_id_duplicate_check">아이디 중복 여부를 확인해주세요</string>
+    <string name="register_id_error">6~12자, 영문/숫자 조합으로 입력해주세요</string>
+    <string name="register_id_valid">사용 가능한 아이디입니다</string>
+    <string name="register_id_invalid">이미 사용중인 아이디입니다</string>
+
+    <!-- 회원가입 Step3 -->
+    <string name="register_password_title">비밀번호를\n설정해주세요</string>
+    <string name="register_password_placeholder">8자 이상, 영문/숫자 조합</string>
+    <string name="register_password_error_length">8자 이상의 비밀번호를 입력해주세요</string>
+    <string name="register_password_error_combination">영문/숫자 조합으로 구성해주세요</string>
+
+    <!-- 회원가입 Step4 -->
+    <string name="register_nickname_title">프로필 설정을 위해\n회원정보를 입력해주세요</string>
+    <string name="register_nickname_placeholder">12자 이내, 특수문자 사용 불가</string>
+    <string name="register_nickname_valid">사용 가능한 닉네임 입니다.</string>
+    <string name="register_birth_year_desc">출생연도는 뉴스레터 추천에 활용돼요.</string>
+    <string name="register_gender_desc">성별은 뉴스레터 추천에 활용돼요.</string>
+    <string name="register_nickname_invalid">특수문자는 사용할 수 없어요</string>
+
+    <!-- 회원가입 Step5 -->
+    <string name="register_terms_title">마지막으로\n이용 약관에 동의해주세요</string>
+    <string name="register_terms_term_1">만 14세 이상 확인 (필수)</string>
+    <string name="register_terms_term_2">서비스 이용 동의 (필수)</string>
+    <string name="register_terms_term_3">개인정보 수집 및 이용 동의 (필수)</string>
+    <string name="register_terms_term_4">마케팅 활용/광고성 정보 수신 동의 (선택)</string>
+    <string name="register_terms_term_all">전체 약관 동의</string>
+    <string name="register_terms_complete">가입 완료</string>
+
+    <!-- 회원가입 Step6 -->
+    <string name="register_complete_title">뉴스레터 구독을 위한\n이메일이 생성되었어요</string>
+    <string name="register_complete_body">이제 뉴독으로 구독을 신청할 수 있어요\n지금 바로 내게 도움이 될 뉴스레터를 만나보세요.</string>
+
+    <!-- 회원가입 Step7 -->
+    <string name="register_additional_info_title">뉴스레터 추천을 위해\n%s님에 대해\n더 알려주세요</string>
+    <string name="register_additional_info_body">종사 산업과 관심사를 선택하면,\n내게 도움이 될 뉴스레터를 만나볼 수 있어요!</string>
+    <string name="register_additional_button_text">뉴스레터 추천받기</string>
+
+    <!-- 사전조사 Step1 -->
+    <string name="pre_investigation_industry_title">종사 중인 산업을\n선택해주세요</string>
+    <string name="pre_investigation_industry_body">선택하신 산업과 관련된 뉴스레터를 찾아드려요.</string>
+    <string name="pre_investigation_industry_dropdown_placeholder">산업군을 선택해주세요</string>
+
+    <!-- 사전조사 Step2 -->
+    <string name="pre_investigation_interests_title">정확한 추천을 위해\n관심사를 3개 이상 선택해주세요</string>
+    <string name="pre_investigation_interests_body">취향에 맞는 뉴스레터를 추천해드려요</string>
+    <string name="pre_investigation_interests_1">시사·상식</string>
+    <string name="pre_investigation_interests_2">비즈니스</string>
+    <string name="pre_investigation_interests_3">과학·기술</string>
+    <string name="pre_investigation_interests_4">트렌드</string>
+    <string name="pre_investigation_interests_5">재테크</string>
+    <string name="pre_investigation_interests_6">콘텐츠</string>
+    <string name="pre_investigation_interests_7">라이프스타일</string>
+    <string name="pre_investigation_interests_8">비즈니스</string>
+    <string name="pre_investigation_interests_9">건강</string>
+    <string name="pre_investigation_interests_10">멘탈케어</string>
+    <string name="pre_investigation_interests_11">푸드·드링크</string>
+    <string name="pre_investigation_interests_12">자연·환경</string>
+    <string name="pre_investigation_interests_13">공간·인테리어</string>
+    <string name="pre_investigation_interests_14">미술·디자인</string>
+    <string name="pre_investigation_interests_15">음악</string>
+    <string name="pre_investigation_interests_16">게임</string>
+    <string name="pre_investigation_interests_17">콘서트·공연</string>
+    <string name="pre_investigation_interests_18">문화</string>
+    <string name="pre_investigation_interests_19">문학·도서</string>
+    <string name="pre_investigation_interests_20">언어</string>
+    <string name="pre_investigation_interests_21">영화</string>
+    <string name="pre_investigation_interests_22">여행</string>
+    <string name="pre_investigation_interests_23">쇼핑</string>
+    <string name="pre_investigation_interests_24">가족</string>
+    <string name="pre_investigation_interests_25">반려동물</string>
+    <string name="pre_investigation_interests_26">사회공헌</string>
+
+    <!-- 사전조사 Step2 -->
+    <string name="pre_investigation_curation_header">추천 뉴스레터</string>
+    <string name="pre_investigation_curation_title">%s님을 위한\n맞춤형 뉴스레터가 도착했어요!</string>
+    <string name="pre_investigation_curation_body">구독한 뉴스레터는 발행일에 맞춰 홈으로 배달해드려요.\n구독하기를 누르면 구독이메일이 자동으로 복사돼요.</string>
+
 </resources>
