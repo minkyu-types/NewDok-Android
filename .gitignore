@@ -110,6 +110,7 @@ google-services.json
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/kotlinc.xml
 
 # -----------------------------
 # Crashlytics / Fabric
