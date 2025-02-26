@@ -74,7 +74,9 @@
     <!-- 회원가입 Step4 -->
     <string name="register_nickname_title">프로필 설정을 위해\n회원정보를 입력해주세요</string>
     <string name="register_nickname_placeholder">12자 이내, 특수문자 사용 불가</string>
-    <string name="register_birth_year_desc">출생연도는 뉴스레터 추천에 활용돼요</string>
+    <string name="register_nickname_valid">사용 가능한 닉네임 입니다.</string>
+    <string name="register_birth_year_desc">출생연도는 뉴스레터 추천에 활용돼요.</string>
+    <string name="register_gender_desc">성별은 뉴스레터 추천에 활용돼요.</string>
     <string name="register_nickname_invalid">특수문자는 사용할 수 없어요</string>
 
     <!-- 회원가입 Step5 -->
