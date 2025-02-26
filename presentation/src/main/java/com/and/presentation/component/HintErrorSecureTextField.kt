@@ -23,8 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.and.presentation.R
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Assistive
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Error_Caption
+import com.and.presentation.ui.Label1
+import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
 
 /**
@@ -32,6 +37,7 @@ import com.and.presentation.ui.Primary_Normal
  */
 @Composable
 fun HintErrorSecureTextField(
+    icon: Int? = null,
     value: String,
     valueTitle: String,
     valueHint: String,
@@ -45,9 +51,10 @@ fun HintErrorSecureTextField(
     Column {
         Text(
             text = valueTitle,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 6.dp)
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral,
+            modifier = Modifier.padding(start = 4.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -56,15 +63,19 @@ fun HintErrorSecureTextField(
             placeholder = {
                 Text(
                     text = valueHint,
-                    color = Color.Gray
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Assistive
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(4.dp),
             isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = if (isError) Color.Red else Primary_Normal,
-                unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
+                unfocusedBorderColor = if (isError) Color.Red else Line_Alternative,
                 errorBorderColor = Color.Red,
                 cursorColor = Primary_Normal
             ),
@@ -72,6 +83,14 @@ fun HintErrorSecureTextField(
                 VisualTransformation.None // 보이기
             } else {
                 PasswordVisualTransformation() // 마스킹
+            },
+            leadingIcon = icon?.let {
+                {
+                    Icon(
+                        painter = painterResource(id = it),
+                        contentDescription = null,
+                    )
+                }
             },
             trailingIcon = {
                 val iconRes = if (isPasswordVisible) {
@@ -95,8 +114,9 @@ fun HintErrorSecureTextField(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = errorMessage,
-                color = Color.Red,
-                fontSize = 12.sp
+                style = Label1,
+                fontWeight = FontWeight.Medium,
+                color = Error_Caption,
             )
         }
     }
