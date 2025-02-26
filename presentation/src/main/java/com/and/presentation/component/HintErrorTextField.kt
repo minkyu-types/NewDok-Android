@@ -6,59 +6,87 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.and.presentation.R
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Assistive
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Line_Alternative
+import com.and.presentation.ui.Primary_Normal
 
+/**
+ * leadingIcon, 힌트, 에러를 지원하는 TextField
+ *
+ * 주의: Error 발생 시 보여줄 Text는 호출부에서 구현해야 함
+ * 이유: TextField 우측에 추가 요소 배치 시 TextField의 높이가 변경되어 정렬이 풀림
+ */
 @Composable
 fun HintErrorTextField(
+    maxLength: Int,
+    icon: Int? = null,
     value: String,
     valueTitle: String,
     valueHint: String,
     onValueChange: (String) -> Unit = {},
     isError: Boolean,
-    errorMessage: String?,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+    ) {
         Text(
             text = valueTitle,
-            fontSize = 14.sp,
-            modifier = Modifier.padding(start = 6.dp)
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral,
+            modifier = Modifier.padding(start = 4.dp)
         )
-    }
-
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = { Text(text = valueHint) },
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        isError = isError,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if (isError) Color.Red else MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = if (isError) Color.Red else Color.Gray,
-            errorBorderColor = Color.Red,
-        )
-    )
-
-    if (isError && !errorMessage.isNullOrEmpty()) {
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = errorMessage,
-            color = Color.Red,
-            fontSize = 12.sp
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = { newValue ->
+                if (newValue.length <= maxLength) {
+                    onValueChange(newValue)
+                }
+            },
+            placeholder = {
+                Text(
+                    text = valueHint,
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Assistive
+                )
+            },
+            leadingIcon = icon?.let {
+                {
+                    Icon(
+                        painter = painterResource(id = it),
+                        contentDescription = null,
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(4.dp),
+            isError = isError,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Primary_Normal,
+                unfocusedIndicatorColor = Line_Alternative,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
+                errorContainerColor = Color.White
+            ),
         )
     }
 }

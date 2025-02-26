@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.and.data"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 28
