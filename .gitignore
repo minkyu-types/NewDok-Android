@@ -121,3 +121,5 @@ crashlytics-build.properties
 fabric.properties
 /gradlew
 /gradlew.bat
+=======
+./.idea
