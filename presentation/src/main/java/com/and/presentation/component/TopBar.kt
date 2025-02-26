@@ -1,7 +1,6 @@
 package com.and.presentation.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -14,9 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.and.presentation.R
+import com.and.presentation.ui.Body1Normal
+import com.and.presentation.ui.Caption_Heavy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +35,9 @@ fun TopBar(
             ) {
                 Text(
                     text = title,
-                    fontSize = 16.sp
+                    style = Body1Normal,
+                    fontWeight = FontWeight.Bold,
+                    color = Caption_Heavy
                 )
             }
         },

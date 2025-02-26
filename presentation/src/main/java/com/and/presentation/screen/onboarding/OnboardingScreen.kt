@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,9 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
+import com.and.presentation.ui.Blue50
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Heavy
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Heading1
+import com.and.presentation.ui.Line_Blue_100
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.whiteColorScheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -101,15 +109,17 @@ fun OnboardingHeader(
     ) {
         Text(
             text = titleText,
-            fontSize = 14.sp,
-            color = colorResource(id = R.color.neutral_10),
-            modifier = Modifier.padding(bottom = 8.dp)
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral,
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = subtitleText,
-            fontSize = 22.sp,
+            style = Heading1,
+            fontWeight = FontWeight.Bold,
+            color = Caption_Heavy,
             textAlign = TextAlign.Center,
-            lineHeight = 34.sp
         )
     }
 }
@@ -134,8 +144,8 @@ fun OnboardingIndicator(
                     .padding(2.dp)
                     .size(width = 20.dp, height = 4.dp)
                     .background(
-                        color = if (isSelected) colorResource(id = R.color.primary_0)
-                        else colorResource(id = R.color.neutral_4),
+                        color = if (isSelected) Primary_Normal
+                        else Blue50,
                         shape = RectangleShape,
                     )
             )
@@ -163,13 +173,7 @@ fun OnboardingImageViewPager(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, top = 40.dp, bottom = 40.dp)
-                .background(
-                    color = when (page) {
-                        0 -> colorResource(id = R.color.tint_0)
-                        1 -> colorResource(id = R.color.tint_4)
-                        else -> colorResource(id = R.color.tint_8)
-                    }
-                ),
+                .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
             // TODO - 이미지 리소스로 변경

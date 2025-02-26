@@ -74,6 +74,7 @@ fun HintErrorSecureTextField(
             shape = RoundedCornerShape(4.dp),
             isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor = Color.White,
                 focusedBorderColor = if (isError) Color.Red else Primary_Normal,
                 unfocusedBorderColor = if (isError) Color.Red else Line_Alternative,
                 errorBorderColor = Color.Red,

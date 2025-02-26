@@ -25,9 +25,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +40,9 @@ import com.and.presentation.R
 import com.and.presentation.component.HintErrorSecureTextField
 import com.and.presentation.component.HintErrorTextField
 import com.and.presentation.component.TopBar
+import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Disabled
 import com.and.presentation.ui.whiteColorScheme
 import com.and.presentation.util.ID_MAX_LENGTH
 
@@ -102,9 +105,13 @@ fun LoginScreen(
                 modifier = Modifier.align(Alignment.End)
             )
         }
-        LoginButton(
-            modifier = Modifier
-                .offset(y = (-12).dp)
+        ConditionalNextButton(
+            enabled = false,
+            onClick = {
+
+            },
+            modifier = Modifier.padding(16.dp),
+            buttonText = stringResource(R.string.login)
         )
         LoginBottomText(
             modifier = Modifier,
@@ -161,7 +168,9 @@ fun LoginButton(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(id = R.string.login),
-            color = colorResource(id = R.color.neutral_10),
+            style = Body2Normal,
+            fontWeight = FontWeight.Bold,
+            color = Caption_Disabled,
             fontSize = 16.sp
         )
     }
@@ -177,7 +186,7 @@ fun LoginBottomText(
         modifier = Modifier
             .fillMaxWidth()
             .height(54.dp)
-            .padding(top = 12.dp, bottom = 20.dp),
+            .padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

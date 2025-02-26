@@ -6,19 +6,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
 import com.and.presentation.screen.login.LoginTheme
+import com.and.presentation.ui.Primary_Normal
 
 @Composable
 fun ProgressTopBar(
     title: String,
     currentProgress: Int,
     maxProgress: Int,
-    onNavigationIconClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationIconClick: () -> Unit = {}
 ) {
     // TopBar 하단에 진행 상태를 나타내는 ProgressBar가 존재해야 함
     val progressFraction = if (maxProgress > 0) {
@@ -39,7 +38,7 @@ fun ProgressTopBar(
         LinearProgressIndicator(
             progress = { progressFraction },
             modifier = Modifier.fillMaxWidth().height(2.dp),
-            color = colorResource(id = R.color.primary_0),
+            color = Primary_Normal,
         )
     }
 }
