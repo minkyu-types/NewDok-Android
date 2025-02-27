@@ -36,8 +36,11 @@ fun MainNavGraph() {
                 onLoginWithoutSignUp = {
                     // 비회원으로 이용
                 },
-                onRegisterClick = {
+                onRegister = {
                     navController.navigate(ScreenFlow.REGISTER.route)
+                },
+                onFindIdPassword = {
+                    // 아이디/비밀번호 찾기로 이동
                 },
                 onBack = {
                     navController.popBackStack()
