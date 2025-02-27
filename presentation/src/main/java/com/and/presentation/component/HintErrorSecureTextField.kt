@@ -9,8 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +28,7 @@ import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Error_Caption
+import com.and.presentation.ui.Error_Fill
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
@@ -73,11 +74,13 @@ fun HintErrorSecureTextField(
                 .height(48.dp),
             shape = RoundedCornerShape(4.dp),
             isError = isError,
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Primary_Normal,
+                unfocusedIndicatorColor = Line_Alternative,
+                focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
-                focusedBorderColor = if (isError) Color.Red else Primary_Normal,
-                unfocusedBorderColor = if (isError) Color.Red else Line_Alternative,
-                errorBorderColor = Color.Red,
+                disabledContainerColor = Color.White,
+                errorContainerColor = Error_Fill,
                 cursorColor = Primary_Normal
             ),
             visualTransformation = if (isPasswordVisible) {
@@ -112,7 +115,7 @@ fun HintErrorSecureTextField(
         )
 
         if (isError && !errorMessage.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = errorMessage,
                 style = Label1,
