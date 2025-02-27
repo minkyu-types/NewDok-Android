@@ -76,11 +76,18 @@ fun RegisterStep4Screen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
+            Text(
+                text = stringResource(R.string.nickname),
+                style = Body2Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Neutral,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             HintErrorTextField(
                 maxLength = NICKNAME_MAX_LENGTH,
                 value = userNickname,
                 onValueChange = { userNickname = it },
-                valueTitle = stringResource(id = R.string.nickname),
                 valueHint = stringResource(id = R.string.register_nickname_placeholder),
                 isError = userNickname.isNotBlank() && !isNicknameValid,
             )
@@ -118,9 +125,10 @@ fun RegisterStep4Screen(
         }
 
         ConditionalNextButton(
-            enabled = isNicknameValid && isBirthYearSelected && (userGender != null),
+//            enabled = isNicknameValid && isBirthYearSelected && (userGender != null),
+            enabled = true,
             onClick = onNext,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(24.dp)
         )
     }
 }
@@ -142,7 +150,7 @@ fun RegisterBirthYear(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(56.dp)
                 .border(
                     width = 1.dp,
                     color = Line_Alternative,
@@ -206,7 +214,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.MALE) },
                 modifier = Modifier
                     .padding(end = 4.dp)
-                    .height(48.dp)
+                    .height(56.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,
@@ -229,7 +237,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.FEMALE) },
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .height(48.dp)
+                    .height(56.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,
