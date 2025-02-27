@@ -85,3 +85,4 @@ val Error_Stroke = Color(0xFF43439C)
 
 val Gray50 = Color(0xFFFAFAFA)
 val Blue50 = Color(0xFFECF3FF)
+val Neutral90 = Color(0xFFF7F7F7)
