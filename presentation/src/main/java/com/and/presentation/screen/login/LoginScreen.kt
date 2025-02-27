@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
@@ -43,6 +42,8 @@ import com.and.presentation.component.TopBar
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Disabled
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.whiteColorScheme
 import com.and.presentation.util.ID_MAX_LENGTH
 
@@ -56,8 +57,12 @@ import com.and.presentation.util.ID_MAX_LENGTH
  */
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    onLoginSuccess: () -> Unit,
+    onLoginWithoutSignUp: () -> Unit,
+    onRegisterClick: () -> Unit,
+    onBack: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val loginFailed: Boolean by viewModel.loginFailed // id 오류인지, pw 오류인지 구분하도록
     val userId by remember { mutableStateOf("") }
@@ -70,7 +75,7 @@ fun LoginScreen(
         TopBar(
             title = stringResource(id = R.string.login),
             onNavigationIconClick = {
-                navController.popBackStack()
+                onBack()
             },
         )
         Column(
@@ -81,10 +86,17 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(36.dp))
             LoginLogoView()
             Spacer(modifier = Modifier.height(36.dp))
+            Text(
+                text = stringResource(R.string.id),
+                style = Body2Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Neutral,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             HintErrorTextField(
                 maxLength = ID_MAX_LENGTH,
                 value = userId,
-                valueTitle = stringResource(id = R.string.id),
                 valueHint = stringResource(id = R.string.login_id_hint),
                 isError = loginFailed,
                 modifier = Modifier
@@ -108,7 +120,8 @@ fun LoginScreen(
         ConditionalNextButton(
             enabled = false,
             onClick = {
-
+                // 로그인 검증 성공 시 홈 화면 이동
+                onLoginSuccess()
             },
             modifier = Modifier.padding(16.dp),
             buttonText = stringResource(R.string.login)
@@ -116,11 +129,9 @@ fun LoginScreen(
         LoginBottomText(
             modifier = Modifier,
             onNotMemberClick = {
-                // 비회원으로 이용하기
+                onLoginWithoutSignUp()
             },
-            onRegisterClick = {
-                // 로그인
-            }
+            onRegisterClick = { onRegisterClick() }
         )
     }
 }
@@ -192,7 +203,9 @@ fun LoginBottomText(
     ) {
         Text(
             text = stringResource(id = R.string.login_without_register),
-            fontSize = 14.sp,
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral,
             modifier = Modifier.clickable(onClick = onNotMemberClick)
         )
 
@@ -206,7 +219,9 @@ fun LoginBottomText(
 
         Text(
             text = stringResource(id = R.string.register),
-            fontSize = 14.sp,
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Primary_Normal,
             modifier = Modifier.clickable(onClick = onRegisterClick)
         )
     }
@@ -229,6 +244,19 @@ fun LoginScreenPreview() {
     val navController: NavHostController = rememberNavController()
 
     LoginTheme {
-        LoginScreen(navController)
+        LoginScreen(
+            onLoginSuccess = {
+
+            },
+            onLoginWithoutSignUp = {
+
+            },
+            onRegisterClick = {
+
+            },
+            onBack = {
+
+            }
+        )
     }
 }

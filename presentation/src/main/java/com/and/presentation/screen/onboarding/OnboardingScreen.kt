@@ -42,6 +42,7 @@ import com.and.presentation.ui.Blue50
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading1
 import com.and.presentation.ui.Line_Blue_100
 import com.and.presentation.ui.Primary_Normal
@@ -50,7 +51,9 @@ import com.and.presentation.ui.whiteColorScheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
-    navController: NavController
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState() { 3 }
 
@@ -75,8 +78,12 @@ fun OnboardingScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OnboardingRegisterButton(modifier = Modifier)
-            OnBoardingLoginText(modifier = Modifier)
+            OnboardingRegisterButton(
+                onClick = onRegisterClick
+            )
+            OnBoardingLoginText(
+                onClick = onLoginClick
+            )
         }
     }
 }
@@ -188,11 +195,12 @@ fun OnboardingImageViewPager(
 }
 
 @Composable
-fun OnboardingRegisterButton(modifier: Modifier) {
+fun OnboardingRegisterButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
-        onClick = {
-            // 회원가입 화면으로 이동
-        },
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp),
@@ -208,7 +216,10 @@ fun OnboardingRegisterButton(modifier: Modifier) {
 }
 
 @Composable
-fun OnBoardingLoginText(modifier: Modifier) {
+fun OnBoardingLoginText(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -225,18 +236,10 @@ fun OnBoardingLoginText(modifier: Modifier) {
             textDecoration = TextDecoration.Underline,
             fontSize = 12.sp,
             modifier = Modifier.clickable {
-                // 로그인 화면으로 이동
+                onClick()
             }
         )
     }
-}
-
-@Composable
-fun OnboardingTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = whiteColorScheme,
-        content = content
-    )
 }
 
 @Preview(
@@ -245,9 +248,14 @@ fun OnboardingTheme(content: @Composable () -> Unit) {
 )
 @Composable
 fun OnboardingScreenPreview() {
-    val navController = rememberNavController()
+    DefaultWhiteTheme {
+        OnboardingScreen(
+            onRegisterClick = {
 
-    OnboardingTheme {
-        OnboardingScreen(navController)
+            },
+            onLoginClick = {
+
+            }
+        )
     }
 }
