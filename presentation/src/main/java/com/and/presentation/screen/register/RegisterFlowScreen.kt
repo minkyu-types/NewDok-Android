@@ -28,7 +28,7 @@ fun RegisterFlowScreen(
             ProgressTopBar(
                 title = stringResource(id = R.string.register),
                 currentProgress = currentProgress,
-                maxProgress = 5,
+                maxProgress = 6,
             )
         }
     ) { innerPadding ->
