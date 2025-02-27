@@ -3,9 +3,11 @@ package com.and.presentation.screen.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,6 +52,9 @@ import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Disabled
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.ID_MAX_LENGTH
+import com.and.presentation.util.clearFocusOnKeyboardDismiss
+import com.and.presentation.util.passwordValidation
+import com.and.presentation.util.phoneNumberValidation
 import kotlinx.coroutines.delay
 
 /**
@@ -107,11 +112,9 @@ fun RegisterStep1Screen(
         }
 
         ConditionalNextButton(
-            enabled = false,
-            onClick = {
-                // 다음 단계로 이동
-            },
-            modifier = Modifier.padding(16.dp)
+            enabled = true,
+            onClick = onNext,
+            modifier = Modifier.padding(24.dp)
         )
     }
 }
@@ -124,26 +127,33 @@ fun PhoneTextField(
     onAuthButtonClick: (String) -> Boolean
 ) {
     // 전화번호 정규식 검사
-    val isPhoneNumberValid = false
+    val isPhoneNumberValid = phoneNumber.phoneNumberValidation()
 
     Column {
+        Text(
+            text = stringResource(R.string.phone_number_title),
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             HintErrorTextField(
                 maxLength = ID_MAX_LENGTH,
                 icon = R.drawable.ic_mobile,
                 value = phoneNumber,
                 onValueChange = { onValueChange(it) },
-                valueTitle = stringResource(id = R.string.phone_number_title),
                 valueHint = stringResource(id = R.string.register_phone_auth_placeholder),
                 isError = phoneNumber.isNotBlank() && !isPhoneNumberValid,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(top = 12.dp)
             )
             Button(
+                enabled = isPhoneNumberValid,
                 onClick = {
                     val result = onAuthButtonClick(phoneNumber)
                     // 중복이 아닌 경우 TextField border Primary0으로 색상 변경
@@ -153,15 +163,16 @@ fun PhoneTextField(
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .height(48.dp)
+                    .height(56.dp)
                     .align(Alignment.Bottom)
                     .border(
-                        width = if (isPhoneNumberValid) 0.dp else 1.dp,
+                        width = 1.dp,
                         shape = RoundedCornerShape(5.dp),
                         color = if (isPhoneNumberValid) Primary_Normal else Line_Disabled
                     ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
+                    disabledContainerColor = Color.White,
                 ),
                 contentPadding = PaddingValues(horizontal = 20.dp)
             )
@@ -170,7 +181,7 @@ fun PhoneTextField(
                     text = stringResource(R.string.auth_request),
                     style = Body2Normal,
                     fontWeight = FontWeight.Bold,
-                    color = Caption_Disabled,
+                    color = if (isPhoneNumberValid) Primary_Normal else Caption_Disabled,
                     maxLines = 1
                 )
             }
@@ -232,17 +243,14 @@ fun AuthTextField(
             isError = isError,
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier
-                .height(48.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(vertical = 0.dp),
             colors = TextFieldDefaults.colors(
                 // 인증번호 6자리 (숫자만) 입력되면 Primary_Normal 적용
-                focusedIndicatorColor = Color.White,
+                focusedIndicatorColor = Primary_Normal,
                 unfocusedIndicatorColor = Line_Alternative,
-                errorIndicatorColor = Error_Stroke,
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                errorContainerColor = Error_Fill
             ),
             trailingIcon = {
                 Text(
