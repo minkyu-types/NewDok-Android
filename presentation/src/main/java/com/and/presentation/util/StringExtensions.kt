@@ -58,3 +58,8 @@ fun String.passwordValidation(): Boolean {
 fun String.nicknameValidation(): Boolean {
     return this.all { it.isLetterOrDigit() }
 }
+
+fun String.phoneNumberValidation(): Boolean {
+    val phoneRegex = Regex("^010-?\\d{3,4}-?\\d{4}$")
+    return phoneRegex.matches(this)
+}
