@@ -33,11 +33,11 @@ fun ProgressTopBar(
         // 하단에 Progress 표시
         TopBar(
             title = title,
-            onNavigationIconClick = onNavigationIconClick
+            onNavigationIconClick = onNavigationIconClick,
         )
         LinearProgressIndicator(
             progress = { progressFraction },
-            modifier = Modifier.fillMaxWidth().height(2.dp),
+            modifier = Modifier.fillMaxWidth().height(4.dp),
             color = Primary_Normal,
         )
     }
