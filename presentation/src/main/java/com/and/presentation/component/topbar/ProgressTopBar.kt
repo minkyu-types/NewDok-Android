@@ -1,4 +1,4 @@
-package com.and.presentation.component
+package com.and.presentation.component.topbar
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

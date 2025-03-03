@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
 import com.and.presentation.component.HintErrorSecureTextField
 import com.and.presentation.component.HintErrorTextField
-import com.and.presentation.component.TopBar
+import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Disabled
