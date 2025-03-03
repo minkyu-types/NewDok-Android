@@ -1,6 +1,6 @@
 package com.and.data.mapper.api.newsletter
 
-import com.and.data.mapper.model.response.GetNewsLettersByIdResponseApi
+import com.and.data.mapper.model.response.GetNewsLettersByIdResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,5 +15,5 @@ interface GetMemberNewsLettersByIdApi {
     @GET("/newsletters/{id}")
     fun getNewsLettersById(
         @Path("id") id: String
-    ): Response<GetNewsLettersByIdResponseApi>
+    ): Response<GetNewsLettersByIdResponseDto>
 }
