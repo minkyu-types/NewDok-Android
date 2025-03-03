@@ -1,21 +1,20 @@
 [versions]
 agp = "8.1.3"
-org-jetbrains-kotlin-android = "1.9.0"
+kotlin = "2.1.10"
 core-ktx = "1.9.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 appcompat = "1.7.0"
 material = "1.8.0"
-org-jetbrains-kotlin-jvm = "1.9.0"
-ksp = "1.9.0-1.0.11"
+ksp = "2.1.0-1.0.29"
 
 activity-compose = "1.9.3"
-compose-bom = "2024.06.00"
+compose-bom = "2024.10.01"
 material3 = "1.2.0"
 kakao-login = "2.20.6"
 naver-oauth = "5.10.0"
-hilt = "2.48"
+hilt = "2.51.1"
 coroutine = "1.6.4"
 glide = "4.13.2"
 navigation = "2.5.0"
@@ -36,6 +35,7 @@ constraintlayout = "2.1.4"
 datastore-preferences = "1.1.1"
 ted-permission = "3.3.0"
 pager-indicator = "0.32.0"
+coil = "3.1.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -86,14 +86,17 @@ ktx-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", ve
 ktx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "ktx-preference" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
+coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
 
