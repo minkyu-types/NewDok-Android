@@ -5,5 +5,5 @@ enum class ScreenFlow(val route: String) {
     LOGIN("loginFlow"),
     REGISTER("registerFlow"),
     PRE_INVESTIGATION("investigationFlow"),
-    HOME("homeFlow")
+    MAIN("mainFlow")
 }

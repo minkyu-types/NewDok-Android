@@ -60,7 +60,7 @@ import com.and.presentation.ui.Tint10
 import com.and.presentation.util.NICKNAME_MAX_LENGTH
 import com.and.presentation.util.nicknameValidation
 import com.and.presentation.util.removeRippleEffect
-import com.and.presentation.util.type.Gender
+import com.and.domain.model.type.Gender
 import java.time.LocalDate
 
 @Composable

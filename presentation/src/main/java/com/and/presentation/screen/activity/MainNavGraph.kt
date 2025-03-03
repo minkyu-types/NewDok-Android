@@ -59,7 +59,7 @@ fun MainNavGraph() {
         composable(ScreenFlow.PRE_INVESTIGATION.route) {
             InvestigationFlowScreen(
                 onFlowFinished = {
-                    navController.navigate(ScreenFlow.HOME.route)
+                    navController.navigate(ScreenFlow.MAIN.route)
                 }
             )
         }
