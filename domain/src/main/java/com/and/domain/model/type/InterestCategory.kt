@@ -1,4 +1,4 @@
-package com.and.presentation.screen.preinvestigation
+package com.and.domain.model.type
 
 enum class InterestCategory(val value: String) {
     INTEREST_ECONOMY_AFFAIRS("경제·시사"),

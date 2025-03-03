@@ -1,4 +1,4 @@
-package com.and.presentation.screen.preinvestigation
+package com.and.domain.model.type
 
 enum class IndustryCategory(val value: String) {
     IT("IT·게임·통신"),
@@ -15,5 +15,11 @@ enum class IndustryCategory(val value: String) {
     HEALTHCARE("의료"),
     FASHION("패션"),
     STARTUPS_SELF_EMPLOYMENT("창업·자영업"),
-    YOUR_JOB_IS_GUITAR("기타"),
+    YOUR_JOB_IS_GUITAR("기타");
+
+    companion object {
+        fun getStringValues(): List<String> {
+            return entries.map { it.value }
+        }
+    }
 }
