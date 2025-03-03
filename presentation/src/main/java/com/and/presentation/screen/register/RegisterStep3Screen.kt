@@ -111,11 +111,10 @@ fun RegisterStep3Screen(
         }
 
         ConditionalNextButton(
-            enabled = isPasswordValid,
-            onClick = {
-                // 다음 단계로 이동
-            },
-            modifier = Modifier.padding(16.dp)
+//            enabled = isPasswordValid,
+            enabled = true,
+            onClick = onNext,
+            modifier = Modifier.padding(24.dp)
         )
     }
 }

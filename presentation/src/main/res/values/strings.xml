@@ -20,9 +20,16 @@
     <string name="phone_number_title">휴대폰 번호</string>
     <string name="subscription_email">구독 이메일</string>
     <string name="subscribe">구독하기</string>
+    <string name="subscribing">구독중</string>
     <string name="move_to_main">메인으로</string>
     <string name="industry_category">종사산업</string>
     <string name="profile_setting">프로필 설정</string>
+    <string name="refresh">새로고침</string>
+    <string name="reset">초기화</string>
+    <string name="read">읽음</string>
+    <string name="unread">안읽음</string>
+    <!-- Snackbar -->
+    <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
 
     <!-- 다이얼로그 -->
     <string name="auth_fail_title">인증 실패</string>
@@ -140,5 +147,30 @@
     <string name="pre_investigation_curation_header">추천 뉴스레터</string>
     <string name="pre_investigation_curation_title">%s님을 위한\n맞춤형 뉴스레터가 도착했어요!</string>
     <string name="pre_investigation_curation_body">구독한 뉴스레터는 발행일에 맞춰 홈으로 배달해드려요.\n구독하기를 누르면 구독이메일이 자동으로 복사돼요.</string>
+
+    <!-- 홈 -->
+    <string name="home_daily_article_title">%d개의 아티클이 도착했어요</string>
+
+    <!-- 둘러보기 -->
+    <string name="feed_title">둘러보기</string>
+    <string name="feed_tab_1">추천 뉴스레터</string>
+    <string name="feed_tab_2">모든 뉴스레터</string>
+    <string name="feed_recommend_title">%s님을 위한\n맞춤형 뉴스레터가 도착했어요</string>
+    <string name="feed_recommend_title_2">이런 뉴스레터는 어때요?</string>
+
+    <!-- 마이페이지 -->
+    <string name="my_page_profile_email">구독이메일</string>
+    <string name="my_page_profile_edit">프로필 편집</string>
+
+    <string name="my_page_service_title">서비스</string>
+    <string name="my_page_service_item_1">계정 관리</string>
+    <string name="my_page_service_item_2">알림 설정</string>
+
+    <string name="my_page_customer_service_title">고객센터</string>
+    <string name="my_page_customer_service_item1">FAQ</string>
+    <string name="my_page_customer_service_item2">서비스 피드백</string>
+    <string name="my_page_customer_service_item3">약관 및 정책</string>
+    <string name="my_page_customer_service_item4">버전</string>
+
 
 </resources>

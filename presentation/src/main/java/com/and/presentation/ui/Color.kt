@@ -83,5 +83,10 @@ val Error_Caption = Color(0xFFE32727)
 val Error_Fill = Color(0xFFFEE6E6)
 val Error_Stroke = Color(0xFF43439C)
 
+// Background Colors
+val Background_System = Color(0xFFF5F5F7)
+
 val Gray50 = Color(0xFFFAFAFA)
 val Blue50 = Color(0xFFECF3FF)
+val Tint80 = Color(0xFF5184DB)
+val Neutral90 = Color(0xFFF7F7F7)

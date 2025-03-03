@@ -69,7 +69,6 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt)
-    implementation(libs.constraintlayout)
     ksp(libs.hilt.compiler)
 
     // Navigation
@@ -93,6 +92,7 @@ dependencies {
     // Ted permission
     implementation(libs.ted.permission)
 
+    implementation(libs.constraintlayout)
     // Ktx
     implementation(libs.ktx.activity)
     implementation(libs.ktx.fragment)

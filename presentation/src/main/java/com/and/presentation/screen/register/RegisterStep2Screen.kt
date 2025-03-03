@@ -33,6 +33,7 @@ import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Disabled
 import com.and.presentation.ui.Caption_Heavy
+import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Disabled
@@ -71,7 +72,14 @@ fun RegisterStep2Screen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
-
+            Text(
+                text = stringResource(R.string.id),
+                style = Body2Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Neutral,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,12 +92,10 @@ fun RegisterStep2Screen(
                         if (isIdNotDuplicated) isIdNotDuplicated = false
                         userId = it
                     },
-                    valueTitle = stringResource(id = R.string.id),
                     valueHint = stringResource(id = R.string.register_id_placeholder),
                     isError = userId.isNotBlank() && !isIdValid,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(top = 12.dp)
                 )
                 Button(
                     onClick = {
@@ -101,7 +107,7 @@ fun RegisterStep2Screen(
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .height(48.dp)
+                        .height(56.dp)
                         .align(Alignment.Bottom)
                         .border(
                             width = if (isIdNotDuplicated) 0.dp else 1.dp,
@@ -154,11 +160,10 @@ fun RegisterStep2Screen(
         }
 
         ConditionalNextButton(
-            enabled = isIdValid && isIdNotDuplicated,
-            onClick = {
-                // 다음 단계로 이동
-            },
-            modifier = Modifier.padding(16.dp)
+//            enabled = isIdValid && isIdNotDuplicated,
+            enabled = true,
+            onClick = onNext,
+            modifier = Modifier.padding(24.dp)
         )
     }
 }

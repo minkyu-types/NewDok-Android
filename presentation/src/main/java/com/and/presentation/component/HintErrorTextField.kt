@@ -1,10 +1,9 @@
 package com.and.presentation.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
-import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
 
@@ -31,27 +29,20 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun HintErrorTextField(
     maxLength: Int,
-    icon: Int? = null,
     value: String,
-    valueTitle: String,
     valueHint: String,
-    onValueChange: (String) -> Unit = {},
     isError: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    icon: Int? = null,
+    onValueChange: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = valueTitle,
-            style = Body2Normal,
-            fontWeight = FontWeight.Medium,
-            color = Caption_Neutral,
-            modifier = Modifier.padding(start = 4.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
+            textStyle = Body2Normal,
             value = value,
             onValueChange = { newValue ->
                 if (newValue.length <= maxLength) {
@@ -76,7 +67,7 @@ fun HintErrorTextField(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .height(56.dp),
             shape = RoundedCornerShape(4.dp),
             isError = isError,
             colors = TextFieldDefaults.colors(

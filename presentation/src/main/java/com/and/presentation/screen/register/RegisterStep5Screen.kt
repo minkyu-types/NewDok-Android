@@ -52,7 +52,7 @@ fun RegisterStep5Screen(
     var isTerm2Checked by remember { mutableStateOf(false) }
     var isTerm3Checked by remember { mutableStateOf(false) }
     var isTerm4Checked by remember { mutableStateOf(false) }
-    var isAllTermsChecked = isTerm1Checked && isTerm2Checked
+    val isAllTermsChecked = isTerm1Checked && isTerm2Checked
             && isTerm3Checked && isTerm4Checked
 
     Column(
@@ -65,7 +65,7 @@ fun RegisterStep5Screen(
                 .weight(1f)
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.register_terms_title),
                 style = Heading2,
@@ -73,31 +73,31 @@ fun RegisterStep5Screen(
                 color = Caption_Heavy,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(48.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_1),
                 initialChecked = isTerm1Checked,
                 onCheckChange = { isTerm1Checked = it }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_2),
                 initialChecked = isTerm2Checked,
                 onCheckChange = { isTerm2Checked = it }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_3),
                 initialChecked = isTerm3Checked,
                 onCheckChange = { isTerm3Checked = it }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_4),
                 initialChecked = isTerm4Checked,
                 onCheckChange = { isTerm4Checked = it }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
@@ -117,9 +117,10 @@ fun RegisterStep5Screen(
 
         ConditionalNextButton(
             buttonText = stringResource(R.string.register_terms_complete),
-            enabled = isTerm1Checked && isTerm2Checked && isTerm3Checked,
+            enabled = true,
+//            enabled = isTerm1Checked && isTerm2Checked && isTerm3Checked,
             onClick = onNext,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(24.dp)
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.and.presentation.component
+package com.and.presentation.component.topbar
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,11 +33,11 @@ fun ProgressTopBar(
         // 하단에 Progress 표시
         TopBar(
             title = title,
-            onNavigationIconClick = onNavigationIconClick
+            onNavigationIconClick = onNavigationIconClick,
         )
         LinearProgressIndicator(
             progress = { progressFraction },
-            modifier = Modifier.fillMaxWidth().height(2.dp),
+            modifier = Modifier.fillMaxWidth().height(4.dp),
             color = Primary_Normal,
         )
     }

@@ -11,10 +11,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
-import com.and.presentation.component.ProgressTopBar
+import com.and.presentation.component.topbar.ProgressTopBar
 
 @Composable
-fun RegisterFlowScreen() {
+fun RegisterFlowScreen(
+    onFlowFinished: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute: String = currentBackStackEntry?.destination?.route ?: RegisterStep.STEP_1_AUTH.route
@@ -25,14 +28,15 @@ fun RegisterFlowScreen() {
             ProgressTopBar(
                 title = stringResource(id = R.string.register),
                 currentProgress = currentProgress,
-                maxProgress = 5,
+                maxProgress = 6,
             )
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = RegisterStep.STEP_1_AUTH.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
         ) {
             composable(RegisterStep.STEP_1_AUTH.route) {
                 RegisterStep1Screen(
@@ -77,9 +81,7 @@ fun RegisterFlowScreen() {
             }
             composable(RegisterStep.STEP_7_ADDITIONAL_INFO.route) {
                 RegisterStep7Screen(
-                    onNext = {
-                        // 홈 화면으로 이동
-                    },
+                    onNext = { onFlowFinished() },
                     onBack = { navController.popBackStack() }
                 )
             }
