@@ -53,6 +53,13 @@ val Heading2 = TextStyle(
     letterSpacing = (-0.02).em
 )
 
+val Headline = TextStyle(
+    fontFamily = SpoqaHanSansNeo,
+    fontSize = 18.sp,
+    lineHeight = 24.sp,
+    letterSpacing = (-0.02).em
+)
+
 val Body1Normal = TextStyle(
     fontFamily = SpoqaHanSansNeo,
     fontSize = 16.sp,
