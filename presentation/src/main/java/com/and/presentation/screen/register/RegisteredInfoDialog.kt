@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.and.presentation.model.RegisteredUser
+import com.and.presentation.model.RegisteredAccountModel
 import com.and.presentation.screen.login.LoginTheme
 import com.and.presentation.util.toLocalDateWithDot
 import com.and.presentation.util.toMaskedString
@@ -41,12 +41,12 @@ import java.time.LocalDate
 @Composable
 fun RegisterFailDialog(
     onDismiss: () -> Unit,
-    registeredUsers: List<RegisteredUser>,
+    registeredAccountModels: List<RegisteredAccountModel>,
     onContinue: () -> Unit,
     onLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isUserLessThanThree = registeredUsers.size < 3
+    val isUserLessThanThree = registeredAccountModels.size < 3
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -76,7 +76,7 @@ fun RegisterFailDialog(
                             )
                             .padding(vertical = 8.dp, horizontal = 6.dp),
                     ) {
-                        items(registeredUsers) { userInfo ->
+                        items(registeredAccountModels) { userInfo ->
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -153,10 +153,10 @@ fun RegisterFailDialogPreview() {
             onDismiss = {
 
             },
-            registeredUsers = listOf(
-                RegisteredUser("lion9638", LocalDate.now()),
-                RegisteredUser("cat1234", LocalDate.now().minusMonths(2)),
-                RegisteredUser("dog6789", LocalDate.now().minusMonths(12)),
+            registeredAccountModels = listOf(
+                RegisteredAccountModel("lion9638", LocalDate.now()),
+                RegisteredAccountModel("cat1234", LocalDate.now().minusMonths(2)),
+                RegisteredAccountModel("dog6789", LocalDate.now().minusMonths(12)),
             ),
             onContinue = {
 

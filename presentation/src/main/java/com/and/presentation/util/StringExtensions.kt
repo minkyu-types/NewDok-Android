@@ -10,7 +10,7 @@ package com.and.presentation.util
  *
  * @author 로키
  * @throws IllegalArgumentException 문자열 길이가 3 이하일 경우 예외가 발생합니다.
- * @receiver [com.and.presentation.model.RegisteredUser]의 id 값
+ * @receiver [com.and.presentation.model.RegisteredAccountModel]의 id 값
  * @return 끝 3글자가 마스킹 처리된 문자열
  */
 fun String.toMaskedString(): String {
