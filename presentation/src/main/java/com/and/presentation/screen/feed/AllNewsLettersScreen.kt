@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.FilterCategory
+import com.and.domain.model.type.NewsLetterFilterCategory
 import com.and.presentation.R
 import com.and.presentation.component.item.BrandSmallItem
 import com.and.presentation.component.item.FilterChip
@@ -50,7 +50,7 @@ fun AllNewsLettersScreen(
     onResetClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedFilters by remember { mutableStateOf<Map<FilterCategory, List<String>>>(emptyMap()) }
+    var selectedFilters by remember { mutableStateOf<Map<NewsLetterFilterCategory, List<String>>>(emptyMap()) }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -79,7 +79,7 @@ fun AllNewsLettersScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllNewsLetterFilters(
-    selectedFilters:  Map<FilterCategory, List<String>>,
+    selectedFilters:  Map<NewsLetterFilterCategory, List<String>>,
     onResetClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -102,7 +102,7 @@ fun AllNewsLetterFilters(
                         .weight(1f)
                         .horizontalScroll(rememberScrollState())
                 ) {
-                    FilterCategory.entries
+                    NewsLetterFilterCategory.entries
                         .zip(
                             listOf(
                                 painterResource(R.drawable.ic_line_arrow_transfer),
