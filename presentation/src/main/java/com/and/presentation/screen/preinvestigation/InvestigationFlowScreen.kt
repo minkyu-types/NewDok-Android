@@ -16,7 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
 import com.and.presentation.component.IconSnackbar
-import com.and.presentation.component.ProgressTopBar
+import com.and.presentation.component.topbar.ProgressTopBar
 import kotlinx.coroutines.launch
 
 @Composable
