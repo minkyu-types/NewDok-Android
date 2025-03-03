@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
@@ -10,7 +11,7 @@ plugins {
 
 android {
     namespace = "com.and.presentation"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 28
@@ -31,7 +32,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-        dataBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -39,9 +39,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
     }
 }
 
@@ -86,8 +83,9 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.common)
 
-    // Glide
-    implementation(libs.glide)
+    // Coil
+    implementation(libs.coil)
+    implementation(libs.coil.network)
 
     // Ted permission
     implementation(libs.ted.permission)
