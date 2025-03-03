@@ -158,6 +158,13 @@
     <string name="feed_recommend_title">%s님을 위한\n맞춤형 뉴스레터가 도착했어요</string>
     <string name="feed_recommend_title_2">이런 뉴스레터는 어때요?</string>
 
+    <!-- 북마크 -->
+    <string name="bookmark_title">북마크함</string>
+    <string name="bookmark_count_title">총 %d개</string>
+    <string name="bookmark_empty_title">저장한 아티클이 없어요.</string>
+    <string name="bookmark_empty_body">북마크를 눌러 다시 보고 싶은 아티클을 저장해보세요.</string>
+
+
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>
     <string name="my_page_profile_edit">프로필 편집</string>

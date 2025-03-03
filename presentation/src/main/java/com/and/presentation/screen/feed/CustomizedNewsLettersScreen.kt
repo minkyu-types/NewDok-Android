@@ -100,7 +100,6 @@ fun CustomizedNewsLettersScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CustomizedNewsLettersDotsIndicator(
     pagerState: PagerState,
