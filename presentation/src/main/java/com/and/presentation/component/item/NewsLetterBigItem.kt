@@ -43,7 +43,7 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun BrandBigItem(
+fun NewsLetterBigItem(
     newsLetter: NewsLetterModel,
     modifier: Modifier = Modifier
 ) {
@@ -136,7 +136,7 @@ fun BrandBigItem(
 @Composable
 fun BrandBigItemPreview() {
     DefaultWhiteTheme {
-        BrandBigItem(
+        NewsLetterBigItem(
             newsLetter = NewsLetterModel(
                 "뉴스레터 브랜드명",
                 "",
