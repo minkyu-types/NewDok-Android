@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class
+)
 
 package com.and.presentation.screen.bookmark
 
@@ -25,9 +27,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
@@ -65,7 +65,6 @@ import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Headline
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -288,10 +287,10 @@ fun ArticleExistView(
         modifier = modifier
             .fillMaxSize()
             .background(Background_System)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        contentPadding = PaddingValues(vertical = 20.dp)
     ) {
         item {
-            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "2023년 11월",
                 style = Headline,
@@ -306,9 +305,6 @@ fun ArticleExistView(
                 article = article,
                 onArticleClick = onArticleClick
             )
-        }
-        item {
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
