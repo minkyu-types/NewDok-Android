@@ -30,10 +30,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
 import com.and.presentation.component.button.SubscribeButton
 import com.and.presentation.model.NewsLetterModel
-import com.and.domain.model.type.InterestCategory
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -42,15 +42,10 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun BrandSmallItem(
+fun NewsLetterSubscriptionItem(
     newsLetter: NewsLetterModel,
     modifier: Modifier = Modifier
 ) {
-    val displayedIntroduction = if (newsLetter.introduction.length > 25) {
-        newsLetter.introduction.take(25) + "..."
-    } else {
-        newsLetter.introduction
-    }
     var isSubscribed by remember { mutableStateOf(true) }
 
     Card(
@@ -66,7 +61,8 @@ fun BrandSmallItem(
                 color = Color.White
             ),
     ) {
-        Column(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -74,79 +70,36 @@ fun BrandSmallItem(
                 )
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(56.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .border(
-                            width = 1.dp,
-                            color = Line_Neutral,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = newsLetter.name,
-                            style = Body1Normal,
-                            fontWeight = FontWeight.Bold,
-                            color = Caption_Heavy
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        SubscribeButton(
-                            isSubscribed = isSubscribed,
-                            onSubscribeClick = {
-                                isSubscribed = !isSubscribed
-                            }
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = displayedIntroduction,
-                        style = Body2Normal,
-                        fontWeight = FontWeight.Medium,
-                        color = Caption_Neutral,
-                        modifier = Modifier.fillMaxWidth()
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Line_Neutral,
+                        shape = RoundedCornerShape(10.dp)
                     )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            InterestLazyRow(newsLetter)
-        }
-    }
-}
+            )
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
 
-@Composable
-fun InterestLazyRow(
-    newsLetter: NewsLetterModel,
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        items(newsLetter.categories) { category ->
-            CategoryChip(text = category.value)
+            }
+
         }
     }
 }
 
 @Preview(
-    name = "BrandSmallItem Preview",
+    name = "NewsLetterSubscriptionItem Preview",
     showBackground = true
 )
 @Composable
-fun BrandSmallItemPreview() {
+fun NewsLetterSubscriptionItemPreview() {
     DefaultWhiteTheme {
-        BrandSmallItem(
+        NewsLetterSubscriptionItem(
             newsLetter = NewsLetterModel(
                 "뉴스레터 브랜드명",
                 "",
