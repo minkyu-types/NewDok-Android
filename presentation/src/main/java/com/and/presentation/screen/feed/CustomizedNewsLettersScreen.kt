@@ -32,8 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
-import com.and.presentation.component.item.BrandBigItem
-import com.and.presentation.component.item.BrandSmallItem
+import com.and.presentation.component.item.NewsLetterBigItem
+import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Blue50
 import com.and.presentation.ui.Body1Normal
@@ -81,7 +81,7 @@ fun CustomizedNewsLettersScreen(
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(start = 24.dp, end = 40.dp)
             ) { page ->
-                BrandBigItem(newsLetters[page])
+                NewsLetterBigItem(newsLetters[page])
             }
         }
         CustomizedNewsLettersDotsIndicator(
@@ -169,7 +169,7 @@ fun RecommendOtherNewsLettersArea(
             }
         }
         recommendedNewsLetters.forEach { newsLetter ->
-            BrandSmallItem(newsLetter)
+            NewsLetterSmallItem(newsLetter)
             Spacer(modifier = Modifier.height(8.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))

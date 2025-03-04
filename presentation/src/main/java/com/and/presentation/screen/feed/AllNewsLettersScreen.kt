@@ -34,8 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.NewsLetterFilterCategory
 import com.and.presentation.R
-import com.and.presentation.component.item.BrandSmallItem
 import com.and.presentation.component.item.FilterChip
+import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body2Normal
@@ -66,7 +66,7 @@ fun AllNewsLettersScreen(
             )
         }
         items(newsLetters) { newsLetter ->
-            BrandSmallItem(
+            NewsLetterSmallItem(
                 newsLetter = newsLetter,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
