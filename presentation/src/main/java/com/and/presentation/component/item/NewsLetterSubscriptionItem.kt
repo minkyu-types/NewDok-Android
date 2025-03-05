@@ -8,14 +8,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,34 +26,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
-import com.and.presentation.component.button.SubscribeButton
+import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.NewsLetterModel
-import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
-import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
+import com.and.presentation.ui.Label1
+import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
 fun NewsLetterSubscriptionItem(
     newsLetter: NewsLetterModel,
+    onSubscribeClick: (NewsLetterModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isSubscribed by remember { mutableStateOf(true) }
-
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
-                color = Line_Neutral,
+                color = Line_Alternative,
                 shape = RoundedCornerShape(12.dp)
             )
             .background(
@@ -82,12 +83,43 @@ fun NewsLetterSubscriptionItem(
                         shape = RoundedCornerShape(10.dp)
                     )
             )
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.weight(1f)
             ) {
-
+                Text(
+                    text = newsLetter.name,
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Bold,
+                    color = Caption_Heavy
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_line_clock),
+                        contentDescription = null,
+                        tint = Caption_Assistive,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                    Text(
+                        text = newsLetter.repeatTerm,
+                        style = Label1,
+                        fontWeight = FontWeight.Medium,
+                        color = Caption_Assistive
+                    )
+                }
             }
-
+            OutlinedSecondaryButton(
+                buttonText = stringResource(R.string.subscribe_paused),
+                buttonSize = ButtonSize.SMALL,
+                onClick = {
+                    onSubscribeClick(newsLetter)
+                }
+            )
         }
     }
 }
@@ -101,16 +133,19 @@ fun NewsLetterSubscriptionItemPreview() {
     DefaultWhiteTheme {
         NewsLetterSubscriptionItem(
             newsLetter = NewsLetterModel(
-                "뉴스레터 브랜드명",
+                "Alone & around",
                 "",
-                "",
+                "평일 아침",
                 "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
                 listOf(
                     InterestCategory.INTEREST_GAME,
                     InterestCategory.INTEREST_CULTURE,
                     InterestCategory.INTEREST_ART_DESIGN,
                 )
-            )
+            ),
+            onSubscribeClick = {
+
+            }
         )
     }
 }
