@@ -1,4 +1,4 @@
-package com.and.presentation.screen.activity
+package com.and.presentation.activity
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
