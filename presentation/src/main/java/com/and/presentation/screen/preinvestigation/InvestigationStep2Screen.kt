@@ -1,5 +1,7 @@
 package com.and.presentation.screen.preinvestigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -95,6 +98,7 @@ fun InvestigationStep2Screen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InvestigationInterestList(
     categories: List<InterestCategory>,
@@ -102,20 +106,24 @@ fun InvestigationInterestList(
     onInterestClick: (InterestCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    CompositionLocalProvider(
+        LocalOverscrollConfiguration provides null
     ) {
-        items(
-            items = categories,
-        ) { interest ->
-            InvestigationInterestItem(
-                interest = interest,
-                isSelected = interest in selectedInterests,
-                onClick = onInterestClick
-            )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                items = categories,
+            ) { interest ->
+                InvestigationInterestItem(
+                    interest = interest,
+                    isSelected = interest in selectedInterests,
+                    onClick = onInterestClick
+                )
+            }
         }
     }
 }

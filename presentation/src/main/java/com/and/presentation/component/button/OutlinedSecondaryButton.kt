@@ -1,6 +1,5 @@
 package com.and.presentation.component.button
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,9 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Disabled
@@ -28,6 +25,7 @@ fun OutlinedSecondaryButton(
     buttonSize: ButtonSize,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    fontWeight: FontWeight = FontWeight.Medium,
     enabled: Boolean = true
 ) {
     val textColor = if (enabled) Caption_Neutral else Caption_Disabled
@@ -43,7 +41,6 @@ fun OutlinedSecondaryButton(
             .clickable { onClick() }
             .heightIn(min = 32.dp)
             .clip(RoundedCornerShape(4.dp))
-            .background(Color.White)
             .border(
                 width = 1.dp,
                 color = borderColor,
@@ -55,7 +52,7 @@ fun OutlinedSecondaryButton(
         Text(
             text = buttonText,
             style = Body2Normal,
-            fontWeight = FontWeight.Medium,
+            fontWeight = fontWeight,
             color = textColor,
         )
     }

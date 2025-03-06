@@ -63,5 +63,11 @@ fun MainNavGraph() {
                 }
             )
         }
+
+        composable(ScreenFlow.MAIN.route) {
+            MainFlowScreen(
+
+            )
+        }
     }
 }

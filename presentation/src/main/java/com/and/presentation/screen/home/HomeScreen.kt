@@ -4,8 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +21,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +46,7 @@ import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.removeRippleEffect
 import com.and.presentation.util.toLocalDateWithKRFormat
 import java.time.LocalDate
 
@@ -109,7 +109,6 @@ fun HomeScreen(
             onItemClick = {
 
             },
-            modifier = Modifier.weight(1f)
         )
     }
 }
@@ -185,7 +184,7 @@ fun HomeArticleList(
         modifier = modifier
             .clip(shape = RoundedCornerShape(12.dp))
             .background(color = Color.White)
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 8.dp),
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -199,26 +198,31 @@ fun HomeArticleList(
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
-            TextButton(
-                onClick = onRefreshClick,
-                contentPadding = PaddingValues(0.dp)
+            Box(
+                modifier = Modifier
+                    .removeRippleEffect { onRefreshClick() }
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_line_reload),
-                    tint = Primary_Normal,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = stringResource(R.string.refresh),
-                    style = Body2Normal,
-                    fontWeight = FontWeight.Medium,
-                    color = Primary_Normal
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_line_reload),
+                        tint = Primary_Normal,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.refresh),
+                        style = Body2Normal,
+                        fontWeight = FontWeight.Medium,
+                        color = Primary_Normal
+                    )
+                }
             }
         }
+        Spacer(modifier = Modifier.height(20.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {

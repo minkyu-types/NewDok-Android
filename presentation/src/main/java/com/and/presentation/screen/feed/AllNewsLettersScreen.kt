@@ -72,8 +72,10 @@ fun AllNewsLettersScreen(
                     .padding(horizontal = 24.dp)
             )
         }
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
+        }
     }
-    Spacer(modifier = Modifier.height(20.dp))
 }
 
 @OptIn(ExperimentalFoundationApi::class)
