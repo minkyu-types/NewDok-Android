@@ -170,7 +170,7 @@ fun LoginFindIdPassword(
 @Composable
 fun LoginLogoView(modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.logo),
+        painter = painterResource(id = R.drawable.img_logo),
         contentDescription = stringResource(id = R.string.logo_image),
         modifier = Modifier
             .padding(vertical = 32.dp)

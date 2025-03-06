@@ -68,7 +68,7 @@ fun NewsLetterSubscriptionItem(
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = R.drawable.img_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(56.dp)

@@ -126,7 +126,7 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(R.drawable.logo),
+            painter = painterResource(R.drawable.img_logo),
             contentDescription = null
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -255,7 +255,7 @@ fun HomeArticleListItem(
             .padding(16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.img_logo),
             contentDescription = null,
             modifier = Modifier
                 .size(56.dp)

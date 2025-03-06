@@ -76,7 +76,7 @@ fun NewsLetterSmallItem(
         ) {
             Row {
                 Image(
-                    painter = painterResource(id = R.drawable.logo),
+                    painter = painterResource(id = R.drawable.img_logo),
                     contentDescription = null,
                     modifier = Modifier
                         .size(56.dp)

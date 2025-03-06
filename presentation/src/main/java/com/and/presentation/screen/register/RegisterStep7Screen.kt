@@ -60,7 +60,7 @@ fun RegisterStep7Screen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             Image(
-                painter = painterResource(id = R.drawable.sign_up_2),
+                painter = painterResource(id = R.drawable.img_sign_up_2),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
