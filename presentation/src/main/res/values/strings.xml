@@ -13,6 +13,7 @@
     <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
     <string name="back">뒤로가기</string>
+    <string name="search">검색</string>
     <string name="register">회원가입</string>
     <string name="login">로그인</string>
     <string name="auth_request">인증요청</string>
@@ -27,6 +28,9 @@
     <string name="reset">초기화</string>
     <string name="read">읽음</string>
     <string name="unread">안읽음</string>
+    <string name="search_result_empty">검색 결과가 없어요</string>
+    <string name="find_id_password">ID/PW 찾기</string>
+
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
 
@@ -171,6 +175,16 @@
     <string name="subscribe_count_body">구독신청 후 첫 아티클을 수신받으면 내 구독에 추가돼요.</string>
     <string name="subscribe_empty_title">구독 중인 뉴스레터가 없어요.</string>
 
+    <!-- 검색 -->
+    <string name="search_placeholder">검색어를 입력하세요</string>
+    <string name="search_popular_queries_title">인기검색어</string>
+    <string name="search_popular_queries_update_date">%s 업데이트</string>
+    <string name="search_result_newsletter_title">뉴스레터</string>
+    <string name="search_result_article_title">아티클(%d)</string>
+    <string name="search_newsletter_empty_body">찾는 뉴스레터가 없다면 등록을 요청해보세요.</string>
+    <string name="search_article_empty_body">띄어쓰기를 포함하여 검색어가 정확한지 확인해주세요.</string>
+    <string name="search_newsletter_request">뉴스레터 등록 요청하기</string>
+
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>
     <string name="my_page_profile_edit">프로필 편집</string>
@@ -184,6 +198,5 @@
     <string name="my_page_customer_service_item2">서비스 피드백</string>
     <string name="my_page_customer_service_item3">약관 및 정책</string>
     <string name="my_page_customer_service_item4">버전</string>
-
 
 </resources>
