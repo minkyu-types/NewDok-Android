@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.and.presentation.R
-import com.and.presentation.component.HintErrorTextField
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive

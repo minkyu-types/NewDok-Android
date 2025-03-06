@@ -35,8 +35,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.and.presentation.R
-import com.and.presentation.component.HintErrorSecureTextField
-import com.and.presentation.component.HintErrorTextField
+import com.and.presentation.component.textfield.HintErrorSecureTextField
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal

@@ -1,4 +1,4 @@
-package com.and.presentation.component
+package com.and.presentation.component.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
