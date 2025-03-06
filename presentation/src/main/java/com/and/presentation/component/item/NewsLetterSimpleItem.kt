@@ -33,11 +33,10 @@ import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
-import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun NewsLetterQueryItem(
+fun NewsLetterSimpleItem(
     newsLetter: NewsLetterModel,
     modifier: Modifier = Modifier,
     onClick: (NewsLetterModel) -> Unit
@@ -49,7 +48,7 @@ fun NewsLetterQueryItem(
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
-                color = Line_Alternative,
+                color = Line_Neutral,
                 shape = RoundedCornerShape(12.dp)
             )
             .background(
@@ -66,7 +65,7 @@ fun NewsLetterQueryItem(
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = R.drawable.img_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(56.dp)
@@ -118,7 +117,7 @@ fun NewsLetterQueryItem(
 @Composable
 fun NewsLetterQueryItemPreview() {
     DefaultWhiteTheme {
-        NewsLetterQueryItem(
+        NewsLetterSimpleItem(
             newsLetter = NewsLetterModel(
                 "Alone & around",
                 "",
