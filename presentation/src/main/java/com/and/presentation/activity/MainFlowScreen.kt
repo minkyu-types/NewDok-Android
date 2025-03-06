@@ -1,4 +1,4 @@
-package com.and.presentation.screen.activity
+package com.and.presentation.activity
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon

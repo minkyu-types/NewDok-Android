@@ -3,11 +3,9 @@ package com.and.presentation.screen.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,7 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
-import com.and.presentation.component.HintErrorTextField
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
@@ -44,16 +42,12 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Error_Fill
-import com.and.presentation.ui.Error_Stroke
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Disabled
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.ID_MAX_LENGTH
-import com.and.presentation.util.clearFocusOnKeyboardDismiss
-import com.and.presentation.util.passwordValidation
 import com.and.presentation.util.phoneNumberValidation
 import kotlinx.coroutines.delay
 

@@ -19,13 +19,14 @@ fi
 MODULE_NAME=$1
 if [[ $MODULE_NAME = "" ]]
 then
-  MODULE_NAME="presentation"
+  MODULE_NAME="presentation" # 필요한 경우 모듈명 변경
 fi
 echo "[Info] 모듈 이름은 $MODULE_NAME 입니다"
 MODULE_PATH="../$MODULE_NAME"
 
 # ----------------------------------
 # 2. 해상도별 폴더 경로 준비
+# >>> 필요한 경우 경로 수정 <<<
 # ----------------------------------
 declare -A DENSITY_PATHS=(
   ["mdpi"]="$MODULE_PATH/src/main/res/drawable"
@@ -42,11 +43,11 @@ done
 
 # ----------------------------------
 # 3. 파일명 검사 정규식
-# 소문자 알파벳, 언더스코어, 숫자 + 해상도 + png
+# >>> 소문자 알파벳, 언더스코어, 숫자 + 해상도 + png
 # ----------------------------------
 VALID_ASSET_REGEX="[a-z0-9_]+(@1.5x|@2x|@3x|@4x)*\.png$"
 
-# 해상도별 접미사 → 폴더 매핑
+# 해상도별 접미사로 폴더 매핑
 declare -A SUFFIX_TO_DENSITY=(
   ["@1.5x"]="hdpi"
   ["@2x"]="xhdpi"
@@ -100,4 +101,4 @@ if [ "$FAILED" = true ]; then
   exit 1
 fi
 
-echo "[Info] 모든 아이콘이 정상 처리되었습니다."
+echo "[Info] 모든 비트맵이 정상적으로 처리되었습니다."

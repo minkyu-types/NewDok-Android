@@ -1,6 +1,9 @@
 package com.and.presentation.screen.register
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -19,16 +22,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.and.presentation.R
+import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.OutlinedPrimaryButton
+import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.model.RegisteredAccountModel
 import com.and.presentation.screen.login.LoginTheme
+import com.and.presentation.ui.Background_System
+import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Caption_Heavy
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Heading2
+import com.and.presentation.ui.Label1
 import com.and.presentation.util.toLocalDateWithDot
 import com.and.presentation.util.toMaskedString
 import java.time.LocalDate
@@ -54,90 +71,101 @@ fun RegisterFailDialog(
             shadowElevation = 8.dp,
             color = MaterialTheme.colorScheme.surface
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(20.dp)
+            ) {
                 Column(
                     modifier = Modifier
-                        .padding(24.dp)
                         .fillMaxWidth()
                 ) {
-                    Text(
-                        text = "이미 가입된 정보입니다",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                    Image(
+                        painter = painterResource(R.drawable.img_warning),
+                        contentDescription = null,
+                        alignment = Alignment.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(R.string.auth_request_fail_title),
+                        style = Heading2,
+                        fontWeight = FontWeight.Bold,
+                        color = Caption_Heavy,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(R.string.auth_request_fail_body),
+                        style = Body2Normal,
+                        fontWeight = FontWeight.Medium,
+                        color = Caption_Neutral,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
                     LazyColumn(
                         modifier = Modifier
-                            .clip(shape = RoundedCornerShape(10.dp))
-                            .border(
-                                width = 1.dp,
-                                color = Color.Gray,
-                                shape = RoundedCornerShape(10.dp)
-                            )
-                            .padding(vertical = 8.dp, horizontal = 6.dp),
+                            .clip(shape = RoundedCornerShape(4.dp))
+                            .background(Background_System)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        items(registeredAccountModels) { userInfo ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp, horizontal = 12.dp)
-                            ) {
-                                Text(
-                                    text = userInfo.id.toMaskedString(),
-                                    fontSize = 14.sp
-                                )
-                                Text(
-                                    text = userInfo.registeredDate.toLocalDateWithDot(),
-                                    fontSize = 14.sp
-                                )
-                            }
+                        items(registeredAccountModels) { account ->
+                            RegisteredAccountItem(account)
                         }
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = if (isUserLessThanThree) "한 번호로 최대 3개의 계정을 만들 수 있어요."
-                        else "한 번호로 최대 3개의 계정만 만들 수 있어요.",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
                 }
-                HorizontalDivider(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                )
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(IntrinsicSize.Min)
                 ) {
-                    TextButton(
-                        onClick = onContinue,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = if (isUserLessThanThree) "계속 진행하기"
-                            else "ID/FW 찾기",
-                            color = Color.Black
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(1.dp),
-                        color = Color.LightGray
+                    OutlinedPrimaryButton(
+                        buttonText = if (isUserLessThanThree) stringResource(R.string.auth_request_fail_button_left)
+                        else stringResource(R.string.find_id_password),
+                        buttonSize = ButtonSize.LARGE,
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+
+                        }
                     )
-                    TextButton(
-                        onClick = onLogin,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = "로그인",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-                        )
-                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    SolidPrimaryButton(
+                        buttonText = stringResource(R.string.login),
+                        buttonSize = ButtonSize.LARGE,
+                        modifier = Modifier.weight(1f),
+                        onClick = onLogin
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun RegisteredAccountItem(
+    account: RegisteredAccountModel,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Text(
+            text = account.id.toMaskedString(),
+            style = Body2Normal,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Heavy,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = account.registeredDate.toLocalDateWithDot(),
+            style = Label1,
+            fontWeight = FontWeight.Medium,
+            color = Caption_Neutral
+        )
     }
 }
 
