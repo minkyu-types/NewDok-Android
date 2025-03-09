@@ -87,6 +87,8 @@ val Error_Stroke = Color(0xFF43439C)
 val Background_System = Color(0xFFF5F5F7)
 
 val Gray50 = Color(0xFFFAFAFA)
+val Gray700 = Color(0xFF555555)
+val Gray800 = Color(0xFF333333)
 val Blue50 = Color(0xFFECF3FF)
 val Tint80 = Color(0xFF5184DB)
 val Neutral90 = Color(0xFFF7F7F7)
