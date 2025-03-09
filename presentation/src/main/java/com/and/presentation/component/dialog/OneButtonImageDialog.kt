@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,18 +22,20 @@ import androidx.compose.ui.window.Dialog
 import com.and.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
-import com.and.presentation.screen.login.LoginTheme
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 
 /**
  * @author Loki
- * 제목, 내용, 버튼 값을 받고 버튼 클릭 시 닫히는 안내용 다이얼로그
+ *
+ * @image painter 이미지
  */
 @Composable
-fun OneButtonDialog(
+fun OneButtonImageDialog(
+    image:  Painter,
     title: String,
     body: String,
     buttonText: String,
@@ -46,12 +49,14 @@ fun OneButtonDialog(
             shadowElevation = 8.dp,
             color = MaterialTheme.colorScheme.surface
         ) {
-            Column(modifier = Modifier.fillMaxWidth()
-                .padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 28.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 28.dp)
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Image(
-                        painter = painterResource(R.drawable.img_warning),
+                        painter = image,
                         contentDescription = null,
                         alignment = Alignment.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -88,23 +93,25 @@ fun OneButtonDialog(
 }
 
 @Preview(
-    name = "OneButtonDialog Preview",
+    name = "OneButtonImageDialog Preview",
     showBackground = true,
     showSystemUi = false
 )
 @Composable
-fun OneButtonDialogPreview() {
-    LoginTheme {
-        OneButtonDialog(
+fun OneButtonImageDialogPreview() {
+    DefaultWhiteTheme {
+        OneButtonImageDialog(
             onDismiss = {
 
             },
             onClick = {
 
             },
-            title = "인증에 실패하였습니다.",
-            body = "인증 횟수를 초과했습니다\n처음부터 다시 진행해주세요",
-            buttonText = "처음으로"
+            image = painterResource(R.drawable.img_update),
+            title = "최신 버전 업데이트가 있습니다.",
+            body = "안정적인 서비스 사용을 위해\n" +
+                    "최신 버전으로 업데이트를 진행해 주세요.",
+            buttonText = "업데이트"
         )
     }
 }

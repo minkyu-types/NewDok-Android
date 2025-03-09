@@ -32,15 +32,17 @@ import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
+import com.and.presentation.ui.Gray700
+import com.and.presentation.ui.Gray800
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun NewsLetterQueryItem(
+fun ArticleSimpleItem(
     newsLetter: NewsLetterModel,
-    modifier: Modifier = Modifier,
-    onClick: (NewsLetterModel) -> Unit
+    onClick: (NewsLetterModel) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -49,7 +51,7 @@ fun NewsLetterQueryItem(
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
-                color = Line_Alternative,
+                color = Line_Neutral,
                 shape = RoundedCornerShape(12.dp)
             )
             .background(
@@ -57,7 +59,7 @@ fun NewsLetterQueryItem(
             ),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -66,59 +68,50 @@ fun NewsLetterQueryItem(
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = R.drawable.img_logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(8.dp))
                     .border(
                         width = 1.dp,
                         color = Line_Neutral,
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(8.dp)
                     )
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
             ) {
                 Text(
                     text = newsLetter.name,
                     style = Body2Normal,
-                    fontWeight = FontWeight.Bold,
-                    color = Caption_Heavy
+                    fontWeight = FontWeight.Medium,
+                    color = Gray700,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_line_clock),
-                        contentDescription = null,
-                        tint = Caption_Assistive,
-                        modifier = Modifier
-                            .size(20.dp)
-                    )
-                    Text(
-                        text = newsLetter.repeatTerm,
-                        style = Label1,
-                        fontWeight = FontWeight.Medium,
-                        color = Caption_Assistive
-                    )
-                }
+                Text(
+                    text = newsLetter.repeatTerm,
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
+                    color = Gray800,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
 }
 
 @Preview(
-    name = "NewsLetterQueryItem Preview",
+    name = "ArticleSimpleItem Preview",
     showBackground = true
 )
 @Composable
-fun NewsLetterQueryItemPreview() {
+fun ArticleSimpleItemPreview() {
     DefaultWhiteTheme {
-        NewsLetterQueryItem(
+        ArticleSimpleItem(
             newsLetter = NewsLetterModel(
                 "Alone & around",
                 "",

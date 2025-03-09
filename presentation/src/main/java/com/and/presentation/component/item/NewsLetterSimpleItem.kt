@@ -3,6 +3,7 @@ package com.and.presentation.component.item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,37 +22,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
-import com.and.presentation.component.button.ButtonSize
-import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
-import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun NewsLetterSubscriptionItem(
+fun NewsLetterSimpleItem(
     newsLetter: NewsLetterModel,
     modifier: Modifier = Modifier,
-    subscribeButtonVisible: Boolean = true,
-    onSubscribeClick: (NewsLetterModel) -> Unit = { }
+    onClick: (NewsLetterModel) -> Unit
 ) {
     Card(
         modifier = modifier
+            .clickable { onClick(newsLetter) }
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
-                color = Line_Alternative,
+                color = Line_Neutral,
                 shape = RoundedCornerShape(12.dp)
             )
             .background(
@@ -109,27 +106,18 @@ fun NewsLetterSubscriptionItem(
                     )
                 }
             }
-            if (subscribeButtonVisible) {
-                OutlinedSecondaryButton(
-                    buttonText = stringResource(R.string.subscribe_paused),
-                    buttonSize = ButtonSize.SMALL,
-                    onClick = {
-                        onSubscribeClick(newsLetter)
-                    }
-                )
-            }
         }
     }
 }
 
 @Preview(
-    name = "NewsLetterSubscriptionItem Preview",
+    name = "NewsLetterQueryItem Preview",
     showBackground = true
 )
 @Composable
-fun NewsLetterSubscriptionItemPreview() {
+fun NewsLetterQueryItemPreview() {
     DefaultWhiteTheme {
-        NewsLetterSubscriptionItem(
+        NewsLetterSimpleItem(
             newsLetter = NewsLetterModel(
                 "Alone & around",
                 "",
@@ -141,7 +129,7 @@ fun NewsLetterSubscriptionItemPreview() {
                     InterestCategory.INTEREST_ART_DESIGN,
                 )
             ),
-            onSubscribeClick = {
+            onClick = {
 
             }
         )

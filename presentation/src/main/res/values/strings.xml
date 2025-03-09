@@ -30,6 +30,9 @@
     <string name="unread">안읽음</string>
     <string name="search_result_empty">검색 결과가 없어요</string>
     <string name="find_id_password">ID/PW 찾기</string>
+    <string name="alarm">알람</string>
+    <string name="today">오늘</string>
+    <string name="since_last_week">이전 7일</string>
 
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
@@ -184,6 +187,10 @@
     <string name="search_newsletter_empty_body">찾는 뉴스레터가 없다면 등록을 요청해보세요.</string>
     <string name="search_article_empty_body">띄어쓰기를 포함하여 검색어가 정확한지 확인해주세요.</string>
     <string name="search_newsletter_request">뉴스레터 등록 요청하기</string>
+
+    <!-- 뉴스레터 홈-->
+    <string name="newsletter_home_title">뉴스레터 홈</string>
+    <string name="newsletter_history_title">지난 아티클 보기</string>
 
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>

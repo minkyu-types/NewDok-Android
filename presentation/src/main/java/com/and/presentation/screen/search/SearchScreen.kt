@@ -39,10 +39,9 @@ import com.and.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.OutlinedPrimaryButton
 import com.and.presentation.component.item.ArticleItem
-import com.and.presentation.component.item.NewsLetterQueryItem
+import com.and.presentation.component.item.NewsLetterSimpleItem
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.NewsLetterModel
-import com.and.presentation.model.UserModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body1Reading
 import com.and.presentation.ui.Body2Normal
@@ -55,7 +54,6 @@ import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchScreen(
@@ -299,7 +297,7 @@ private fun QueryNewsLetterResult(
             LazyColumn {
                 items(newsLetterCount) { index ->
                     newsLetters[index]?.let { newsLetter ->
-                        NewsLetterQueryItem(
+                        NewsLetterSimpleItem(
                             newsLetter = newsLetter,
                             onClick = {
                                 onNewsLetterClick(it)

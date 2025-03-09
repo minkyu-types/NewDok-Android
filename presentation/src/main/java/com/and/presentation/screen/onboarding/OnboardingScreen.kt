@@ -170,9 +170,9 @@ fun OnboardingImageViewPager(
         modifier = modifier
     ) { page ->
         val imageRes = when (page) {
-            0 -> R.drawable.onboarding_1
-            1 -> R.drawable.onboarding_2
-            else -> R.drawable.onboarding_3
+            0 -> R.drawable.img_onboarding_1
+            1 -> R.drawable.img_onboarding_2
+            else -> R.drawable.img_onboarding_3
         }
 
         Box(

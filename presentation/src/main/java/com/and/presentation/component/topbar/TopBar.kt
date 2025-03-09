@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,8 +30,10 @@ import com.and.presentation.util.removeRippleEffect
 @Composable
 fun TopBar(
     title: String,
+    modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onActionButtonClick: () -> Unit = {},
+    actionIcon: Painter? = null
 ) {
     CenterAlignedTopAppBar (
         title = {
@@ -58,7 +61,16 @@ fun TopBar(
             )
         },
         actions = {
-            // 필요한 경우 추가 액션 아이콘 배치
+            if (actionIcon != null) {
+                Icon(
+                    painter = actionIcon,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .removeRippleEffect { onActionButtonClick() }
+                        .height(56.dp)
+                        .padding(horizontal = 12.dp)
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White
@@ -82,7 +94,11 @@ fun TopBarPreview() {
             title = "회원가입",
             onNavigationIconClick = {
 
-            }
+            },
+            onActionButtonClick = {
+
+            },
+            actionIcon = painterResource(R.drawable.ic_line_search)
         )
     }
 }
