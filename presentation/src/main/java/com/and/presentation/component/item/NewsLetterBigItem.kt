@@ -120,7 +120,7 @@ fun NewsLetterBigItem(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    newsLetter.categories.forEach { category ->
+                    newsLetter.interests.forEach { category ->
                         CategoryChip(text = category.value)
                     }
                 }

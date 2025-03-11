@@ -133,7 +133,7 @@ fun InterestLazyRow(
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(newsLetter.categories) { category ->
+        items(newsLetter.interests) { category ->
             CategoryChip(text = category.value)
         }
     }
