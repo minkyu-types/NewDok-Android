@@ -1,4 +1,4 @@
-package com.and.presentation.component
+package com.and.presentation.component.image
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box

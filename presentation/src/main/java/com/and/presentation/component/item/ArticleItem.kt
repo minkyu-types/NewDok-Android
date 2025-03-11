@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.component.BrandProfileImage
+import com.and.presentation.component.image.BrandProfileImage
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
