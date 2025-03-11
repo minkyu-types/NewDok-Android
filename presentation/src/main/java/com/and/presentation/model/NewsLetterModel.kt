@@ -7,5 +7,5 @@ data class NewsLetterModel(
     val profileImage: String,
     val repeatTerm: String,
     val introduction: String,
-    val categories: List<InterestCategory>
+    val interests: List<InterestCategory>
 )
