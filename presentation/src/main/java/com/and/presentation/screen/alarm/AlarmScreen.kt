@@ -97,7 +97,7 @@ fun AlarmTabIndicator(
     onTabChange: (AlarmTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val selectedTabIndex = selectedTab.index
+    val selectedTabIndex = selectedTab.ordinal
     TabRow(
         selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->
@@ -109,8 +109,8 @@ fun AlarmTabIndicator(
         },
         containerColor = Color.White
     ) {
-        AlarmTab.entries.forEachIndexed { index, currentTab ->
-            val isSelected = selectedTabIndex == index
+        AlarmTab.entries.forEach { currentTab ->
+            val isSelected = selectedTabIndex == currentTab.ordinal
             Tab(
                 selected = isSelected,
                 onClick = {

@@ -42,14 +42,16 @@ fun HintErrorSecureTextField(
     value: String,
     valueTitle: String,
     valueHint: String,
-    onValueChange: (String) -> Unit = {},
     isError: Boolean,
     errorMessage: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit = {}
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Text(
             text = valueTitle,
             style = Body2Normal,
@@ -71,7 +73,7 @@ fun HintErrorSecureTextField(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(48.dp),
             shape = RoundedCornerShape(4.dp),
             isError = isError,
             colors = TextFieldDefaults.colors(
@@ -121,6 +123,8 @@ fun HintErrorSecureTextField(
                 style = Label1,
                 fontWeight = FontWeight.Medium,
                 color = Error_Caption,
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
             )
         }
     }
