@@ -13,6 +13,7 @@
     <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
     <string name="back">뒤로가기</string>
+    <string name="edit">변경하기</string>
     <string name="search">검색</string>
     <string name="register">회원가입</string>
     <string name="login">로그인</string>
@@ -23,6 +24,7 @@
     <string name="subscribe">구독하기</string>
     <string name="move_to_main">메인으로</string>
     <string name="industry_category">종사산업</string>
+    <string name="interest_category">관심사</string>
     <string name="profile_setting">프로필 설정</string>
     <string name="refresh">새로고침</string>
     <string name="reset">초기화</string>
@@ -33,6 +35,7 @@
     <string name="alarm">알람</string>
     <string name="today">오늘</string>
     <string name="since_last_week">이전 7일</string>
+    <string name="withdrawal">회원탈퇴</string>
 
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
@@ -205,5 +208,26 @@
     <string name="my_page_customer_service_item2">서비스 피드백</string>
     <string name="my_page_customer_service_item3">약관 및 정책</string>
     <string name="my_page_customer_service_item4">버전</string>
+
+    <!-- 계정 관리-->
+    <string name="account_manage_phone">휴대폰 번호 변경</string>
+    <string name="account_manage_password">비밀번호 변경</string>
+    <string name="account_manage_logout">로그아웃</string>
+
+    <!-- 비밀번호 변경-->
+    <string name="password_edit_current_error">현재 비밀번호가 일치하지 않습니다</string>
+    <string name="password_edit_current_title">현재 비밀번호</string>
+    <string name="password_edit_new_title">새 비밀번호</string>
+    <string name="password_edit_new_confirm_title">새 비밀번호 확인</string>
+    <string name="password_edit_current_body">현재 비밀번호 입력</string>
+
+    <!-- 프로필 편집 -->
+    <string name="profile_edit_head">등록하신 정보에 맞춰\n뉴스레터를 추천해드려요</string>
+    <string name="profile_edit_industry_placeholder">산업군을 선택해주세요.</string>
+    <string name="profile_edit_interest_placeholder">관심사를 선택해주세요.</string>
+    <string name="profile_edit_nickname_title">닉네임 변경</string>
+    <string name="profile_edit_industry_title">종사산업 변경</string>
+    <string name="profile_edit_interest_title">관심사 변경</string>
+    <string name="profile_edit_interest_body">최소 3가지 이상을 선택해주세요.</string>
 
 </resources>
