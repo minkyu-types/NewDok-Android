@@ -67,7 +67,7 @@ fun HintErrorTextField(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(48.dp),
             shape = RoundedCornerShape(4.dp),
             isError = isError,
             colors = TextFieldDefaults.colors(

@@ -189,6 +189,7 @@ fun RegisterBirthYear(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
+                    .height(48.dp)
                     .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -330,7 +331,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.MALE) },
                 modifier = Modifier
                     .padding(end = 4.dp)
-                    .height(56.dp)
+                    .height(48.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,
@@ -353,7 +354,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.FEMALE) },
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .height(56.dp)
+                    .height(48.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,

@@ -107,7 +107,7 @@ fun RegisterStep2Screen(
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .height(56.dp)
+                        .height(48.dp)
                         .align(Alignment.Bottom)
                         .border(
                             width = if (isIdNotDuplicated) 0.dp else 1.dp,
