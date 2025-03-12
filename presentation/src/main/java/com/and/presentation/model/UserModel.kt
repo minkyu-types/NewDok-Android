@@ -1,6 +1,7 @@
 package com.and.presentation.model
 
 import com.and.domain.model.type.Gender
+import com.and.domain.model.type.InterestCategory
 
 data class UserModel(
     val id: Int,
@@ -12,5 +13,5 @@ data class UserModel(
     val gender: Gender,
     val createdAt: String,
     val industryId: Int,
-    val interests: List<Int>
+    val interests: List<InterestCategory>
 )
