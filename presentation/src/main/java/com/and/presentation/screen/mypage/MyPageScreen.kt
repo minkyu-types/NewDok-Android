@@ -33,7 +33,6 @@ import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
-import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
@@ -217,36 +216,6 @@ fun MyPageCustomerServiceArea(
             onClick = {
 
             }
-        )
-    }
-}
-
-@Composable
-private fun MyPageItem(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = Modifier
-            .clickable {
-                onClick()
-            }
-            .padding(horizontal = 20.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = text,
-            style = Body1Normal,
-            fontWeight = FontWeight.Medium,
-            color = Caption_Strong,
-            modifier = Modifier
-                .weight(1f)
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_line_right),
-            contentDescription = null,
-            tint = Caption_Neutral
         )
     }
 }
