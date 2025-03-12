@@ -85,23 +85,18 @@ fun RegisterStep1Screen(
             )
             Spacer(modifier = Modifier.height(48.dp))
 
-            PhoneTextField(
+            PhoneAuthView(
                 phoneNumber = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                onAuthButtonClick = { phoneNum ->
-                    // 전화번호로 인증 문자 전송
-                    true
+                authCode = authCode,
+                onPhoneNumberChange = { phoneNumber ->
+
                 },
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
+                onAuthCodeChange = { authCode ->
 
-            Spacer(modifier = Modifier.height(32.dp))
+                },
+                onAuthButtonClick = { phoneNumber ->
 
-            AuthTextField(
-                value = authCode,
-                isError = false,
-                onValueChange = { authCode = it }
+                }
             )
         }
 
@@ -111,6 +106,35 @@ fun RegisterStep1Screen(
             modifier = Modifier.padding(24.dp)
         )
     }
+}
+
+@Composable
+fun PhoneAuthView(
+    phoneNumber: String,
+    authCode: String,
+    onPhoneNumberChange: (String) -> Unit,
+    onAuthCodeChange: (String) -> Unit,
+    onAuthButtonClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    PhoneTextField(
+        phoneNumber = phoneNumber,
+        onValueChange = onPhoneNumberChange,
+        onAuthButtonClick = { phoneNum ->
+            // 전화번호로 인증 문자 전송
+            true
+        },
+        modifier = Modifier
+            .fillMaxWidth(),
+    )
+
+    Spacer(modifier = Modifier.height(32.dp))
+
+    AuthTextField(
+        value = authCode,
+        isError = false,
+        onValueChange = onAuthCodeChange
+    )
 }
 
 @Composable
@@ -157,7 +181,7 @@ fun PhoneTextField(
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .height(56.dp)
+                    .height(48.dp)
                     .align(Alignment.Bottom)
                     .border(
                         width = 1.dp,
@@ -238,7 +262,7 @@ fun AuthTextField(
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 0.dp),
+                .height(48.dp),
             colors = TextFieldDefaults.colors(
                 // 인증번호 6자리 (숫자만) 입력되면 Primary_Normal 적용
                 focusedIndicatorColor = Primary_Normal,
