@@ -1,4 +1,4 @@
-package com.and.presentation.screen.newsletter
+package com.and.presentation.screen.newsletterdetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
