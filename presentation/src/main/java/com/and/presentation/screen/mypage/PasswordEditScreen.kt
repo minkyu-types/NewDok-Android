@@ -1,7 +1,6 @@
 package com.and.presentation.screen.mypage
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
+import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.textfield.HintErrorSecureTextField
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.ui.DefaultWhiteTheme
@@ -43,6 +43,7 @@ fun PasswordEditScreen(
         )
         Column(
             modifier = Modifier
+                .weight(1f)
                 .padding(horizontal = 24.dp),
         ) {
             HintErrorSecureTextField(
@@ -82,6 +83,14 @@ fun PasswordEditScreen(
                     .fillMaxWidth()
             )
         }
+        ConditionalNextButton(
+            enabled = true,
+            onClick = {
+                onBack()
+            },
+            buttonText = stringResource(R.string.edit),
+            modifier = Modifier.padding(24.dp),
+        )
     }
 }
 
