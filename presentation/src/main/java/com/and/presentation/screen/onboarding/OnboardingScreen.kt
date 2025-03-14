@@ -18,8 +18,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,7 +41,6 @@ import com.and.presentation.ui.Heading1
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     onRegisterClick: () -> Unit,
@@ -88,7 +85,6 @@ fun OnboardingScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingHeader(
     pagerState: PagerState,
@@ -131,7 +127,6 @@ fun OnboardingHeader(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingIndicator(
     modifier: Modifier = Modifier,
@@ -159,7 +154,6 @@ fun OnboardingIndicator(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingImageViewPager(
     modifier: Modifier,
@@ -188,27 +182,6 @@ fun OnboardingImageViewPager(
                 modifier = Modifier.fillMaxSize()
             )
         }
-    }
-}
-
-@Composable
-fun OnboardingRegisterButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
-        shape = RoundedCornerShape(15.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFD9D9D9),
-        )
-    ) {
-        Text(
-            text = stringResource(id = R.string.register)
-        )
     }
 }
 
