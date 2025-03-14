@@ -42,6 +42,7 @@
 
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
+    <string name="snackbar_password_edit_success">비밀번호가 재설정되었습니다.</string>
 
     <!-- 다이얼로그 -->
     <string name="auth_fail_title">인증 실패</string>
@@ -246,5 +247,35 @@
     <string name="profile_edit_industry_title">종사산업 변경</string>
     <string name="profile_edit_interest_title">관심사 변경</string>
     <string name="profile_edit_interest_body">최소 3가지 이상을 선택해주세요.</string>
+
+    <!-- FAQ-->
+    <string name="faq_title">FAQ</string>
+
+    <!-- 서비스 피드백 -->
+    <string name="service_feedback">서비스 피드백</string>
+    <string name="service_feedback_title">뉴독에 대한 회원님의\n목소리를 들려주세요</string>
+    <string name="service_feedback_body">서비스 사용 시 좋았떤 점이나 불편했던 점,\n뉴스레터 등록 신청 혹은 문의사항을 편하게 남겨주세요!</string>
+
+    <!-- 약관 및 정책-->
+    <string name="terms">약관 및 정책</string>
+    <string name="terms_service">서비스 이용약관</string>
+    <string name="terms_personal">개인정보 처리방침</string>
+
+    <!-- 계정 찾기-->
+    <string name="find_account">계정찾기</string>
+    <string name="find_auth_code_sent">가입 당시 입력한 휴대폰 번호로\n인증번호를 발송했어요.</string>
+
+    <string name="find_account_id">아이디 찾기</string>
+    <string name="find_account_id_title">가입 당시 입력한\n휴대폰 번호를 입력해주세요.</string>
+    <string name="find_account_id_found_title">입력하신 번호로\n%d개의 계정을 찾았습니다.</string>
+    <string name="find_account_id_found_body">로그인을 원하시면 계정을 선택해주세요.</string>
+    <string name="find_account_id_found_more">전체 아이디 확인을 원하시면 여기로 문의해주세요</string>
+
+    <string name="find_account_password">비밀번호 찾기</string>
+    <string name="find_account_password_title">가입한 아이디를\n입력해주세요.</string>
+    <string name="find_account_password_not_found_title">가입되지 않은 아이디 입니다.</string>
+    <string name="find_account_password_not_found_body">아이디를 다시 확인해주세요.</string>
+    <string name="find_account_password_new_password_title">새로운 비밀번호를\n입력해주세요.</string>
+    <string name="find_account_password_new_password_confirm">비밀번호 재설정</string>
 
 </resources>
