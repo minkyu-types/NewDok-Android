@@ -149,7 +149,7 @@ fun MyPageServiceArea(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp)
+            .padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(
            text = stringResource(R.string.my_page_service_title),
@@ -157,7 +157,7 @@ fun MyPageServiceArea(
             fontWeight = FontWeight.Medium,
             color = Caption_Assistive,
             modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 8.dp)
+                .padding(vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         MyPageItem(
@@ -182,7 +182,7 @@ fun MyPageCustomerServiceArea(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp)
+            .padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(
             text = stringResource(R.string.my_page_customer_service_title),
@@ -190,7 +190,7 @@ fun MyPageCustomerServiceArea(
             fontWeight = FontWeight.Medium,
             color = Caption_Assistive,
             modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 8.dp)
+                .padding(vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         MyPageItem(
