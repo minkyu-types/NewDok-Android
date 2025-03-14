@@ -12,13 +12,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
+import com.and.presentation.component.WebViewScreen
 import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.component.dialog.BottomSheetDialog
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -41,19 +46,50 @@ import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Blue_100
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterStep5Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    var bottomSheetUrl by remember { mutableStateOf<String?>(null) }
+    val serviceTermUrl = stringResource(R.string.register_terms_term_1)
+    val personalTermUrl = stringResource(R.string.register_terms_term_2)
+
     var isTerm1Checked by remember { mutableStateOf(false) }
     var isTerm2Checked by remember { mutableStateOf(false) }
     var isTerm3Checked by remember { mutableStateOf(false) }
     var isTerm4Checked by remember { mutableStateOf(false) }
     val isAllTermsChecked = isTerm1Checked && isTerm2Checked
             && isTerm3Checked && isTerm4Checked
+
+    if (showBottomSheet) {
+        BottomSheetDialog(
+            title = stringResource(R.string.terms_common),
+            sheetState = sheetState,
+            onDismiss = {
+                showBottomSheet = false
+            },
+            onHideRequested = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                }
+                showBottomSheet = false
+            },
+            content = {
+                bottomSheetUrl?.let {
+                    WebViewScreen(it)
+                }
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -83,13 +119,25 @@ fun RegisterStep5Screen(
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_2),
                 initialChecked = isTerm2Checked,
-                onCheckChange = { isTerm2Checked = it }
+                onCheckChange = {
+                    if (it) {
+                        bottomSheetUrl = serviceTermUrl
+                        showBottomSheet = true
+                    }
+                    isTerm2Checked = it
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
             RegisterTermAgreeButton(
                 title = stringResource(R.string.register_terms_term_3),
                 initialChecked = isTerm3Checked,
-                onCheckChange = { isTerm3Checked = it }
+                onCheckChange = {
+                    if (it) {
+                        bottomSheetUrl = personalTermUrl
+                        showBottomSheet = true
+                    }
+                    isTerm3Checked = it
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
             RegisterTermAgreeButton(
