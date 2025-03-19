@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.R
+import com.and.presentation.component.dialog.CalendarDialog
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
@@ -53,8 +54,13 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
+    onArticleClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onAlarmClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+    var currSelectedDate: LocalDate by remember { mutableStateOf(LocalDate.now()) }
     var refreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
@@ -65,6 +71,18 @@ fun HomeScreen(
         }
     )
 
+    if (showDialog) {
+        CalendarDialog(
+            onDismiss = {
+                showDialog = false
+            },
+            onDateSelected = { date ->
+                currSelectedDate = date
+            },
+            initialDate = currSelectedDate
+        )
+    }
+
     Column(
         modifier = Modifier
             .pullRefresh(pullRefreshState)
@@ -72,17 +90,14 @@ fun HomeScreen(
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
         HomeTopBar(
-            onSearchClick = {
-
-            },
-            onAlarmClick = {
-
-            }
+            onSearchClick = onSearchClick,
+            onAlarmClick = onAlarmClick
         )
         Spacer(modifier = Modifier.height(8.dp))
         HomeCalendarBar(
+            date = currSelectedDate,
             onCalendarClick = {
-
+                showDialog = true
             }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -104,11 +119,9 @@ fun HomeScreen(
                 ),
             ),
             onRefreshClick = {
-
+                // 아티클 리스트 갱신
             },
-            onItemClick = {
-
-            },
+            onItemClick = onArticleClick,
         )
     }
 }
@@ -146,30 +159,38 @@ fun HomeTopBar(
 
 @Composable
 fun HomeCalendarBar(
+    date: LocalDate,
     onCalendarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = Color.White)
-            .padding(vertical = 12.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = modifier
+            .removeRippleEffect {
+                onCalendarClick()
+            }
     ) {
-        Text(
-            text = LocalDate.now().toLocalDateWithKRFormat(),
-            style = Body1Normal,
-            fontWeight = FontWeight.Bold,
-            color = Caption_Strong,
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .padding(end = 12.dp)
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_calendar),
-            contentDescription = null
-        )
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+                .padding(vertical = 12.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = date.toLocalDateWithKRFormat(),
+                style = Body1Normal,
+                fontWeight = FontWeight.Bold,
+                color = Caption_Strong,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 12.dp)
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_calendar),
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -310,7 +331,15 @@ fun HomeArticleListItem(
 fun HomeScreenPreview() {
     DefaultWhiteTheme {
         HomeScreen(
+            onArticleClick = {
 
+            },
+            onSearchClick = {
+
+            },
+            onAlarmClick = {
+
+            }
         )
     }
 }
