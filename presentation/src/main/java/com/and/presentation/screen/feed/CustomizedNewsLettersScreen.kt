@@ -52,6 +52,7 @@ fun CustomizedNewsLettersScreen(
     nickname: String,
     newsLetters: List<NewsLetterModel>,
     recommendedNewsLetters: List<NewsLetterModel>,
+    onNewsLetterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState() { newsLetters.size }
@@ -81,7 +82,10 @@ fun CustomizedNewsLettersScreen(
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(start = 24.dp, end = 40.dp)
             ) { page ->
-                NewsLetterBigItem(newsLetters[page])
+                NewsLetterBigItem(
+                    newsLetters[page],
+                    onClick = onNewsLetterClick
+                )
             }
         }
         CustomizedNewsLettersDotsIndicator(
@@ -92,6 +96,7 @@ fun CustomizedNewsLettersScreen(
         )
         RecommendOtherNewsLettersArea(
             recommendedNewsLetters = recommendedNewsLetters,
+            onClick = onNewsLetterClick,
             onRefreshClick = {
 
             }
@@ -130,6 +135,7 @@ fun CustomizedNewsLettersDotsIndicator(
 @Composable
 fun RecommendOtherNewsLettersArea(
     recommendedNewsLetters: List<NewsLetterModel>,
+    onClick: () -> Unit,
     onRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -169,7 +175,10 @@ fun RecommendOtherNewsLettersArea(
             }
         }
         recommendedNewsLetters.forEach { newsLetter ->
-            NewsLetterSmallItem(newsLetter)
+            NewsLetterSmallItem(
+                newsLetter = newsLetter,
+                onClick = onClick
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))

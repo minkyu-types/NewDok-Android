@@ -31,7 +31,7 @@ fun MainNavGraph() {
         composable(ScreenFlow.LOGIN.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    // 홈 화면으로 이동
+                    navController.navigate(ScreenFlow.MAIN.route)
                 },
                 onLoginWithoutSignUp = {
                     // 비회원으로 이용

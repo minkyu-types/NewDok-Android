@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -70,8 +71,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
     val loginFailed: Boolean by viewModel.loginFailed // id 오류인지, pw 오류인지 구분하도록
-    val userId by remember { mutableStateOf("") }
-    val userPassword by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf("") }
+    var userPassword by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -103,6 +104,9 @@ fun LoginScreen(
                 value = userId,
                 valueHint = stringResource(id = R.string.login_id_hint),
                 isError = loginFailed,
+                onValueChange = { id ->
+                    userId = id
+                },
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -114,6 +118,9 @@ fun LoginScreen(
                 valueHint = stringResource(id = R.string.login_password_hint),
                 isError = loginFailed,
                 errorMessage = stringResource(id = R.string.login_password_error),
+                onValueChange = { pw ->
+                    userPassword = pw
+                },
                 modifier = Modifier
                     .padding(bottom = 12.dp)
                     .fillMaxWidth()
@@ -124,7 +131,7 @@ fun LoginScreen(
             )
         }
         ConditionalNextButton(
-            enabled = false,
+            enabled = true,
             onClick = {
                 // 로그인 검증 성공 시 홈 화면 이동
                 onLoginSuccess()

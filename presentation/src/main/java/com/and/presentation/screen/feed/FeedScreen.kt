@@ -30,6 +30,9 @@ import com.and.presentation.ui.Primary_Normal
 
 @Composable
 fun FeedScreen(
+    onNewsLetterClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onAlarmClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(FeedTab.RECOMMEND) }
@@ -100,12 +103,8 @@ fun FeedScreen(
     ) {
         MainTopBar(
             title = stringResource(R.string.feed_title),
-            onSearchClick = {
-
-            },
-            onAlarmClick = {
-
-            }
+            onSearchClick = onSearchClick,
+            onAlarmClick = onAlarmClick
         )
         FeedTabIndicator(
             selectedTab = selectedTab,
@@ -119,7 +118,8 @@ fun FeedScreen(
                     CustomizedNewsLettersScreen(
                         nickname = "기무민규",
                         newsLetters = newsLetters,
-                        recommendedNewsLetters = recommendedNewsLetters
+                        recommendedNewsLetters = recommendedNewsLetters,
+                        onNewsLetterClick = onNewsLetterClick
                     )
                 } else {
                     RecommendNewsLetterForNoUserProfile()
@@ -129,6 +129,7 @@ fun FeedScreen(
             FeedTab.ALL -> {
                 AllNewsLettersScreen(
                     newsLetters = newsLetters,
+                    onNewsLetterClick = onNewsLetterClick,
                     onResetClick = {
 
                     }
@@ -197,7 +198,15 @@ fun RecommendNewsLetterForNoUserProfile(
 fun FeedScreenPreview() {
     DefaultWhiteTheme {
         FeedScreen(
+            onNewsLetterClick = {
 
+            },
+            onSearchClick = {
+
+            },
+            onAlarmClick = {
+
+            }
         )
     }
 }

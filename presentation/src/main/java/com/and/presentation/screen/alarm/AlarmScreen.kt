@@ -43,6 +43,8 @@ import java.time.LocalDate
 @Composable
 fun AlarmScreen(
     onBack: () -> Unit,
+    onArticleClick: () -> Unit,
+    onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(AlarmTab.ARTICLE) }
@@ -56,9 +58,7 @@ fun AlarmScreen(
         TopBar(
             title = stringResource(R.string.alarm),
             onNavigationIconClick = onBack,
-            onActionButtonClick = {
-
-            },
+            onActionButtonClick = onActionClick,
             actionIcon = painterResource(R.drawable.ic_line_settings)
         )
         AlarmTabIndicator(
@@ -215,6 +215,12 @@ fun AlarmScreenPreview() {
     DefaultWhiteTheme {
         AlarmScreen(
             onBack = {
+
+            },
+            onArticleClick = {
+
+            },
+            onActionClick = {
 
             }
         )

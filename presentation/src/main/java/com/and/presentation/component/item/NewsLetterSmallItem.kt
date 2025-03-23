@@ -40,10 +40,12 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
+import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun NewsLetterSmallItem(
     newsLetter: NewsLetterModel,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val displayedIntroduction = if (newsLetter.introduction.length > 25) {
@@ -55,6 +57,9 @@ fun NewsLetterSmallItem(
 
     Card(
         modifier = modifier
+            .removeRippleEffect {
+                onClick()
+            }
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
@@ -156,8 +161,11 @@ fun BrandSmallItemPreview() {
                     InterestCategory.INTEREST_GAME,
                     InterestCategory.INTEREST_CULTURE,
                     InterestCategory.INTEREST_ART_DESIGN,
-                )
-            )
+                ),
+            ),
+            onClick = {
+
+            }
         )
     }
 }

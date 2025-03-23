@@ -47,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.ArticleSortCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
@@ -70,20 +71,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BookmarkScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BookmarkViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
     val refreshState = rememberPullToRefreshState()
-    var existInterests by remember { mutableStateOf(InterestCategory.entries) }
-    var selectedInterests by remember {
-        mutableStateOf(
-            setOf(
-                InterestCategory.INTEREST_CULTURE,
-                InterestCategory.INTEREST_TREND
-            )
-        )
-    }
+    val selectedInterests = viewModel.selectedInterests
     var currentSort by remember { mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED) }
     val filteredArticles = listOf(
         DailyArticleModel(
@@ -124,23 +118,16 @@ fun BookmarkScreen(
             }
         )
         BookmarkFilters(
-            interests = existInterests,
             selectedInterests = selectedInterests,
             onInterestClick = { interest ->
-                val prevList = selectedInterests.toMutableSet()
-                if (interest in prevList) {
-                    prevList.remove(interest)
-                } else {
-                    prevList.add(interest)
-                }
-                selectedInterests = prevList
+                viewModel.toggleInterest(interest)
             }
         )
         BookmarkResultBar(
             currentSort = currentSort,
             articleCount = filteredArticles.size,
             onSortClick = {
-
+                // 바텀 시트 오픈
             }
         )
         BookmarkArticleList(
@@ -163,11 +150,12 @@ fun BookmarkScreen(
 
 @Composable
 fun BookmarkFilters(
-    interests: List<InterestCategory>,
     selectedInterests: Set<InterestCategory>,
     onInterestClick: (InterestCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interests = InterestCategory.entries
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -350,7 +338,6 @@ fun ArticleEmptyView(
 fun BookmarkScreenPreview() {
     DefaultWhiteTheme {
         BookmarkScreen(
-
         )
     }
 }

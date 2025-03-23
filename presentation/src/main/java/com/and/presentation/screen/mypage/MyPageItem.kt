@@ -1,6 +1,7 @@
 package com.and.presentation.screen.mypage
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -15,6 +16,7 @@ import com.and.presentation.R
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
+import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun MyPageItem(
@@ -22,26 +24,29 @@ fun MyPageItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Box(
         modifier = modifier
-            .clickable {
+            .removeRippleEffect {
                 onClick()
             }
             .padding(vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = text,
-            style = Body1Normal,
-            fontWeight = FontWeight.Medium,
-            color = Caption_Strong,
-            modifier = Modifier
-                .weight(1f)
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_line_right),
-            contentDescription = null,
-            tint = Caption_Neutral
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = text,
+                style = Body1Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Strong,
+                modifier = Modifier
+                    .weight(1f)
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_line_right),
+                contentDescription = null,
+                tint = Caption_Neutral
+            )
+        }
     }
 }

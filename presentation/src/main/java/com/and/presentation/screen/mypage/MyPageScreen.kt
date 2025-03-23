@@ -39,6 +39,13 @@ import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun MyPageScreen(
+    onProfileEditClick: () -> Unit,
+    onAccountManageClick: () -> Unit,
+    onAlarmSettingClick: () -> Unit,
+    onFaqClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
+    onTermClick: () -> Unit,
+    onVersionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -58,17 +65,27 @@ fun MyPageScreen(
                 "",
                 1,
                 emptyList(),
-            )
+            ),
+            onProfileEditClick = onProfileEditClick
         )
-        MyPageServiceArea()
+        MyPageServiceArea(
+            onAccountManageClick,
+            onAlarmSettingClick
+        )
         Spacer(modifier = Modifier.height(12.dp))
-        MyPageCustomerServiceArea()
+        MyPageCustomerServiceArea(
+            onFaqClick,
+            onFeedbackClick,
+            onTermClick,
+            onVersionClick
+        )
     }
 }
 
 @Composable
 fun MyPageProfileArea(
     user: UserModel,
+    onProfileEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -133,9 +150,7 @@ fun MyPageProfileArea(
             buttonText = stringResource(R.string.my_page_profile_edit),
             buttonSize = ButtonSize.LARGE,
             fontWeight = FontWeight.Bold,
-            onClick = {
-
-            },
+            onClick = onProfileEditClick,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -144,6 +159,8 @@ fun MyPageProfileArea(
 
 @Composable
 fun MyPageServiceArea(
+    onAccountManageClick: () -> Unit,
+    onAlarmSettingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -162,21 +179,21 @@ fun MyPageServiceArea(
         Spacer(modifier = Modifier.height(8.dp))
         MyPageItem(
             text = stringResource(R.string.my_page_service_item_1),
-            onClick = {
-
-            }
+            onClick = onAccountManageClick
         )
         MyPageItem(
             text = stringResource(R.string.my_page_service_item_2),
-            onClick = {
-
-            }
+            onClick = onAlarmSettingClick
         )
     }
 }
 
 @Composable
 fun MyPageCustomerServiceArea(
+    onFaqClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
+    onTermClick: () -> Unit,
+    onVersionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -195,27 +212,19 @@ fun MyPageCustomerServiceArea(
         Spacer(modifier = Modifier.height(8.dp))
         MyPageItem(
             text = stringResource(R.string.my_page_customer_service_item1),
-            onClick = {
-
-            }
+            onClick = onFaqClick
         )
         MyPageItem(
             text = stringResource(R.string.my_page_customer_service_item2),
-            onClick = {
-
-            }
+            onClick = onFeedbackClick
         )
         MyPageItem(
             text = stringResource(R.string.my_page_customer_service_item3),
-            onClick = {
-
-            }
+            onClick = onTermClick
         )
         MyPageItem(
             text = stringResource(R.string.my_page_customer_service_item4),
-            onClick = {
-
-            }
+            onClick = onVersionClick
         )
     }
 }
@@ -228,7 +237,27 @@ fun MyPageCustomerServiceArea(
 fun MyPageScreenPreview() {
     DefaultWhiteTheme {
         MyPageScreen(
+            onProfileEditClick = {
 
+            },
+            onAccountManageClick = {
+
+            },
+            onAlarmSettingClick = {
+
+            },
+            onFaqClick = {
+
+            },
+            onFeedbackClick = {
+
+            },
+            onTermClick = {
+
+            },
+            onVersionClick = {
+
+            }
         )
     }
 }

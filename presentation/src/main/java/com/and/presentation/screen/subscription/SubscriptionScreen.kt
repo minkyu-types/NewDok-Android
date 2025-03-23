@@ -58,6 +58,7 @@ import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun SubscriptionScreen(
+    onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var currentTab by remember { mutableStateOf(SubscriptionTab.ING) }
@@ -262,7 +263,9 @@ fun SubscribedNewsLettersExistView(
 fun SubscriptionScreenPreview() {
     DefaultWhiteTheme {
         SubscriptionScreen(
+            onSearchClick = {
 
+            }
         )
     }
 }

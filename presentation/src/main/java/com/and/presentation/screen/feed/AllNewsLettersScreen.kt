@@ -47,6 +47,7 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun AllNewsLettersScreen(
     newsLetters: List<NewsLetterModel>,
+    onNewsLetterClick: () -> Unit,
     onResetClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -68,6 +69,7 @@ fun AllNewsLettersScreen(
         items(newsLetters) { newsLetter ->
             NewsLetterSmallItem(
                 newsLetter = newsLetter,
+                onClick = onNewsLetterClick,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
             )

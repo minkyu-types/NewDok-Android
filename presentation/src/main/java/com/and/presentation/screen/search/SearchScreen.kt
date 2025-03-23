@@ -58,6 +58,8 @@ import com.and.presentation.util.removeRippleEffect
 @Composable
 fun SearchScreen(
     onBack: () -> Unit,
+    onNewsLetterClick: () -> Unit,
+    onArticleClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var query by remember { mutableStateOf("") }
@@ -375,6 +377,12 @@ private fun SearchScreenPreview() {
     DefaultWhiteTheme {
         SearchScreen(
             onBack = {
+
+            },
+            onNewsLetterClick = {
+
+            },
+            onArticleClick = {
 
             }
         )

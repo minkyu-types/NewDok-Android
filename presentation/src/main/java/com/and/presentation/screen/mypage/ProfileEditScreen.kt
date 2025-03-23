@@ -2,6 +2,7 @@ package com.and.presentation.screen.mypage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,10 +38,14 @@ import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Alternative
+import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun ProfileEditScreen(
     onBack: () -> Unit,
+    onNickNameClick: () -> Unit,
+    onIndustryClick: () -> Unit,
+    onInterestClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val user = UserModel(
@@ -59,7 +64,7 @@ fun ProfileEditScreen(
     )
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
@@ -84,25 +89,19 @@ fun ProfileEditScreen(
             ProfileEditBox(
                 title = stringResource(R.string.nickname),
                 value = user.nickname,
-                onClick = {
-
-                }
+                onClick = onNickNameClick
             )
             ProfileEditBox(
                 title = stringResource(R.string.industry_category),
                 value = null,
                 placeHolder = stringResource(R.string.profile_edit_industry_placeholder),
-                onClick = {
-
-                }
+                onClick = onIndustryClick
             )
             ProfileEditBox(
                 title = stringResource(R.string.interest_category),
                 value = null,
                 placeHolder = stringResource(R.string.profile_edit_interest_placeholder),
-                onClick = {
-
-                }
+                onClick = onInterestClick
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -133,6 +132,7 @@ fun ProfileEditBox(
         )
         Box(
             modifier = Modifier
+                .removeRippleEffect { onClick() }
                 .clip(RoundedCornerShape(4.dp))
                 .border(
                     width = 1.dp,
@@ -172,6 +172,15 @@ fun ProfileEditScreenPreview() {
     DefaultWhiteTheme {
         ProfileEditScreen(
             onBack = {
+
+            },
+            onNickNameClick = {
+
+            },
+            onIndustryClick = {
+
+            },
+            onInterestClick = {
 
             }
         )
