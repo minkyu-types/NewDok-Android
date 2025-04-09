@@ -1,5 +1,0 @@
-package com.and.data.mapper.model.request
-
-data class PatchSubscriptionPauseRequestDto(
-    val newsLetterId: String
-)
