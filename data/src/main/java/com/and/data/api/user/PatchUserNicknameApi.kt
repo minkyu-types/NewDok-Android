@@ -10,6 +10,6 @@ interface PatchUserNicknameApi {
 
     @GET("/users/mypage/nickname")
     fun patchUserNickname(
-        @Body request: com.and.data.model.request.PatchUserNicknameRequestDto
-    ): Response<com.and.data.model.response.PatchUserNicknameResponseDto>
+        @Body request: PatchUserNicknameRequestDto
+    ): Response<PatchUserNicknameResponseDto>
 }

@@ -3,17 +3,17 @@ package com.and.data.model.response
 import com.squareup.moshi.Json
 
 data class GetBookmarkedArticlesResponseDto(
-    @Json(name = "data") val data: com.and.data.model.response.GetBookmarkedArticlesResponseDto.BookmarkedArticleData
+    @Json(name = "data") val data: BookmarkedArticleData
 ) {
     data class BookmarkedArticleData(
         val totalAmount: Int,
-        val bookmarkForMonth: List<com.and.data.model.response.GetBookmarkedArticlesResponseDto.MonthlyBookmarkedArticle>
+        val bookmarkForMonth: List<MonthlyBookmarkedArticle>
     )
 
     data class MonthlyBookmarkedArticle(
         val id: Int,
         val month: String,
-        val bookmark: List<com.and.data.model.response.GetBookmarkedArticlesResponseDto.BookmarkedArticle>
+        val bookmark: List<BookmarkedArticle>
     )
 
     data class BookmarkedArticle(

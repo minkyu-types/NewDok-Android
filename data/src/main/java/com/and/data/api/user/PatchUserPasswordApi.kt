@@ -10,6 +10,6 @@ interface PatchUserPasswordApi {
 
     @PATCH("/users/mypage/password")
     fun patchUserPassword(
-        @Body request: com.and.data.model.request.PatchUserPasswordRequestDto
-    ): Response<com.and.data.model.response.PatchUserPasswordResponseDto>
+        @Body request: PatchUserPasswordRequestDto
+    ): Response<PatchUserPasswordResponseDto>
 }

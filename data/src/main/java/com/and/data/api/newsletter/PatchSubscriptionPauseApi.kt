@@ -14,6 +14,6 @@ interface PatchSubscriptionPauseApi {
 
     @PATCH("/newsletters/subscription/pause")
     fun patchSubscriptionPause(
-        @Body request: com.and.data.model.request.PatchSubscriptionPauseRequestDto
-    ): Response<com.and.data.model.response.PatchSubscriptionPauseResponseDto>
+        @Body request: PatchSubscriptionPauseRequestDto
+    ): Response<PatchSubscriptionPauseResponseDto>
 }

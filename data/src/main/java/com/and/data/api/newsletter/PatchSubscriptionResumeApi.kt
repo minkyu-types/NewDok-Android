@@ -10,6 +10,6 @@ interface PatchSubscriptionResumeApi {
 
     @PATCH("/newsletters/subscription/resume")
     fun patchSubscriptionResume(
-        @Body request: com.and.data.model.request.PatchSubscriptionResumeRequestDto
-    ): Response<com.and.data.model.response.PatchSubscriptionResumeResponseDto>
+        @Body request: PatchSubscriptionResumeRequestDto
+    ): Response<PatchSubscriptionResumeResponseDto>
 }

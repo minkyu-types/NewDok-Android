@@ -10,6 +10,6 @@ interface GetPreInvestigateNewsLettersApi {
     @GET("/users/preInvestigate")
     fun getPreInvestigateNewsLetters(
         @Query("industry") industry: String,
-        @Query("interest") interest: List<String>
-    ): Response<com.and.data.model.response.GetPreInvestigateNewLettersResponseDto>
+        @Query("interest") interests: List<String>
+    ): Response<GetPreInvestigateNewLettersResponseDto>
 }

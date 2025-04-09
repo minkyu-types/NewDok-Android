@@ -9,5 +9,5 @@ interface GetSubscribedNewsLettersApi {
     @GET("/newsletters/subscription/active")
     fun getSubscribedNewsLetters(
 
-    ): Response<com.and.data.model.response.GetSubscribedNewsLettersResponseDto>
+    ): Response<GetSubscribedNewsLettersResponseDto>
 }

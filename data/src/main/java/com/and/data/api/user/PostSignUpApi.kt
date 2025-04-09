@@ -10,6 +10,6 @@ interface PostSignUpApi {
 
     @POST("/users/signup")
     fun signUp(
-        @Body request: com.and.data.model.request.SignUpRequestDto
-    ): Response<com.and.data.model.response.PostSignUpResponseDto>
+        @Body request: SignUpRequestDto
+    ): Response<PostSignUpResponseDto>
 }

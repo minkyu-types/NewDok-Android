@@ -11,5 +11,5 @@ interface GetArticlesApi {
     fun getArticles(
         @Query("year") year: String,
         @Query("publicationMonth") publicationMonth: String
-    ): Response<com.and.data.model.response.GetArticlesResponseDto>
+    ): Response<GetArticlesResponseDto>
 }

@@ -9,5 +9,5 @@ interface GetRecommendedNewsLettersApi {
     @GET("/newsletters/recommend")
     fun getRecommendedNewsLetters(
 
-    ): Response<com.and.data.model.response.GetRecommendedNewsLettersResponseDto>
+    ): Response<GetRecommendedNewsLettersResponseDto>
 }

@@ -10,6 +10,6 @@ interface PatchUserInterestApi {
 
     @PATCH("/users/mypage/interest")
     fun patchUserInterest(
-        @Body request: com.and.data.model.request.PatchUserInterestRequestDto
-    ): Response<com.and.data.model.response.PatchUserInterestResponseDto>
+        @Body request: PatchUserInterestRequestDto
+    ): Response<PatchUserInterestResponseDto>
 }

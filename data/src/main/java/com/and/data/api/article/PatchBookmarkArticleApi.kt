@@ -15,6 +15,6 @@ interface PatchBookmarkArticleApi {
 
     @PATCH("/articles/bookmark")
     fun patchBookmarkArticle(
-        @Body request: com.and.data.model.request.PatchBookmarkArticleRequestDto
-    ): Response<com.and.data.model.response.PatchBookmarkArticleResponseDto>
+        @Body request: PatchBookmarkArticleRequestDto
+    ): Response<PatchBookmarkArticleResponseDto>
 }

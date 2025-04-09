@@ -4,6 +4,6 @@ import com.and.data.model.data.UserDto
 import com.squareup.moshi.Json
 
 data class PostLoginResponseDto(
-    @Json(name = "user") val user: com.and.data.model.data.UserDto,
+    @Json(name = "user") val user: UserDto,
     @Json(name = "accessToken") val accessToken: String
 )

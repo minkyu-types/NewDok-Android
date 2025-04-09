@@ -1,7 +1,7 @@
 package com.and.data.model.response
 
 data class GetSubscribedNewsLettersResponseDto(
-    val newsLetters: List<com.and.data.model.response.GetSubscribedNewsLettersResponseDto.NewsLetter>
+    val newsLetters: List<NewsLetter>
 ) {
     data class NewsLetter(
         val id: Int,

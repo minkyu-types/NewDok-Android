@@ -3,7 +3,7 @@ package com.and.data.model.response
 import java.time.Instant
 
 data class GetRecommendedNewsLettersResponseDto(
-    val newsLetters: List<com.and.data.model.response.GetRecommendedNewsLettersResponseDto.NewsLetter>
+    val newsLetters: List<NewsLetter>
 ) {
     data class NewsLetter(
         val id: Int,
@@ -15,8 +15,8 @@ data class GetRecommendedNewsLettersResponseDto(
         val imageUrl: String,
         val createdAt: Instant,
         val updatedAt: Instant,
-        val industries: List<com.and.data.model.response.GetRecommendedNewsLettersResponseDto.Industry>,
-        val interests: List<com.and.data.model.response.GetRecommendedNewsLettersResponseDto.Interest>
+        val industries: List<Industry>,
+        val interests: List<Interest>
     )
 
     data class Industry(

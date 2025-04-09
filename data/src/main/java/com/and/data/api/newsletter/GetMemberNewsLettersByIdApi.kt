@@ -1,6 +1,6 @@
 package com.and.data.api.newsletter
 
-import com.and.data.model.response.GetNewsLettersByIdResponseDto
+import com.and.data.model.response.GetNewsLetterByIdResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,5 +15,5 @@ interface GetMemberNewsLettersByIdApi {
     @GET("/newsletters/{id}")
     fun getNewsLettersById(
         @Path("id") id: String
-    ): Response<com.and.data.model.response.GetNewsLettersByIdResponseDto>
+    ): Response<GetNewsLetterByIdResponseDto>
 }

@@ -1,7 +1,7 @@
 package com.and.data.model.response
 
 data class GetBookmarkedInterestResponseDto(
-    val data: List<com.and.data.model.response.GetBookmarkedInterestResponseDto.Interest>
+    val data: List<Interest>
 ) {
     data class Interest(
         val id: Int,

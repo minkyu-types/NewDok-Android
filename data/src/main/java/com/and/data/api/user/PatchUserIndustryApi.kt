@@ -10,6 +10,6 @@ interface PatchUserIndustryApi {
 
     @PATCH("/users/mypage/industry")
     fun patchUserIndustry(
-        @Body request: com.and.data.model.request.PatchUserIndustryRequestDto
-    ): Response<com.and.data.model.response.PatchUserIndustryResponseDto>
+        @Body request: PatchUserIndustryRequestDto
+    ): Response<PatchUserIndustryResponseDto>
 }

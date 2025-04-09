@@ -10,6 +10,6 @@ interface PostLoginApi {
 
     @POST("/users/login")
     suspend fun login(
-        @Body request: com.and.data.model.request.LoginRequestDto
-    ): Response<com.and.data.model.response.PostLoginResponseDto>
+        @Body request: LoginRequestDto
+    ): Response<PostLoginResponseDto>
 }

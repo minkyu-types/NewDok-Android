@@ -10,5 +10,5 @@ data class UserDto(
     val gender: String,
     val createdAt: String,
     val industryId: Int,
-    val interests: List<com.and.data.model.data.InterestDto>
+    val interests: List<InterestDto>
 )

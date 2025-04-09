@@ -15,5 +15,5 @@ interface GetMemberNewsLettersApi {
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: String,
         @Query("day") day: String,
-    ): Response<com.and.data.model.response.GetNewsLettersResponseDto>
+    ): Response<GetNewsLettersResponseDto>
 }

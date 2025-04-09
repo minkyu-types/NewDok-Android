@@ -9,5 +9,5 @@ interface GetTodayArticlesApi {
     @GET("/articles/today")
     fun getTodayArticles(
 
-    ): Response<com.and.data.model.response.GetTodayArticlesResponseDto>
+    ): Response<GetTodayArticlesResponseDto>
 }

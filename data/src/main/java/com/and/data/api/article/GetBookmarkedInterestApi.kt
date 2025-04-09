@@ -9,5 +9,5 @@ interface GetBookmarkedInterestApi {
     @GET("/articles/bookmark/interest")
     fun getBookmarkedInterest(
 
-    ): Response<com.and.data.model.response.GetBookmarkedInterestResponseDto>
+    ): Response<GetBookmarkedInterestResponseDto>
 }

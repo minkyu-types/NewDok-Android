@@ -2,15 +2,15 @@ package com.and.data.model.response
 
 import java.time.Instant
 
-data class GetNewsLettersByIdResponseDto(
+data class GetNewsLetterByIdResponseDto(
     val brandId: Int,
     val brandName: String,
     val detailDescription: String,
-    val interests: List<com.and.data.model.response.GetNewsLettersByIdResponseDto.Interest>,
+    val interests: List<Interest>,
     val publicationCycle: String,
     val subscribeUrl: String,
     val imageUrl: String,
-    val brandArticleList: List<com.and.data.model.response.GetNewsLettersByIdResponseDto.BrandArticle>,
+    val brandArticleList: List<BrandArticle>,
     val isSubscribed: String,
     val subscribeCheck: Boolean
 ) {

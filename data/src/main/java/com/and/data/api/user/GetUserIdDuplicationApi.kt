@@ -10,5 +10,5 @@ interface GetUserIdDuplicationApi {
     @GET("/users/check/loginId")
     fun getUserIdDuplication(
         @Query("loginId") loginId: String
-    ): Response<com.and.data.model.response.GetUserIdDuplicationResponseDto>
+    ): Response<GetUserIdDuplicationResponseDto>
 }

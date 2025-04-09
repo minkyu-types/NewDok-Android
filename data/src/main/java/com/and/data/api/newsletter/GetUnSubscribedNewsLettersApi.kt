@@ -9,5 +9,5 @@ interface GetUnSubscribedNewsLettersApi {
     @GET("/newsletters/subscription/paused")
     fun getUnSubscribedNewsLetters(
 
-    ): Response<com.and.data.model.response.GetUnSubscribedNewsLettersResponseDto>
+    ): Response<GetUnSubscribedNewsLettersResponseDto>
 }
