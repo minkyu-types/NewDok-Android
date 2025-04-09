@@ -10,7 +10,7 @@ import retrofit2.http.Path
  *
  * @param id
  */
-interface GetMemberNewsLettersByIdApi {
+interface GetMemberNewsLetterByIdApi {
 
     @GET("/newsletters/{id}")
     fun getNewsLettersById(
