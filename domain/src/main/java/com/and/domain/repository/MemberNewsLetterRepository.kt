@@ -7,17 +7,17 @@ import com.and.domain.model.type.SortCategory
 import java.time.Instant
 
 interface MemberNewsLetterRepository {
-    fun getNewsLetters(
+    suspend fun getNewsLetters(
         orderOption: SortCategory,
         industry: IndustryCategory,
         date: Instant
     ): List<NewsLetter>
-    fun getNewsLetterById(
+    suspend fun getNewsLetterById(
         newsLetterId: Int,
     ): NewsLetter
-    fun getRecommendedNewsLetters(): RecommendedNewsLetter
-    fun getSearchedNewsLetter(brandName: String): NewsLetter
-    fun getSubscribedNewsLetters(): List<NewsLetter>
-    fun getUnSubscribedNewsLetters(): List<NewsLetter>
-    fun updateSubscription(newsLetterId: Int): Boolean
+    suspend fun getRecommendedNewsLetters(): RecommendedNewsLetter
+    suspend fun getSearchedNewsLetter(brandName: String): NewsLetter
+    suspend fun getSubscribedNewsLetters(): List<NewsLetter>
+    suspend fun getUnSubscribedNewsLetters(): List<NewsLetter>
+    suspend fun updateSubscription(newsLetterId: Int): Boolean
 }

@@ -6,11 +6,11 @@ import com.and.domain.model.DailyArticles
 import com.and.domain.model.type.InterestCategory
 
 interface ArticleRepository {
-    fun getArticles(year: Int, month: Int): List<DailyArticles>
-    fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles
-    fun getBookmarkedInterests(): List<InterestCategory>
-    fun getArticleById(articleId: Int): Article
-    fun searchArticle(keyword: String): Article
-    fun getTodayArticles(): List<Article>
-    fun updateBookmark(articleId: Int)
+    suspend fun getArticles(year: Int, month: Int): List<DailyArticles>
+    suspend fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles
+    suspend fun getBookmarkedInterests(): List<InterestCategory>
+    suspend fun getArticleById(articleId: Int): Article
+    suspend fun searchArticle(keyword: String): Article
+    suspend fun getTodayArticles(): List<Article>
+    suspend fun updateBookmark(articleId: Int)
 }
