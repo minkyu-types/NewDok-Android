@@ -1,5 +1,7 @@
 package com.and.domain.model
 
+import com.and.domain.model.type.ArticleStatus
+
 data class Article(
     val brandName: String,
     val imageUrl: String,
@@ -7,8 +9,3 @@ data class Article(
     val articleId: Int,
     val status: ArticleStatus
 )
-
-enum class ArticleStatus {
-    READ,
-    UNREAD
-}
