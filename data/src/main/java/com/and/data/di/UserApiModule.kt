@@ -4,7 +4,7 @@ import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
 import com.and.data.api.user.PatchUserIndustryApi
-import com.and.data.api.user.PatchUserInterestApi
+import com.and.data.api.user.PatchUserInterestsApi
 import com.and.data.api.user.PatchUserNicknameApi
 import com.and.data.api.user.PatchUserPasswordApi
 import com.and.data.api.user.PatchUserPhoneNumberApi
@@ -43,7 +43,7 @@ object UserApiModule {
 
     @Provides
     @Singleton
-    fun providesPatchUserInterestApi(retrofit: Retrofit) = retrofit.create(PatchUserInterestApi::class.java)
+    fun providesPatchUserInterestApi(retrofit: Retrofit) = retrofit.create(PatchUserInterestsApi::class.java)
 
     @Provides
     @Singleton

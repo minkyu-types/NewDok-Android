@@ -10,7 +10,7 @@ import retrofit2.http.Path
  *
  * @param interest 관심사 Id
  */
-interface GetReadArticleApi {
+interface GetArticleByIdApi {
 
     @GET("/articles/{id}")
     fun getReadArticle(

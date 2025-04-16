@@ -8,7 +8,7 @@ import retrofit2.http.Path
  *
  * @param id 브랜드 Id 값
  */
-interface GetMemberXNewsLetterByIdApi {
+interface GetNonMemberNewsLetterByIdApi {
 
     // TODO 응답 객체 작성
     @GET("/newsletters/{id}/non-member")

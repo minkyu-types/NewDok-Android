@@ -6,10 +6,10 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 
-interface PatchUserInterestApi {
+interface PatchUserInterestsApi {
 
     @PATCH("/users/mypage/interest")
-    fun patchUserInterest(
+    fun patchUserInterests(
         @Body request: PatchUserInterestRequestDto
     ): Response<PatchUserInterestResponseDto>
 }

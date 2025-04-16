@@ -1,8 +1,8 @@
 package com.and.data.di
 
 import com.and.data.api.newsletter.GetMemberNewsLettersApi
-import com.and.data.api.newsletter.GetMemberXNewsLettersApi
-import com.and.data.api.newsletter.GetMemberXNewsLetterByIdApi
+import com.and.data.api.newsletter.GetNonMemberNewsLettersApi
+import com.and.data.api.newsletter.GetNonMemberNewsLetterByIdApi
 import com.and.data.api.newsletter.GetRecommendedNewsLettersApi
 import com.and.data.api.newsletter.GetSearchedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersApi
@@ -46,11 +46,11 @@ object NewsLetterModule {
 
     @Provides
     @Singleton
-    fun providesGetMemberXNewsLettersByIdApi(retrofit: Retrofit) = retrofit.create(GetMemberXNewsLetterByIdApi::class.java)
+    fun providesGetMemberXNewsLettersByIdApi(retrofit: Retrofit) = retrofit.create(GetNonMemberNewsLetterByIdApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetMemberXNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetMemberXNewsLettersApi::class.java)
+    fun providesGetMemberXNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetNonMemberNewsLettersApi::class.java)
 
     @Provides
     @Singleton
