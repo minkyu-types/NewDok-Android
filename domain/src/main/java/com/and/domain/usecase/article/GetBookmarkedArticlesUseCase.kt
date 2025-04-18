@@ -1,6 +1,6 @@
 package com.and.domain.usecase.article
 
-import com.and.domain.model.BookmarkedArticles
+import com.and.domain.model.MonthlyBookmarkedArticles
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.usecase.BaseUseCase
@@ -8,9 +8,9 @@ import com.and.domain.usecase.article.GetBookmarkedArticlesUseCase.GetBookmarked
 
 class GetBookmarkedArticlesUseCase(
     private val repository: ArticleRepository
-): BaseUseCase<GetBookmarkedArticlesParams, BookmarkedArticles> {
+): BaseUseCase<GetBookmarkedArticlesParams, MonthlyBookmarkedArticles> {
 
-    override suspend fun invoke(parameter: GetBookmarkedArticlesParams): BookmarkedArticles {
+    override suspend fun invoke(parameter: GetBookmarkedArticlesParams): MonthlyBookmarkedArticles {
         return repository.getBookmarkedArticles(
             parameter.interest
         )

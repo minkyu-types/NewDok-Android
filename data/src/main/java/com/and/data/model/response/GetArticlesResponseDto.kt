@@ -3,9 +3,9 @@ package com.and.data.model.response
 import com.and.data.model.data.ArticleDto
 
 data class GetArticlesResponseDto(
-    val data: List<DailyArticle>
+    val data: List<DailyArticlesDto>
 ) {
-    data class DailyArticle(
+    data class DailyArticlesDto(
         val id: Int,
         val publishDate: Int,
         val receivedUnread: Int,

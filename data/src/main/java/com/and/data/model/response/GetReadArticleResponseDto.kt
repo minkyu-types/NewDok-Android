@@ -3,9 +3,9 @@ package com.and.data.model.response
 import java.time.Instant
 
 data class GetReadArticleResponseDto(
-    val data: com.and.data.model.response.GetReadArticleResponseDto.Article
+    val data: ArticleByIdDto
 ) {
-    data class Article(
+    data class ArticleByIdDto(
         val articleTitle: String,
         val articleId: String,
         val date: Instant,

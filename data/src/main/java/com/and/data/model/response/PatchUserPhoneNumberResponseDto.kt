@@ -1,7 +1,9 @@
 package com.and.data.model.response
 
+import com.squareup.moshi.Json
+
 data class PatchUserPhoneNumberResponseDto(
     val id: Int,
     val loginId: String,
-    val phoneNumber: Boolean
+    @Json(name = "phoneNumber")val isPhoneNumberChanged: Boolean
 )

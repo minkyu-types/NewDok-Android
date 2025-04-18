@@ -7,16 +7,16 @@ data class GetBookmarkedArticlesResponseDto(
 ) {
     data class BookmarkedArticleData(
         val totalAmount: Int,
-        val bookmarkForMonth: List<MonthlyBookmarkedArticle>
+        val bookmarkForMonth: List<MonthlyBookmarkedArticlesDto>
     )
 
-    data class MonthlyBookmarkedArticle(
+    data class MonthlyBookmarkedArticlesDto(
         val id: Int,
         val month: String,
-        val bookmark: List<BookmarkedArticle>
+        val articles: List<BookmarkedArticleDto>
     )
 
-    data class BookmarkedArticle(
+    data class BookmarkedArticleDto(
         val brandName: String,
         val brandId: Int,
         val articleTitle: String,
