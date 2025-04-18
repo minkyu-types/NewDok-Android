@@ -10,7 +10,7 @@ interface ArticleRepository {
     suspend fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles
     suspend fun getBookmarkedInterests(): List<InterestCategory>
     suspend fun getArticleById(articleId: Int): Article
-    suspend fun searchArticle(keyword: String): Article
+    suspend fun searchArticles(keyword: String): List<Article>
     suspend fun getTodayArticles(): List<Article>
     suspend fun updateBookmark(articleId: Int)
 }

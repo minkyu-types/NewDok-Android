@@ -11,7 +11,7 @@ interface UserRepository {
     suspend fun getUserByPhoneNumber(phoneNumber: String): List<User>
     suspend fun getUserIdDuplication(loginId: String): User
     suspend fun updateUserIndustry(industryId: Int)
-    suspend fun updateUserInterests(interests: List<InterestCategory>)
+    suspend fun updateUserInterests(interestIds: List<Int>)
     suspend fun updateUserNickname(nickname: String): Boolean
     suspend fun updateUserPassword(loginId: String, prevPassword: String, password: String): Boolean
     suspend fun updateUserPhoneNumber(phoneNumber: String): Boolean

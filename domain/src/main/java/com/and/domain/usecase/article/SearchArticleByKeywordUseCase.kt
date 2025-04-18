@@ -7,10 +7,10 @@ import com.and.domain.usecase.article.SearchArticleByKeywordUseCase.SearchArticl
 
 class SearchArticleByKeywordUseCase(
     private val repository: ArticleRepository
-): BaseUseCase<SearchArticleByKeywordParams, Article> {
+): BaseUseCase<SearchArticleByKeywordParams, List<Article>> {
 
-    override suspend fun invoke(parameter: SearchArticleByKeywordParams): Article {
-        return repository.searchArticle(
+    override suspend fun invoke(parameter: SearchArticleByKeywordParams): List<Article> {
+        return repository.searchArticles(
             parameter.keyword
         )
     }
