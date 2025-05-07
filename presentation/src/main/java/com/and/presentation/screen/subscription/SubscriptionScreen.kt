@@ -19,12 +19,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,11 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.presentation.R
 import com.and.presentation.component.item.NewsLetterSubscriptionItem
 import com.and.presentation.component.topbar.MainTopBar
-import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -53,40 +50,34 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
-import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun SubscriptionScreen(
     onSearchClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.subscribedUiState
+    val newsLetters by remember {
+        mutableStateOf(
+            when (uiState) {
+                is UiState.Success<List<BriefNewsLetterModel>> -> {
+                    (uiState as UiState.Success).data
+                }
+                else -> emptyList()
+            }
+        )
+    }
     var currentTab by remember { mutableStateOf(SubscriptionTab.ING) }
-//    val newsLetters = listOf(
-//        NewsLetterModel(
-//            "NEWNEEK",
-//            "프로필 이미지",
-//            "매주 평일 아침",
-//            "세상 돌아가는 소식, 뉴닉으로!",
-//            listOf(
-//                InterestCategory.INTEREST_GAME,
-//                InterestCategory.INTEREST_CULTURE,
-//                InterestCategory.INTEREST_ART_DESIGN,
-//            ),
-//        ),
-//        NewsLetterModel(
-//            "오렌지레터",
-//            "프로필 이미지",
-//            "매주 수요일",
-//            "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-//            listOf(
-//                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-//                InterestCategory.INTEREST_BUSINESS,
-//                InterestCategory.INTEREST_TREND,
-//            ),
-//        )
-//    )
-    val newsLetters = emptyList<NewsLetterModel>()
+
+    LaunchedEffect(currentTab) {
+        when (currentTab) {
+            SubscriptionTab.ING -> viewModel.getSubscribedNewsLetters()
+            SubscriptionTab.PAUSED -> viewModel.getUnsubscribedNewsLetters()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -215,8 +206,8 @@ fun SubscribedNewsLettersEmptyView(
 
 @Composable
 fun SubscribedNewsLettersExistView(
-    newsLetters: List<NewsLetterModel>,
-    onSubscribeClick: (NewsLetterModel) -> Unit,
+    newsLetters: List<BriefNewsLetterModel>,
+    onSubscribeClick: (BriefNewsLetterModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
