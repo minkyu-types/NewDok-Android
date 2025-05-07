@@ -1,9 +1,9 @@
 package com.and.data.model.response
 
 data class GetSubscribedNewsLettersResponseDto(
-    val newsLetters: List<NewsLetter>
+    val newsLetters: List<BriefNewsLetterDto>
 ) {
-    data class NewsLetter(
+    data class BriefNewsLetterDto(
         val id: Int,
         val brandName: String,
         val imageUrl: String,

@@ -7,5 +7,5 @@ data class NewsLetterDto(
     val publicationCycle: String,
     val subscribeUrl: String,
     val imageUrl: String,
-    val interests: List<InterestDto>
+    val interests: List<UserInterestDto>
 )

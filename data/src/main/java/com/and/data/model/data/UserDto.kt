@@ -1,5 +1,7 @@
 package com.and.data.model.data
 
+import java.time.Instant
+
 data class UserDto(
     val id: Int,
     val loginId: String,
@@ -8,7 +10,7 @@ data class UserDto(
     val nickname: String,
     val birthYear: String,
     val gender: String,
-    val createdAt: String,
+    val createdAt: Instant,
     val industryId: Int,
-    val interests: List<InterestDto>
+    val interests: List<UserInterestDto>
 )

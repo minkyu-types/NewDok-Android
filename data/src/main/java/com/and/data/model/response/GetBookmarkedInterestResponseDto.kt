@@ -1,10 +1,7 @@
 package com.and.data.model.response
 
+import com.and.data.model.data.InterestDto
+
 data class GetBookmarkedInterestResponseDto(
-    val data: List<Interest>
-) {
-    data class Interest(
-        val id: Int,
-        val name: String
-    )
-}
+    val data: List<InterestDto>
+)

@@ -1,27 +1,17 @@
 package com.and.data.model.response
 
-import java.time.Instant
+import com.and.data.model.data.InterestDto
+import com.and.data.model.data.SimpleArticleDto
 
 data class GetNewsLetterByIdResponseDto(
     val brandId: Int,
     val brandName: String,
+    val imageUrl: String,
+    val interests: List<InterestDto>,
+    val brandArticleList: List<SimpleArticleDto>,
     val detailDescription: String,
-    val interests: List<Interest>,
     val publicationCycle: String,
     val subscribeUrl: String,
-    val imageUrl: String,
-    val brandArticleList: List<BrandArticle>,
-    val isSubscribed: String,
-    val subscribeCheck: Boolean
-) {
-    data class Interest(
-        val id: Int,
-        val name: String
-    )
-
-    data class BrandArticle(
-        val id: Int,
-        val title: String,
-        val date: Instant
-    )
-}
+    val subscribeCheck: Boolean,
+    val isSubscribed: String
+)
