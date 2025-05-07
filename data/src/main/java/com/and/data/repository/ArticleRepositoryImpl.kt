@@ -1,0 +1,142 @@
+package com.and.data.repository
+
+import com.and.data.api.article.GetArticleByIdApi
+import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetBookmarkedArticlesApi
+import com.and.data.api.article.GetBookmarkedInterestsApi
+import com.and.data.api.article.GetSearchedArticlesApi
+import com.and.data.api.article.GetTodayArticlesApi
+import com.and.data.api.article.PatchBookmarkArticleApi
+import com.and.data.mapper.ArticleMapper
+import com.and.data.mapper.BookmarkedArticlesMapper
+import com.and.data.mapper.DailyArticleMapper
+import com.and.data.model.request.PatchBookmarkArticleRequestDto
+import com.and.domain.model.Article
+import com.and.domain.model.BookmarkedArticles
+import com.and.domain.model.DailyArticles
+import com.and.domain.model.type.ArticleStatus
+import com.and.domain.model.type.InterestCategory
+import com.and.domain.repository.ArticleRepository
+import javax.inject.Inject
+
+class ArticleRepositoryImpl @Inject constructor(
+    private val getArticlesApi: GetArticlesApi,
+    private val getBookmarkedArticlesApi: GetBookmarkedArticlesApi,
+    private val getBookmarkedInterestsApi: GetBookmarkedInterestsApi,
+    private val getArticleByIdApi: GetArticleByIdApi,
+    private val getSearchedArticlesApi: GetSearchedArticlesApi,
+    private val getTodayArticlesApi: GetTodayArticlesApi,
+    private val patchBookmarkArticleApi: PatchBookmarkArticleApi,
+    private val articleMapper: ArticleMapper,
+    private val dailyArticleMapper: DailyArticleMapper,
+    private val bookmarkedArticlesMapper: BookmarkedArticlesMapper,
+): ArticleRepository, BaseRepository() {
+    override suspend fun getArticles(year: Int, month: Int): List<DailyArticles> {
+        return handleApiCall(
+            apiCall = {
+                getArticlesApi.getArticles(
+                    year = year.toString(),
+                    month = month.toString()
+                )
+            },
+            mapper = {
+                it.data.map { article ->
+                    dailyArticleMapper.mapToDomain(article)
+                }
+            }
+        )
+    }
+
+    override suspend fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles {
+        return handleApiCall(
+            apiCall = {
+                getBookmarkedArticlesApi.getBookmarkedArticles(interest.value)
+            },
+            mapper = { response ->
+                bookmarkedArticlesMapper.mapToDomain(response.data)
+            }
+        )
+    }
+
+    override suspend fun getBookmarkedInterests(): List<InterestCategory> {
+        return handleApiCall(
+            apiCall = {
+                getBookmarkedInterestsApi.getBookmarkedInterests()
+            },
+            mapper = { response ->
+                response.data.map { interest ->
+                    InterestCategory.getInterestByValue(interest.name)
+                }
+            }
+        )
+    }
+
+    /**
+     * TODO
+     * (1) articleId가 어디서는 String, 어디서는 Int인 이유는?
+     * (2) 아티클 리스트 조회와 특정 아티클 조회 응답 객체 구조가 다른 이유는?
+     */
+    override suspend fun getArticleById(articleId: Int): Article {
+        return handleApiCall(
+            apiCall = {
+                getArticleByIdApi.getReadArticle(articleId = articleId.toString())
+            },
+            mapper = { response ->
+                val data = response.data
+                Article(
+                    brandName = data.brandName,
+                    imageUrl = data.brandImageUrl,
+                    title = data.articleTitle,
+                    articleId = data.articleId.toInt(),
+                    status = ArticleStatus.UNREAD
+                )
+            }
+        )
+    }
+
+    override suspend fun searchArticles(keyword: String): List<Article> {
+        return handleApiCall(
+            apiCall = {
+                getSearchedArticlesApi.getSearchedArticles(keyword)
+            },
+            mapper = { response ->
+                val data = response.data
+                data.map {
+                    articleMapper.mapToDomain(it)
+                }
+            }
+        )
+    }
+
+    override suspend fun getTodayArticles(): List<Article> {
+        return handleApiCall(
+            apiCall = {
+                getTodayArticlesApi.getTodayArticles()
+            },
+            mapper = { response ->
+                response.receivedArticleList.map {
+                    articleMapper.mapToDomain(it)
+                }
+            }
+        )
+    }
+
+    /**
+     * TODO
+     * 아웃풋을 어떻게 소비할 건지 결정하기. Toast 출력?
+     */
+    override suspend fun updateBookmark(articleId: Int) {
+        return handleApiCall(
+            apiCall = {
+                patchBookmarkArticleApi.postBookmarkArticle(
+                    PatchBookmarkArticleRequestDto(
+                        articleId = articleId
+                    )
+                )
+            },
+            mapper = { response ->
+                response.message
+            }
+        )
+    }
+}
