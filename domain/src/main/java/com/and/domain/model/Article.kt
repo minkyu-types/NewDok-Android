@@ -8,4 +8,10 @@ data class Article(
     val title: String,
     val articleId: Int,
     val status: ArticleStatus
-)
+) {
+    companion object {
+        fun getIsRead(status: ArticleStatus): Boolean {
+            return status == ArticleStatus.READ
+        }
+    }
+}
