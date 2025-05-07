@@ -7,7 +7,7 @@ import retrofit2.http.GET
 interface GetRecommendedNewsLettersApi {
 
     @GET("/newsletters/recommend")
-    fun getRecommendedNewsLetters(
+    suspend fun getRecommendedNewsLetters(
 
-    ): Response<GetRecommendedNewsLettersResponseDto>
+    ): GetRecommendedNewsLettersResponseDto
 }

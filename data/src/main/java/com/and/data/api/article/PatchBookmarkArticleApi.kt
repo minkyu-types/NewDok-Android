@@ -14,7 +14,7 @@ import retrofit2.http.POST
 interface PatchBookmarkArticleApi {
 
     @POST("/articles/bookmark")
-    fun postBookmarkArticle(
+    suspend fun postBookmarkArticle(
         @Body request: PatchBookmarkArticleRequestDto
-    ): Response<PatchBookmarkArticleResponseDto>
+    ): PatchBookmarkArticleResponseDto
 }

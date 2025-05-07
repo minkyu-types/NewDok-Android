@@ -13,7 +13,7 @@ import retrofit2.http.PATCH
 interface PatchSubscriptionPauseApi {
 
     @PATCH("/newsletters/subscription/pause")
-    fun patchSubscriptionPause(
+    suspend fun patchSubscriptionPause(
         @Body request: PatchSubscriptionPauseRequestDto
     ): Response<PatchSubscriptionPauseResponseDto>
 }

@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 interface PatchSubscriptionResumeApi {
 
     @PATCH("/newsletters/subscription/resume")
-    fun patchSubscriptionResume(
+    suspend fun patchSubscriptionResume(
         @Body request: PatchSubscriptionResumeRequestDto
     ): Response<PatchSubscriptionResumeResponseDto>
 }

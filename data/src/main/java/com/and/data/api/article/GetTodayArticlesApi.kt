@@ -7,7 +7,7 @@ import retrofit2.http.GET
 interface GetTodayArticlesApi {
 
     @GET("/articles/today")
-    fun getTodayArticles(
+    suspend fun getTodayArticles(
 
-    ): Response<GetTodayArticlesResponseDto>
+    ): GetTodayArticlesResponseDto
 }

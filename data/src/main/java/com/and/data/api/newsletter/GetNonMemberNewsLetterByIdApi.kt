@@ -12,7 +12,7 @@ interface GetNonMemberNewsLetterByIdApi {
 
     // TODO 응답 객체 작성
     @GET("/newsletters/{id}/non-member")
-    fun getNewsLettersById(
+    suspend fun getNewsLettersById(
         @Path("id") id: String
     )
 }

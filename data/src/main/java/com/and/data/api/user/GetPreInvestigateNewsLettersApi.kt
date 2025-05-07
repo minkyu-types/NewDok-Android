@@ -11,5 +11,5 @@ interface GetPreInvestigateNewsLettersApi {
     fun getPreInvestigateNewsLetters(
         @Query("industry") industry: String,
         @Query("interest") interests: List<String>
-    ): Response<GetPreInvestigateNewLettersResponseDto>
+    ): GetPreInvestigateNewLettersResponseDto
 }

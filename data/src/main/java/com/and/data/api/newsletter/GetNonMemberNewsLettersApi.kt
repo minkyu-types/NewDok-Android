@@ -10,7 +10,7 @@ interface GetNonMemberNewsLettersApi {
 
     // TODO 응답 객체 작성
     @GET("/newsletters/non-member")
-    fun getNewsLetters(
+    suspend fun getNewsLetters(
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: List<String>,
         @Query("day") day: List<String>,

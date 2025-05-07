@@ -11,9 +11,9 @@ import retrofit2.http.Query
 interface GetMemberNewsLettersApi {
 
     @GET("/newsletters")
-    fun getNewsLetters(
+    suspend fun getNewsLetters(
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: String,
         @Query("day") day: String,
-    ): Response<GetNewsLettersResponseDto>
+    ): GetNewsLettersResponseDto
 }

@@ -9,5 +9,5 @@ interface PatchUserPhoneNumberApi {
 
     fun patchUserPhoneNumber(
         @Body request: PatchUserPhoneNumberRequestDto
-    ): Response<PatchUserPhoneNumberResponseDto>
+    ): PatchUserPhoneNumberResponseDto
 }

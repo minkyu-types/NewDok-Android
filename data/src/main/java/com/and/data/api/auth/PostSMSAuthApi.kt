@@ -10,5 +10,5 @@ interface PostSMSAuthApi {
     @POST("/auth/SMS")
     fun postSMSAuth(
         @Body request: PostSMSAuthRequestDto
-    ): Response<Unit>
+    ): Unit
 }

@@ -11,5 +11,5 @@ interface PostLoginApi {
     @POST("/users/login")
     suspend fun login(
         @Body request: LoginRequestDto
-    ): Response<PostLoginResponseDto>
+    ): PostLoginResponseDto
 }

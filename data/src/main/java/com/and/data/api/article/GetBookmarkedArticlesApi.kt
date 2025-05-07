@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface GetBookmarkedArticlesApi {
 
     @GET("/articles/bookmark")
-    fun getBookmarkedArticles(
+    suspend fun getBookmarkedArticles(
         @Query("interest") interest: String
-    ): Response<GetBookmarkedArticlesResponseDto>
+    ): GetBookmarkedArticlesResponseDto
 }

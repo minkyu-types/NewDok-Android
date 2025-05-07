@@ -23,41 +23,41 @@ object UserApiModule {
 
     @Provides
     @Singleton
-    fun providesPostSignUpApi(retrofit: Retrofit) = retrofit.create(PostSignUpApi::class.java)
+    fun providesPostSignUpApi(retrofit: Retrofit): PostSignUpApi = retrofit.create(PostSignUpApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPostLoginApi(retrofit: Retrofit) = retrofit.create(PostLoginApi::class.java)
+    fun providesPostLoginApi(retrofit: Retrofit): PostLoginApi = retrofit.create(PostLoginApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchUserPhoneNumberApi(retrofit: Retrofit) = retrofit.create(PatchUserPhoneNumberApi::class.java)
+    fun providesPatchUserPhoneNumberApi(retrofit: Retrofit): PatchUserPhoneNumberApi = retrofit.create(PatchUserPhoneNumberApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchUserPasswordApi(retrofit: Retrofit) = retrofit.create(PatchUserPasswordApi::class.java)
+    fun providesPatchUserPasswordApi(retrofit: Retrofit): PatchUserPasswordApi = retrofit.create(PatchUserPasswordApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchUserNicknameApi(retrofit: Retrofit) = retrofit.create(PatchUserNicknameApi::class.java)
+    fun providesPatchUserNicknameApi(retrofit: Retrofit): PatchUserNicknameApi = retrofit.create(PatchUserNicknameApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchUserInterestApi(retrofit: Retrofit) = retrofit.create(PatchUserInterestsApi::class.java)
+    fun providesPatchUserInterestApi(retrofit: Retrofit): PatchUserInterestsApi = retrofit.create(PatchUserInterestsApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchUserIndustryApi(retrofit: Retrofit) = retrofit.create(PatchUserIndustryApi::class.java)
+    fun providesPatchUserIndustryApi(retrofit: Retrofit): PatchUserIndustryApi = retrofit.create(PatchUserIndustryApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetUserIdDuplicationApi(retrofit: Retrofit) = retrofit.create(GetUserIdDuplicationApi::class.java)
+    fun providesGetUserIdDuplicationApi(retrofit: Retrofit): GetUserIdDuplicationApi = retrofit.create(GetUserIdDuplicationApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetUserByPhoneNumberApi(retrofit: Retrofit) = retrofit.create(GetUserByPhoneNumberApi::class.java)
+    fun providesGetUserByPhoneNumberApi(retrofit: Retrofit): GetUserByPhoneNumberApi = retrofit.create(GetUserByPhoneNumberApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetPreInvestigationNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetPreInvestigateNewsLettersApi::class.java)
+    fun providesGetPreInvestigationNewsLettersApi(retrofit: Retrofit): GetPreInvestigateNewsLettersApi = retrofit.create(GetPreInvestigateNewsLettersApi::class.java)
 }

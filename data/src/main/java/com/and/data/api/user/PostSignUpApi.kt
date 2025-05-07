@@ -11,5 +11,5 @@ interface PostSignUpApi {
     @POST("/users/signup")
     fun signUp(
         @Body request: SignUpRequestDto
-    ): Response<PostSignUpResponseDto>
+    ): PostSignUpResponseDto
 }

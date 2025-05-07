@@ -10,5 +10,5 @@ interface GetUserByPhoneNumberApi {
     @GET("/users/check/phoneNumber")
     fun getUserByPhoneNumber(
         @Query("phoneNumber") phoneNumber: String
-    ): Response<GetUserByPhoneNumberResponseDto>
+    ): GetUserByPhoneNumberResponseDto
 }

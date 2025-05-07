@@ -11,5 +11,5 @@ interface PatchUserNicknameApi {
     @GET("/users/mypage/nickname")
     fun patchUserNickname(
         @Body request: PatchUserNicknameRequestDto
-    ): Response<PatchUserNicknameResponseDto>
+    ): PatchUserNicknameResponseDto
 }

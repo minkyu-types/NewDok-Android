@@ -13,7 +13,7 @@ import retrofit2.http.Path
 interface GetArticleByIdApi {
 
     @GET("/articles/{id}")
-    fun getReadArticle(
+    suspend fun getReadArticle(
         @Path("id") articleId: String
-    ): Response<GetReadArticleResponseDto>
+    ): GetReadArticleResponseDto
 }

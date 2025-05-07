@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface GetSearchedArticlesApi {
 
     @GET("/articles/search")
-    fun getSearchedArticles(
+    suspend fun getSearchedArticles(
         @Query("keyword") keyword: String
-    ): Response<GetSearchedArticlesResponseDto>
+    ): GetSearchedArticlesResponseDto
 }
