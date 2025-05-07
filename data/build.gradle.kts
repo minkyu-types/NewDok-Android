@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.converter)
 
+    // DataStore
+    implementation(libs.datastore.preferences)
+
     // Paging3
     implementation(libs.paging.runtime)
     implementation(libs.paging.common)
