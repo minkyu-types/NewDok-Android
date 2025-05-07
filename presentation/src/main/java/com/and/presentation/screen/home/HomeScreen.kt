@@ -23,6 +23,8 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +38,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.domain.model.Article
 import com.and.presentation.R
 import com.and.presentation.component.dialog.CalendarDialog
-import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -48,6 +51,7 @@ import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 import com.and.presentation.util.toLocalDateWithKRFormat
 import java.time.LocalDate
@@ -58,19 +62,32 @@ fun HomeScreen(
     onArticleClick: () -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.articlesUiState
+
     var showDialog by remember { mutableStateOf(false) }
     var currSelectedDate: LocalDate by remember { mutableStateOf(LocalDate.now()) }
-    var refreshing by remember { mutableStateOf(false) }
+    val refreshing by remember { derivedStateOf { uiState is UiState.Loading } }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            refreshing = true
-            // 데이터 갱신 후
-            refreshing = false
+            viewModel.getArticlesByYearMonth(
+                currSelectedDate.year,
+                currSelectedDate.monthValue,
+                currSelectedDate.dayOfMonth
+            )
         }
     )
+
+    LaunchedEffect(currSelectedDate) {
+        viewModel.getArticlesByYearMonth(
+            currSelectedDate.year,
+            currSelectedDate.monthValue,
+            currSelectedDate.dayOfMonth
+        )
+    }
 
     if (showDialog) {
         CalendarDialog(
@@ -104,22 +121,12 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
         HomeArticleList(
-            articles = listOf(
-                DailyArticleModel(
-                    "머니레터",
-                    "",
-                    "모이님의 희망 은퇴 연령은?",
-                    1,
-                    "read"
-                ),
-                DailyArticleModel(
-                    "Daily Byte",
-                    "",
-                    "애플, 9년만에 내놓은 신제품은?",
-                    1,
-                    "Unread"
-                ),
-            ),
+            articles = when (uiState) {
+                is UiState.Success<List<Article>> -> {
+                    (uiState as UiState.Success).data
+                }
+                else -> emptyList()
+            },
             onRefreshClick = {
                 // 아티클 리스트 갱신
             },
@@ -199,7 +206,7 @@ fun HomeCalendarBar(
 @Composable
 fun HomeArticleList(
     onRefreshClick: () -> Unit,
-    articles: List<DailyArticleModel>,
+    articles: List<Article>,
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -258,10 +265,10 @@ fun HomeArticleList(
 
 @Composable
 fun HomeArticleListItem(
-    article: DailyArticleModel,
+    article: Article,
     modifier: Modifier = Modifier
 ) {
-    val isArticleRead = article.isRead()
+    val isArticleRead = Article.getIsRead(article.status)
 
     Row(
         modifier = Modifier
@@ -315,7 +322,7 @@ fun HomeArticleListItem(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = article.articleTitle,
+                text = article.title,
                 style = Body2Normal,
                 fontWeight = FontWeight.Medium,
                 color = Caption_Strong

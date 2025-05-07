@@ -6,9 +6,9 @@ import com.and.domain.usecase.BaseUseCase
 
 class GetRecommendedNewsLetters(
     private val repository: MemberNewsLetterRepository
-): BaseUseCase<Unit, RecommendedNewsLetter> {
+): BaseUseCase<Unit, List<RecommendedNewsLetter>> {
 
-    override suspend fun invoke(parameter: Unit): RecommendedNewsLetter {
+    override suspend fun invoke(parameter: Unit): List<RecommendedNewsLetter> {
         return repository.getRecommendedNewsLetters()
     }
 }
