@@ -4,8 +4,9 @@ import com.and.domain.model.DailyArticles
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.article.GetArticlesUseCase.GetArticlesParams
+import javax.inject.Inject
 
-class GetArticlesUseCase(
+class GetArticlesUseCase @Inject constructor(
     private val repository: ArticleRepository
 ): BaseUseCase<GetArticlesParams, List<DailyArticles>> {
 
