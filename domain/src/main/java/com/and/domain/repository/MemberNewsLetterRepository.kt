@@ -1,5 +1,6 @@
 package com.and.domain.repository
 
+import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.RecommendedNewsLetter
 import com.and.domain.model.type.IndustryCategory
@@ -15,9 +16,9 @@ interface MemberNewsLetterRepository {
     suspend fun getNewsLetterById(
         newsLetterId: Int,
     ): NewsLetter
-    suspend fun getRecommendedNewsLetters(): RecommendedNewsLetter
+    suspend fun getRecommendedNewsLetters(): List<RecommendedNewsLetter>
     suspend fun getSearchedNewsLetter(brandName: String): NewsLetter
-    suspend fun getSubscribedNewsLetters(): List<NewsLetter>
-    suspend fun getUnSubscribedNewsLetters(): List<NewsLetter>
+    suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter>
+    suspend fun getUnSubscribedNewsLetters(): List<BriefNewsLetter>
     suspend fun updateSubscription(newsLetterId: Int): Boolean
 }

@@ -25,11 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.OutlinedSecondaryButton
-import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
@@ -40,10 +39,10 @@ import com.and.presentation.ui.Line_Neutral
 
 @Composable
 fun NewsLetterSubscriptionItem(
-    newsLetter: NewsLetterModel,
+    newsLetter: BriefNewsLetterModel,
     modifier: Modifier = Modifier,
     subscribeButtonVisible: Boolean = true,
-    onSubscribeClick: (NewsLetterModel) -> Unit = { }
+    onSubscribeClick: (BriefNewsLetterModel) -> Unit = { }
 ) {
     Card(
         modifier = modifier
@@ -85,7 +84,7 @@ fun NewsLetterSubscriptionItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = newsLetter.name,
+                    text = newsLetter.brandName,
                     style = Body2Normal,
                     fontWeight = FontWeight.Bold,
                     color = Caption_Heavy
@@ -102,7 +101,7 @@ fun NewsLetterSubscriptionItem(
                             .size(20.dp)
                     )
                     Text(
-                        text = newsLetter.repeatTerm,
+                        text = newsLetter.publicationCycle,
                         style = Label1,
                         fontWeight = FontWeight.Medium,
                         color = Caption_Assistive
@@ -130,16 +129,11 @@ fun NewsLetterSubscriptionItem(
 fun NewsLetterSubscriptionItemPreview() {
     DefaultWhiteTheme {
         NewsLetterSubscriptionItem(
-            newsLetter = NewsLetterModel(
-                "Alone & around",
+            newsLetter = BriefNewsLetterModel(
+                0,
                 "",
                 "평일 아침",
                 "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
-                listOf(
-                    InterestCategory.INTEREST_GAME,
-                    InterestCategory.INTEREST_CULTURE,
-                    InterestCategory.INTEREST_ART_DESIGN,
-                )
             ),
             onSubscribeClick = {
 

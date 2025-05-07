@@ -1,5 +1,6 @@
 package com.and.data.di
 
+import com.and.data.api.newsletter.GetMemberNewsLetterByIdApi
 import com.and.data.api.newsletter.GetMemberNewsLettersApi
 import com.and.data.api.newsletter.GetNonMemberNewsLettersApi
 import com.and.data.api.newsletter.GetNonMemberNewsLetterByIdApi
@@ -22,37 +23,51 @@ object NewsLetterModule {
 
     @Provides
     @Singleton
-    fun providesPatchSubscriptionResumeApi(retrofit: Retrofit) = retrofit.create(PatchSubscriptionResumeApi::class.java)
+    fun providesPatchSubscriptionResumeApi(retrofit: Retrofit): PatchSubscriptionResumeApi =
+        retrofit.create(PatchSubscriptionResumeApi::class.java)
 
     @Provides
     @Singleton
-    fun providesPatchSubscriptionPauseApi(retrofit: Retrofit) = retrofit.create(PatchSubscriptionPauseApi::class.java)
+    fun providesPatchSubscriptionPauseApi(retrofit: Retrofit): PatchSubscriptionPauseApi =
+        retrofit.create(PatchSubscriptionPauseApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetUnSubscribesNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetUnSubscribedNewsLettersApi::class.java)
+    fun providesGetUnSubscribesNewsLettersApi(retrofit: Retrofit): GetUnSubscribedNewsLettersApi =
+        retrofit.create(GetUnSubscribedNewsLettersApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetSubscribedNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetSubscribedNewsLettersApi::class.java)
+    fun providesGetSubscribedNewsLettersApi(retrofit: Retrofit): GetSubscribedNewsLettersApi =
+        retrofit.create(GetSubscribedNewsLettersApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetSearchedNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetSearchedNewsLettersApi::class.java)
+    fun providesGetSearchedNewsLettersApi(retrofit: Retrofit): GetSearchedNewsLettersApi =
+        retrofit.create(GetSearchedNewsLettersApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetRecommendedNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetRecommendedNewsLettersApi::class.java)
+    fun providesGetRecommendedNewsLettersApi(retrofit: Retrofit): GetRecommendedNewsLettersApi =
+        retrofit.create(GetRecommendedNewsLettersApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetMemberXNewsLettersByIdApi(retrofit: Retrofit) = retrofit.create(GetNonMemberNewsLetterByIdApi::class.java)
+    fun providesGetMemberXNewsLettersByIdApi(retrofit: Retrofit): GetNonMemberNewsLetterByIdApi =
+        retrofit.create(GetNonMemberNewsLetterByIdApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetMemberXNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetNonMemberNewsLettersApi::class.java)
+    fun providesGetMemberXNewsLettersApi(retrofit: Retrofit): GetNonMemberNewsLettersApi =
+        retrofit.create(GetNonMemberNewsLettersApi::class.java)
 
     @Provides
     @Singleton
-    fun providesGetMemberNewsLettersApi(retrofit: Retrofit) = retrofit.create(GetMemberNewsLettersApi::class.java)
+    fun providesGetMemberNewsLettersApi(retrofit: Retrofit): GetMemberNewsLettersApi =
+        retrofit.create(GetMemberNewsLettersApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetMemberNewsLettersByIdApi(retrofit: Retrofit): GetMemberNewsLetterByIdApi =
+        retrofit.create(GetMemberNewsLetterByIdApi::class.java)
 }
