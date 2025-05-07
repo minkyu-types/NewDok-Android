@@ -3,8 +3,9 @@ package com.and.domain.usecase.user
 import com.and.domain.model.User
 import com.and.domain.repository.UserRepository
 import com.and.domain.usecase.BaseUseCase
+import javax.inject.Inject
 
-class LoginUseCase(
+class LoginUseCase @Inject constructor(
     private val repository: UserRepository
 ): BaseUseCase<LoginParams, User> {
 
@@ -14,6 +15,6 @@ class LoginUseCase(
 }
 
 data class LoginParams(
-    val loginId: String = "",
-    val password: String = ""
+    val loginId: String,
+    val password: String
 )

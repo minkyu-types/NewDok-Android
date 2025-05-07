@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,12 +68,18 @@ fun LoginScreen(
     onRegister: () -> Unit,
     onFindIdPassword: () -> Unit,
     onBack: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val loginFailed: Boolean by viewModel.loginFailed // id 오류인지, pw 오류인지 구분하도록
+    val loginSuccess: Boolean? by viewModel.loginSuccess // id 오류인지, pw 오류인지 구분하도록
     var userId by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
+
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess == true) {
+            onLoginSuccess()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -103,7 +110,7 @@ fun LoginScreen(
                 maxLength = ID_MAX_LENGTH,
                 value = userId,
                 valueHint = stringResource(id = R.string.login_id_hint),
-                isError = loginFailed,
+                isError = loginSuccess == false,
                 onValueChange = { id ->
                     userId = id
                 },
@@ -116,7 +123,7 @@ fun LoginScreen(
                 value = userPassword,
                 valueTitle = stringResource(id = R.string.password),
                 valueHint = stringResource(id = R.string.login_password_hint),
-                isError = loginFailed,
+                isError = loginSuccess == false,
                 errorMessage = stringResource(id = R.string.login_password_error),
                 onValueChange = { pw ->
                     userPassword = pw
@@ -133,8 +140,10 @@ fun LoginScreen(
         ConditionalNextButton(
             enabled = true,
             onClick = {
-                // 로그인 검증 성공 시 홈 화면 이동
-                onLoginSuccess()
+                viewModel.login(
+                    id = userId,
+                    password = userPassword
+                )
             },
             modifier = Modifier.padding(16.dp),
             buttonText = stringResource(R.string.login)

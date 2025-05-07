@@ -1,6 +1,9 @@
 package com.and.data.di
 
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import com.and.data.BuildConfig
+import com.and.data.util.AuthInterceptor
 import com.and.data.util.InstantAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -14,6 +17,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+
+val Context.userDataStore by preferencesDataStore(
+    name = "user_prefs"
+)
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -37,7 +44,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-
+        authInterceptor: AuthInterceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .readTimeout(5000L, TimeUnit.MILLISECONDS)
@@ -48,6 +55,7 @@ object RetrofitModule {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             builder.addInterceptor(loggingInterceptor)
         }
+        builder.addInterceptor(authInterceptor)
 
         return builder.build()
     }
