@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.IndustryCategory
 import com.and.presentation.R
 import com.and.presentation.component.IndustryDropDown
@@ -38,7 +39,8 @@ import com.and.presentation.ui.Tint10
 fun InvestigationStep1Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: InvestigationViewModel = hiltViewModel()
 ) {
     var selectedIndustry: IndustryCategory? by rememberSaveable { mutableStateOf(null) }
 
@@ -78,7 +80,10 @@ fun InvestigationStep1Screen(
         }
         ConditionalNextButton(
             enabled = (selectedIndustry != null),
-            onClick = { onNext() },
+            onClick = {
+                viewModel.updateIndustry(selectedIndustry!!)
+                onNext()
+            },
             modifier = Modifier.padding(24.dp),
         )
     }
