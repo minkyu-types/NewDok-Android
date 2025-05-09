@@ -1,6 +1,7 @@
 package com.and.domain.model.type
 
 enum class IndustryCategory(val id: Int, val value: String) {
+    DEFAULT(-1, "산업"),
     IT(0, "IT·게임·통신"),
     FnB(1, "F&B"),
     CONSTRUCTION(2, "건설·건축"),

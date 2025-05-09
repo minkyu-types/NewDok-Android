@@ -6,6 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
@@ -31,10 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.and.domain.model.type.IndustryCategory
 import com.and.presentation.R
 import com.and.presentation.component.button.SubscribeButton
 import com.and.presentation.model.NewsLetterModel
 import com.and.domain.model.type.InterestCategory
+import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -42,17 +47,19 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.util.removeRippleEffect
+import java.time.Instant
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NewsLetterBigItem(
-    newsLetter: NewsLetterModel,
+    newsLetter: RecommendedNewsLetterModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val displayedIntroduction = if (newsLetter.introduction.length > 40) {
-        newsLetter.introduction.take(25) + "..."
+    val displayedIntroduction = if (newsLetter.firstDescription.length > 40) {
+        newsLetter.firstDescription.take(25) + "..."
     } else {
-        newsLetter.introduction
+        newsLetter.firstDescription
     }
     var isSubscribed by remember { mutableStateOf(false) }
 
@@ -106,7 +113,7 @@ fun NewsLetterBigItem(
                     .padding(vertical = 16.dp, horizontal = 20.dp)
             ) {
                 Text(
-                    text = newsLetter.name,
+                    text = newsLetter.brandName,
                     style = Body1Normal,
                     fontWeight = FontWeight.Bold,
                     color = Caption_Heavy
@@ -121,9 +128,12 @@ fun NewsLetterBigItem(
                         .heightIn(min = 40.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                 ) {
                     newsLetter.interests.forEach { category ->
                         CategoryChip(text = category.value)
@@ -142,11 +152,19 @@ fun NewsLetterBigItem(
 fun BrandBigItemPreview() {
     DefaultWhiteTheme {
         NewsLetterBigItem(
-            newsLetter = NewsLetterModel(
+            newsLetter = RecommendedNewsLetterModel(
+                0,
                 "뉴스레터 브랜드명",
-                "",
-                "",
-                "뉴스레터 간단 소개글은 최대 40자까지 작성할 수 있습니다.",
+                "뉴스레터 브랜드명",
+                "뉴스레터 브랜드명",
+                "뉴스레터 브랜드명",
+                "뉴스레터 브랜드명",
+                "뉴스레터 브랜드명",
+                Instant.now(),
+                Instant.now(),
+                listOf(
+                    IndustryCategory.FnB
+                ),
                 listOf(
                     InterestCategory.INTEREST_GAME,
                     InterestCategory.INTEREST_CULTURE,

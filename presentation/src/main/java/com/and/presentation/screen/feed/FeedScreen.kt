@@ -117,8 +117,6 @@ fun FeedScreen(
                 if (isProfileRegistered) {
                     CustomizedNewsLettersScreen(
                         nickname = "기무민규",
-                        newsLetters = newsLetters,
-                        recommendedNewsLetters = recommendedNewsLetters,
                         onNewsLetterClick = onNewsLetterClick
                     )
                 } else {
@@ -128,7 +126,6 @@ fun FeedScreen(
 
             FeedTab.ALL -> {
                 AllNewsLettersScreen(
-                    newsLetters = newsLetters,
                     onNewsLetterClick = onNewsLetterClick,
                     onResetClick = {
 

@@ -13,13 +13,15 @@ import com.and.data.mapper.NewsLetterDetailMapper
 import com.and.data.mapper.RecommendedNewsLetterMapper
 import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
-import com.and.domain.model.RecommendedNewsLetter
+import com.and.domain.model.RecommendedNewsLetters
 import com.and.domain.model.SimpleArticle
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
 import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class MemberNewsLetterRepositoryImpl @Inject constructor(
@@ -43,18 +45,18 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     override suspend fun getNewsLetters(
         orderOption: SortCategory,
         industry: IndustryCategory,
-        date: Instant
+        date: ZonedDateTime
     ): List<NewsLetter> {
         return handleApiCall(
             apiCall = {
-                getNewsLettersApi.getNewsLetters(
+                getNewsLettersApi.getAllNewsLetters(
                     orderOpt = orderOption.value,
-                    industry = industry.value,
-                    day = date.toString()
+                    industry = industry.id.toString(),
+                    day = date.dayOfWeek.value.toString()
                 )
             },
             mapper = { response ->
-                response.newsLetters.map { newsLetter ->
+                response.map { newsLetter ->
                     newsLetterDetailMapper.mapToDomain(newsLetter)
                 }
             }
@@ -90,16 +92,21 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getRecommendedNewsLetters(): List<RecommendedNewsLetter> {
+    override suspend fun getRecommendedNewsLetters(): RecommendedNewsLetters {
         return handleApiCall(
             apiCall = {
                 getRecommendedNewsLettersApi.getRecommendedNewsLetters()
             },
             mapper = { response ->
-                // TODO
-                (response.intersectionNewsLetters + response.unionNewsLetters).map { letter ->
-                    recommendedNewsLetterMapper.mapToDomain(letter)
-                }
+                RecommendedNewsLetters(
+                    intersectionNewsLetters = (response.intersectionNewsLetters).map { letter ->
+                        recommendedNewsLetterMapper.mapToDomain(letter)
+                    },
+                    unionNewsLetters = response.unionNewsLetters.map { letter ->
+                        recommendedNewsLetterMapper.mapToDomain(letter)
+                    }
+                )
+
             }
         )
     }
@@ -114,7 +121,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
                 getSubscribedNewsLettersApi.getSubscribedNewsLetters()
             },
             mapper = { response ->
-                response.newsLetters.map { newsLetter ->
+                response.map { newsLetter ->
                     briefNewsLetterMapper.mapToDomain(newsLetter)
                 }
             }
