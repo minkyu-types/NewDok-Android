@@ -1,7 +1,7 @@
 package com.and.data.api.newsletter
 
 import com.and.data.model.response.GetNewsLettersResponseDto
-import retrofit2.Response
+import com.and.data.model.response.GetNewsLettersResponseDto.NewsLetterDetailDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,9 +11,9 @@ import retrofit2.http.Query
 interface GetMemberNewsLettersApi {
 
     @GET("/newsletters")
-    suspend fun getNewsLetters(
+    suspend fun getAllNewsLetters(
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: String,
         @Query("day") day: String,
-    ): GetNewsLettersResponseDto
+    ): List<NewsLetterDetailDto>
 }
