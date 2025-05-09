@@ -19,9 +19,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,16 +62,6 @@ fun SubscriptionScreen(
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.subscribedUiState
-    val newsLetters by remember {
-        mutableStateOf(
-            when (uiState) {
-                is UiState.Success<List<BriefNewsLetterModel>> -> {
-                    (uiState as UiState.Success).data
-                }
-                else -> emptyList()
-            }
-        )
-    }
     var currentTab by remember { mutableStateOf(SubscriptionTab.ING) }
 
     LaunchedEffect(currentTab) {
@@ -99,15 +91,34 @@ fun SubscriptionScreen(
                 currentTab = it
             }
         )
-        if (newsLetters.isEmpty()) {
-            SubscribedNewsLettersEmptyView()
-        } else {
-            SubscribedNewsLettersExistView(
-                newsLetters = newsLetters,
-                onSubscribeClick = { newsLetter ->
-                    // 구독중이라면 구독 중지
+        when (uiState) {
+            is UiState.Loading -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
-            )
+            }
+            is UiState.Success -> {
+                val list = (uiState as UiState.Success<List<BriefNewsLetterModel>>).data
+                if (list.isEmpty()) {
+                    SubscribedNewsLettersEmptyView()
+                } else {
+                    SubscribedNewsLettersExistView(
+                        newsLetters     = list,
+                        onSubscribeClick = {
+
+                        }
+                    )
+                }
+            }
+            is UiState.Error -> {
+                val msg = (uiState as UiState.Error).message
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("오류: $msg", color = Color.Red)
+                }
+            }
+            is UiState.Idle -> {
+                SubscribedNewsLettersEmptyView()
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.and.data.model.response
 
+import com.squareup.moshi.Json
+
 data class GetUnSubscribedNewsLettersResponseDto(
-    val newsLetters: List<GetSubscribedNewsLettersResponseDto.BriefNewsLetterDto>
+    @Json(name = "data") val newsLetters: List<GetSubscribedNewsLettersResponseDto.BriefNewsLetterDto>
 )

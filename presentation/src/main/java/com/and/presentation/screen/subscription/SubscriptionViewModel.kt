@@ -14,7 +14,9 @@ import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +34,9 @@ class SubscriptionViewModel @Inject constructor(
             _subscribedUiState.value = UiState.Loading
 
             kotlin.runCatching {
-                val newsLetters = getSubscribedNewsLettersUseCase(Unit)
+                val newsLetters = withContext(Dispatchers.IO) {
+                    getSubscribedNewsLettersUseCase(Unit)
+                }
                 newsLetters.map {
                     briefNewsLetterMapper.mapToPresentation(it)
                 }
@@ -47,6 +51,21 @@ class SubscriptionViewModel @Inject constructor(
     }
 
     fun getUnsubscribedNewsLetters() {
+        viewModelScope.launch {
+            _subscribedUiState.value = UiState.Loading
 
+            kotlin.runCatching {
+                val newsLetters = getUnSubscribedNewsLettersUseCase(Unit)
+                newsLetters.map {
+                    briefNewsLetterMapper.mapToPresentation(it)
+                }
+            }.onSuccess { newsLetters ->
+                _subscribedUiState.value = UiState.Success(newsLetters)
+            }.onFailure { error ->
+                error.printStackTrace()
+                val message = (error as? ApiException)?.message ?: error.localizedMessage
+                _subscribedUiState.value = UiState.Error(message)
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.and.data.api.newsletter
 
-import com.and.data.model.response.GetSubscribedNewsLettersResponseDto
-import retrofit2.Response
+import com.and.data.model.response.GetSubscribedNewsLettersResponseDto.BriefNewsLetterDto
 import retrofit2.http.GET
 
 interface GetSubscribedNewsLettersApi {
@@ -9,5 +8,5 @@ interface GetSubscribedNewsLettersApi {
     @GET("/newsletters/subscription/active")
     suspend fun getSubscribedNewsLetters(
 
-    ): GetSubscribedNewsLettersResponseDto
+    ): List<BriefNewsLetterDto>
 }
