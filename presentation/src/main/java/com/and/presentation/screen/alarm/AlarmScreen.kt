@@ -164,6 +164,7 @@ fun AlarmList(
         items(todayAlarms) { alarm ->
             NewsLetterSimpleItem(
                 newsLetter = NewsLetterModel(
+                    0,
                     "",
                     "",
                     "",
@@ -188,6 +189,7 @@ fun AlarmList(
         items(otherAlarms) { alarm ->
             NewsLetterSimpleItem(
                 newsLetter = NewsLetterModel(
+                    0,
                     "",
                     "",
                     "",

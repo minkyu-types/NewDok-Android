@@ -1,14 +1,10 @@
 package com.and.presentation.component.item
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,22 +20,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.IndustryCategory
-import com.and.presentation.R
-import com.and.presentation.component.button.SubscribeButton
-import com.and.presentation.model.NewsLetterModel
 import com.and.domain.model.type.InterestCategory
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.RecommendedNewsLetterModel
@@ -52,11 +39,10 @@ import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.util.removeRippleEffect
 import java.time.Instant
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NewsLetterBigItem(
     newsLetter: RecommendedNewsLetterModel,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val displayedIntroduction = if (newsLetter.firstDescription.length > 40) {
@@ -64,12 +50,11 @@ fun NewsLetterBigItem(
     } else {
         newsLetter.firstDescription
     }
-    var isSubscribed by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
             .removeRippleEffect {
-                onClick()
+                onClick(newsLetter.id)
             }
             .width(320.dp)
             .border(
@@ -95,16 +80,6 @@ fun NewsLetterBigItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
-                )
-                SubscribeButton(
-                    isSubscribed = isSubscribed,
-                    onSubscribeClick = {
-                        // TODO 구독 상태 변경
-                        isSubscribed = !isSubscribed
-                    },
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = 20.dp, end = 16.dp)
                 )
             }
             HorizontalDivider(
@@ -175,7 +150,7 @@ fun BrandBigItemPreview() {
             ),
             onClick = {
 
-            }
+            },
         )
     }
 }

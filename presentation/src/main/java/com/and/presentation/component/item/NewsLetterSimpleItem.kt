@@ -119,6 +119,7 @@ fun NewsLetterQueryItemPreview() {
     DefaultWhiteTheme {
         NewsLetterSimpleItem(
             newsLetter = NewsLetterModel(
+                id = 0,
                 "Alone & around",
                 "",
                 "평일 아침",
