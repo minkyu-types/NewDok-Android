@@ -2,6 +2,8 @@ package com.and.presentation.di
 
 import com.and.presentation.mapper.BriefNewsLetterMapper
 import com.and.presentation.mapper.BriefNewsLetterMapperImpl
+import com.and.presentation.mapper.NewsLetterDetailMapper
+import com.and.presentation.mapper.NewsLetterDetailMapperImpl
 import com.and.presentation.mapper.NewsLetterMapper
 import com.and.presentation.mapper.NewsLetterMapperImpl
 import com.and.presentation.mapper.RecommendedNewsLetterMapper
@@ -27,6 +29,12 @@ interface MapperModule {
     fun bindsNewsLetterMapper(
         newsLetterMapperImpl: NewsLetterMapperImpl
     ): NewsLetterMapper
+
+    @Binds
+    @Singleton
+    fun bindsNewsLetterDetailMapper(
+        newsLetterDetailMapperImpl: NewsLetterDetailMapperImpl
+    ): NewsLetterDetailMapper
 
     @Binds
     @Singleton

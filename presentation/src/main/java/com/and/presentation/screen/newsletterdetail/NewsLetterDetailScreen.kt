@@ -1,11 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.and.presentation.screen.newsletterdetail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,9 +21,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +42,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
 import com.and.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.item.InterestTag
 import com.and.presentation.component.topbar.TopBar
-import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
@@ -53,21 +56,27 @@ import com.and.presentation.ui.Label1
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.component.item.ArticleHistoryItem
-import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Body2Reading
 import com.and.presentation.ui.Gray700
+import com.and.presentation.util.UiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NewsLetterDetailScreen(
+    id: Int,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: NewsLetterDetailViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.newsLetterDetailUiState
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
@@ -80,42 +89,14 @@ fun NewsLetterDetailScreen(
             }
         }
     )
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
     val grayAreaHeightDp = (70.dp * pullRefreshState.progress).coerceAtMost(70.dp)
 
-    val newsLetter = NewsLetterModel(
-        "뉴스레터 브랜드명",
-        "",
-        "뉴스레터 발송일",
-        "세상 돌아가는 소식은 궁금한데, 시간이 없다고요? <뉴닉>은 신문 볼 새 없이 바쁘지만, 세상과의 연결고리는 튼튼하게 유지하고 싶은 여러분들을 위해 세상 돌아가는 소식을 모두 담아 간단하게 정리해드려요.",
-        listOf(
-            InterestCategory.INTEREST_LIVING_INTERIOR,
-            InterestCategory.INTEREST_CONTENTS,
-            InterestCategory.INTEREST_TRAVEL,
-        ),
-    )
-    val articles = listOf(
-        DailyArticleModel(
-            "주간 컴퍼니타임스",
-            "",
-            "\uD83E\uDD94정원 늘어난다 쭉쭉쭉쭉~?",
-            1,
-            "",
-        ),
-        DailyArticleModel(
-            "주간 컴퍼니타임스",
-            "",
-            "\uD83E\uDD94정원 늘어난다 쭉쭉쭉쭉~?",
-            1,
-            "",
-        ),
-        DailyArticleModel(
-            "주간 컴퍼니타임스",
-            "",
-            "\uD83E\uDD94정원 늘어난다 쭉쭉쭉쭉~?",
-            1,
-            "",
-        ),
-    )
+    LaunchedEffect(id) {
+        viewModel.getNewsLetterDetail(id)
+    }
 
     Column(
         modifier = Modifier
@@ -132,47 +113,81 @@ fun NewsLetterDetailScreen(
                     state = pullRefreshState
                 ),
         ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-            ) {
-                NewsLetterCard(newsLetter)
-                NewsLetterNameCard(
-                    newsLetter,
-                    onSubscribeClick = {
+            when (uiState) {
+                is UiState.Success<*> -> {
+                    val data = (uiState as UiState.Success<NewsLetterDetailModel>).data
 
-                    },
-                    modifier = Modifier
-                        .offset(y = (-20).dp)
-                        .padding(horizontal = 26.dp)
-                )
-                NewsLetterIntroduction(
-                    newsLetter,
-                    modifier = Modifier.padding(horizontal = 24.dp)
-                )
-                NewsLetterHistory(
-                    articles = articles
-                )
+                    if (sheetState.isVisible) {
+                        SubscriptionBottomSheet(
+                            newsLetterDetailModel = data,
+                            sheetState = sheetState,
+                            onHideRequested = {
+                                coroutineScope.launch {
+                                    sheetState.hide()
+                                }
+                            }
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        NewsLetterCard(data)
+                        NewsLetterNameCard(
+                            data,
+                            onSubscribeClick = { id, wasSubscribed ->
+                                coroutineScope.launch {
+                                    sheetState.show()
+                                }
+                            },
+                            modifier = Modifier
+                                .offset(y = (-20).dp)
+                                .padding(horizontal = 26.dp)
+                        )
+                        NewsLetterIntroduction(
+                            data,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                        NewsLetterHistory(
+                            articles = data.brandArticleList
+                        )
+                    }
+                }
+
+                UiState.Idle, UiState.Loading -> {
+                    Box(
+                        modifier = modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                else -> {
+
+                }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(grayAreaHeightDp)
-                    .background(Background_System),
-                contentAlignment = Alignment.Center
-            ) {
-                PullRefreshIndicator(
-                    refreshing = isRefreshing,
-                    state = pullRefreshState,
-                )
-            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(grayAreaHeightDp)
+                .background(Background_System),
+            contentAlignment = Alignment.Center
+        ) {
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+            )
         }
     }
 }
 
 @Composable
 fun NewsLetterCard(
-    newsLetter: NewsLetterModel,
+    newsLetter: NewsLetterDetailModel,
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -191,8 +206,8 @@ fun NewsLetterCard(
                     InterestTag(interest)
                 }
             }
-            Image(
-                painter = painterResource(R.drawable.img_sample),
+            CommonImage(
+                imageUrl = newsLetter.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -205,39 +220,30 @@ fun NewsLetterCard(
 
 @Composable
 fun NewsLetterNameCard(
-    newsLetter: NewsLetterModel,
-    onSubscribeClick: () -> Unit,
+    newsLetter: NewsLetterDetailModel,
+    onSubscribeClick: (Int, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(12.dp))
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
+            .wrapContentHeight()
+            .blur(16.dp)
+            .background(
+                color = Color.White.copy(alpha = 0.7f),
+                shape = RoundedCornerShape(12.dp)
+            )
             .background(Color.White.copy(alpha = 0.6f)),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.04f))
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .blur(radius = 8.dp)
-        )
-
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .shadow(
-                    elevation = 8.dp,
-                    shape = RoundedCornerShape(8.dp),
-                    spotColor = Color.Black.copy(alpha = 0.04f)
+                .background(
+                    color = Color.White.copy(alpha = 0.7f),
+                    shape = RoundedCornerShape(12.dp)
                 )
-                .background(Color.White.copy(alpha = 0.4f))
                 .padding(horizontal = 24.dp, vertical = 20.dp)
         ) {
             Column(
@@ -246,7 +252,7 @@ fun NewsLetterNameCard(
                     .weight(1f)
             ) {
                 Text(
-                    text = newsLetter.name,
+                    text = newsLetter.brandName,
                     style = Body1Normal,
                     fontWeight = FontWeight.Bold,
                     color = Caption_Heavy
@@ -263,7 +269,7 @@ fun NewsLetterNameCard(
                             .size(20.dp)
                     )
                     Text(
-                        text = newsLetter.repeatTerm,
+                        text = newsLetter.publicationCycle,
                         style = Label1,
                         fontWeight = FontWeight.Medium,
                         color = Caption_Neutral
@@ -273,7 +279,12 @@ fun NewsLetterNameCard(
             SolidPrimaryButton(
                 buttonText = stringResource(R.string.subscribe),
                 buttonSize = ButtonSize.MEDIUM,
-                onClick = onSubscribeClick
+                onClick = {
+                    onSubscribeClick(
+                        newsLetter.brandId,
+                        NewsLetterDetailModel.getIsSubscribed(newsLetter)
+                    )
+                }
             )
         }
     }
@@ -281,11 +292,11 @@ fun NewsLetterNameCard(
 
 @Composable
 fun NewsLetterIntroduction(
-    newsLetter: NewsLetterModel,
+    newsLetter: NewsLetterDetailModel,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = newsLetter.introduction,
+        text = newsLetter.detailDescription,
         style = Body2Reading,
         fontWeight = FontWeight.Normal,
         color = Gray700,
@@ -297,7 +308,7 @@ fun NewsLetterIntroduction(
 
 @Composable
 fun NewsLetterHistory(
-    articles: List<DailyArticleModel>,
+    articles: List<NewsLetterDetailModel.BrandArticleModel>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -327,6 +338,7 @@ fun NewsLetterHistory(
 fun NewsLetterDetailScreenPreview() {
     DefaultWhiteTheme {
         NewsLetterDetailScreen(
+            id = 0,
             onBack = {
 
             }

@@ -4,8 +4,9 @@ import com.and.domain.model.NewsLetter
 import com.and.domain.repository.MemberNewsLetterRepository
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.newsletter.member.GetNewsLetterByIdUseCase.GetNewsLetterByIdParams
+import javax.inject.Inject
 
-class GetNewsLetterByIdUseCase(
+class GetNewsLetterByIdUseCase @Inject constructor(
     private val repository: MemberNewsLetterRepository
 ): BaseUseCase<GetNewsLetterByIdParams, NewsLetter> {
 

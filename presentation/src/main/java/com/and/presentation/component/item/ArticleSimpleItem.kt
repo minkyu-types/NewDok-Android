@@ -111,21 +111,5 @@ fun ArticleSimpleItem(
 @Composable
 fun ArticleSimpleItemPreview() {
     DefaultWhiteTheme {
-        ArticleSimpleItem(
-            newsLetter = NewsLetterModel(
-                "Alone & around",
-                "",
-                "평일 아침",
-                "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
-                listOf(
-                    InterestCategory.INTEREST_GAME,
-                    InterestCategory.INTEREST_CULTURE,
-                    InterestCategory.INTEREST_ART_DESIGN,
-                )
-            ),
-            onClick = {
-
-            }
-        )
     }
 }

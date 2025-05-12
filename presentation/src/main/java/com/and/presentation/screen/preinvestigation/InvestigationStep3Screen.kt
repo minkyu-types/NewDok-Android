@@ -92,30 +92,7 @@ fun InvestigationStep3Screen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             InvestigationNewLetterList(
-                listOf(
-                    NewsLetterModel(
-                        "NEWNEEK",
-                        "프로필 이미지",
-                        "매주 평일 아침",
-                        "세상 돌아가는 소식, 뉴닉으로!",
-                        listOf(
-                            InterestCategory.INTEREST_GAME,
-                            InterestCategory.INTEREST_CULTURE,
-                            InterestCategory.INTEREST_ART_DESIGN,
-                        ),
-                    ),
-                    NewsLetterModel(
-                        "오렌지레터",
-                        "프로필 이미지",
-                        "매주 수요일",
-                        "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-                        listOf(
-                            InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-                            InterestCategory.INTEREST_BUSINESS,
-                            InterestCategory.INTEREST_TREND,
-                        ),
-                    )
-                ),
+                emptyList(),
                 onSubscribeClick = {
                     onSubscribeClick()
                     // 사용자 구독용 이메일을 클립보드에 복사한 후

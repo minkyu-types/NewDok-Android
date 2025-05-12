@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
@@ -32,7 +32,7 @@ import com.and.presentation.ui.Line_Neutral
 
 @Composable
 fun ArticleHistoryItem(
-    article: DailyArticleModel,
+    article: NewsLetterDetailModel.BrandArticleModel,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -49,7 +49,7 @@ fun ArticleHistoryItem(
     ) {
         Column {
             Text(
-                text = article.articleTitle,
+                text = article.title,
                 style = Body2Normal,
                 fontWeight = FontWeight.Bold,
                 color = Caption_Strong
@@ -88,14 +88,5 @@ fun ArticleHistoryItem(
 @Composable
 fun NewsLetterHistoryPreview() {
     DefaultWhiteTheme {
-        ArticleHistoryItem(
-            article = DailyArticleModel(
-                "주간 컴퍼니타임스",
-                "",
-                "\uD83E\uDD94정원 늘어난다 쭉쭉쭉쭉~?",
-                1,
-                "",
-            )
-        )
     }
 }
