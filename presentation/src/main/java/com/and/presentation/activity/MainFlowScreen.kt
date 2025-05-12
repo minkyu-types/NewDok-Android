@@ -20,11 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.presentation.screen.alarm.AlarmScreen
@@ -94,8 +96,8 @@ fun MainFlowScreen(
 
             composable("FeedMain") {
                 FeedScreen(
-                    onNewsLetterClick = {
-                        navController.navigate("NewsLetterDetail")
+                    onNewsLetterClick = { id ->
+                        navController.navigate("NewsLetterDetail/${id}")
                     },
                     onSearchClick = {
                         navController.navigate("SearchMain")
@@ -221,8 +223,20 @@ fun MainFlowScreen(
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable("NewsLetterDetail") {
+            composable(
+                route = "NewsLetterDetail/{id}",
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                        defaultValue = 0
+                        nullable = false
+                    }
+                )
+            ) { backStackEntry ->
+                val newsLetterId = backStackEntry.arguments?.getInt("id")
+                    ?: throw IllegalArgumentException("뉴스레터 ID가 존재하지 않습니다")
                 NewsLetterDetailScreen(
+                    id = newsLetterId,
                     onBack = { navController.popBackStack() }
                 )
             }
@@ -244,10 +258,11 @@ fun BottomNavigationBar(
     )
 
     Column {
-        HorizontalDivider(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Line_Disabled)
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Line_Disabled)
         )
         NavigationBar(
             containerColor = Color.White

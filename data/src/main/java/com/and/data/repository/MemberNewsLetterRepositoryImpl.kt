@@ -11,6 +11,8 @@ import com.and.data.api.newsletter.PatchSubscriptionResumeApi
 import com.and.data.mapper.BriefNewsLetterMapper
 import com.and.data.mapper.NewsLetterDetailMapper
 import com.and.data.mapper.RecommendedNewsLetterMapper
+import com.and.data.model.request.PatchSubscriptionPauseRequestDto
+import com.and.data.model.request.PatchSubscriptionResumeRequestDto
 import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.RecommendedNewsLetters
@@ -19,8 +21,6 @@ import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
-import java.time.Instant
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -141,7 +141,19 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateSubscription(newsLetterId: Int): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun updateSubscription(newsLetterId: Int, wasSubscribed: Boolean) {
+        if (wasSubscribed) {
+            patchSubscriptionPauseApi.patchSubscriptionPause(
+                PatchSubscriptionPauseRequestDto(
+                    newsLetterId = newsLetterId.toString()
+                )
+            )
+        } else {
+            patchSubscriptionResumeApi.patchSubscriptionResume(
+                PatchSubscriptionResumeRequestDto(
+                    newsLetterId = newsLetterId.toString()
+                )
+            )
+        }
     }
 }
