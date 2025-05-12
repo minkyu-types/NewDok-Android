@@ -1,6 +1,5 @@
 package com.and.presentation.component.item
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,22 +17,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
 import com.and.presentation.component.button.SubscribeButton
 import com.and.presentation.model.NewsLetterModel
-import com.and.domain.model.type.InterestCategory
+import com.and.presentation.component.image.CommonImage
+import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -53,7 +47,6 @@ fun NewsLetterSmallItem(
     } else {
         newsLetter.introduction
     }
-    var isSubscribed by remember { mutableStateOf(true) }
 
     Card(
         modifier = modifier
@@ -80,8 +73,8 @@ fun NewsLetterSmallItem(
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
             Row {
-                Image(
-                    painter = painterResource(id = R.drawable.img_logo),
+                CommonImage(
+                    imageUrl = newsLetter.profileImageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .size(56.dp)
@@ -107,12 +100,6 @@ fun NewsLetterSmallItem(
                             color = Caption_Heavy
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        SubscribeButton(
-                            isSubscribed = isSubscribed,
-                            onSubscribeClick = {
-                                isSubscribed = !isSubscribed
-                            }
-                        )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
@@ -136,7 +123,8 @@ fun InterestLazyRow(
     modifier: Modifier = Modifier
 ) {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
     ) {
         items(newsLetter.interests) { category ->
             CategoryChip(text = category.value)
@@ -151,21 +139,6 @@ fun InterestLazyRow(
 @Composable
 fun BrandSmallItemPreview() {
     DefaultWhiteTheme {
-        NewsLetterSmallItem(
-            newsLetter = NewsLetterModel(
-                "뉴스레터 브랜드명",
-                "",
-                "",
-                "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
-                listOf(
-                    InterestCategory.INTEREST_GAME,
-                    InterestCategory.INTEREST_CULTURE,
-                    InterestCategory.INTEREST_ART_DESIGN,
-                ),
-            ),
-            onClick = {
 
-            }
-        )
     }
 }

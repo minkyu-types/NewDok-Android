@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
@@ -39,6 +41,7 @@ import com.and.presentation.R
 import com.and.presentation.component.button.SubscribeButton
 import com.and.presentation.model.NewsLetterModel
 import com.and.domain.model.type.InterestCategory
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -86,8 +89,8 @@ fun NewsLetterBigItem(
                     .fillMaxWidth()
                     .height(210.dp)
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_background),
+                CommonImage(
+                    imageUrl = newsLetter.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -128,14 +131,13 @@ fun NewsLetterBigItem(
                         .heightIn(min = 40.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                FlowRow(
+                LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    newsLetter.interests.forEach { category ->
+                    items(newsLetter.interests) { category ->
                         CategoryChip(text = category.value)
                     }
                 }
