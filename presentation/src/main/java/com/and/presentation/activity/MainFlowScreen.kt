@@ -24,11 +24,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.and.domain.model.type.IndustryCategory
-import com.and.domain.model.type.InterestCategory
 import com.and.presentation.screen.alarm.AlarmScreen
 import com.and.presentation.screen.articledetail.ArticleDetailScreen
 import com.and.presentation.screen.bookmark.BookmarkScreen
