@@ -172,7 +172,7 @@ fun AllNewsLetterFilters(
                     .clickable {
                         onResetClick()
                     }
-                    .size(20.dp)
+                    .size(24.dp)
             )
         }
     }
