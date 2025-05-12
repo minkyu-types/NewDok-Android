@@ -8,10 +8,10 @@ class NewsLetterMapperImpl @Inject constructor(): NewsLetterMapper {
     override fun mapToPresentation(input: NewsLetter): NewsLetterModel {
         return NewsLetterModel(
             name = input.brandName,
-            profileImage = input.imageUrl,
+            profileImageUrl = input.imageUrl,
             repeatTerm = input.publicationCycle,
             introduction = input.shortDescription ?: "",
-            interests = input.interests
+            interests = input.interests,
         )
     }
 
@@ -19,7 +19,7 @@ class NewsLetterMapperImpl @Inject constructor(): NewsLetterMapper {
         return NewsLetter(
             brandId = 0,
             brandName = input.name,
-            imageUrl = input.profileImage,
+            imageUrl = input.profileImageUrl,
             interests = input.interests,
             articles = emptyList(),
             shortDescription = input.introduction,
@@ -27,7 +27,7 @@ class NewsLetterMapperImpl @Inject constructor(): NewsLetterMapper {
             publicationCycle = input.repeatTerm,
             subscribeUrl = "",
             subscriptionCount = 0,
-            isSubscribed = "",
+            isSubscribed = ""
         )
     }
 }
