@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.newsletter.member.GetRecommendedNewsLettersUseCase
+import com.and.domain.usecase.newsletter.member.UpdateSubscriptionUseCase
 import com.and.domain.util.ApiException
 import com.and.presentation.mapper.RecommendedNewsLetterMapper
 import com.and.presentation.model.RecommendedNewsLettersModel

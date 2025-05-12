@@ -1,7 +1,5 @@
 package com.and.presentation.model
 
-import com.and.domain.model.type.InterestCategory
-
 data class BriefNewsLetterModel(
     val id: Int,
     val brandName: String,

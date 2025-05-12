@@ -36,6 +36,7 @@ fun FilterChip(
     text: String,
     icon: Painter,
     leastOneItemSelected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val mainColor = if (leastOneItemSelected) Primary_Normal else Caption_Assistive
@@ -77,7 +78,10 @@ fun FilterChipPreview() {
         FilterChip(
             text = "인기순",
             icon = painterResource(R.drawable.ic_line_arrow_transfer),
-            leastOneItemSelected = true
+            leastOneItemSelected = true,
+            onClick = {
+
+            }
         )
     }
 }

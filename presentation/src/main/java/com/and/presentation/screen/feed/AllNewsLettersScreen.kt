@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+
 package com.and.presentation.screen.feed
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,7 +10,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,9 +22,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -33,18 +37,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.NewsLetterFilterCategory
 import com.and.presentation.R
+import com.and.presentation.component.dialog.BottomSheetDialog
 import com.and.presentation.component.item.FilterChip
 import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body2Normal
+import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.UiState
 
@@ -53,13 +58,14 @@ import com.and.presentation.util.UiState
  */
 @Composable
 fun AllNewsLettersScreen(
-    onNewsLetterClick: () -> Unit,
+    onNewsLetterClick: (Int) -> Unit,
     onResetClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AllNewsLettersViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.allNewsLettersUiState
     var selectedFilters by remember { mutableStateOf(SelectedFilters()) }
+    val sheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(selectedFilters) {
         viewModel.getAllNewsLetters(
@@ -99,7 +105,9 @@ fun AllNewsLettersScreen(
                     items(newsLetters) { newsLetter ->
                         NewsLetterSmallItem(
                             newsLetter = newsLetter,
-                            onClick = onNewsLetterClick,
+                            onClick = {
+                                onNewsLetterClick(newsLetter.id)
+                            },
                             modifier = Modifier
                                 .padding(horizontal = 24.dp)
                         )
@@ -159,6 +167,9 @@ fun AllNewsLetterFilters(
                                     selectedFilters,
                                     filter
                                 ),
+                                onClick = {
+
+                                }
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                         }
@@ -176,4 +187,43 @@ fun AllNewsLetterFilters(
             )
         }
     }
+}
+
+@Composable
+private inline fun FilterBottomSheet(
+    sheetState: SheetState,
+    crossinline onDismiss: () -> Unit,
+    crossinline onHideRequest: () -> Unit,
+    modifier: Modifier
+) {
+    BottomSheetDialog(
+        title = "정렬",
+        sheetState = sheetState,
+        onDismiss = {
+            onDismiss()
+        },
+        onHideRequested = {
+            onHideRequest()
+        },
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+            ) {
+                Text(
+                    text = "인기순",
+                    modifier = Modifier
+                        .height(56.dp)
+                )
+                HorizontalDivider(
+                    modifier = Modifier.height(1.dp),
+                    color = Line_Neutral
+                )
+                Text(
+                    text = "최신등록순"
+                )
+            }
+        }
+    )
 }

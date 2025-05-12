@@ -7,6 +7,7 @@ import javax.inject.Inject
 class NewsLetterMapperImpl @Inject constructor(): NewsLetterMapper {
     override fun mapToPresentation(input: NewsLetter): NewsLetterModel {
         return NewsLetterModel(
+            id = input.brandId,
             name = input.brandName,
             profileImageUrl = input.imageUrl,
             repeatTerm = input.publicationCycle,
@@ -17,7 +18,7 @@ class NewsLetterMapperImpl @Inject constructor(): NewsLetterMapper {
 
     override fun mapToDomain(input: NewsLetterModel): NewsLetter {
         return NewsLetter(
-            brandId = 0,
+            brandId = input.id,
             brandName = input.name,
             imageUrl = input.profileImageUrl,
             interests = input.interests,

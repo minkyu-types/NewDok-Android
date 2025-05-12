@@ -60,7 +60,7 @@ import com.and.presentation.util.UiState
 @Composable
 fun CustomizedNewsLettersScreen(
     nickname: String,
-    onNewsLetterClick: () -> Unit,
+    onNewsLetterClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CustomizedNewsLettersViewModel = hiltViewModel()
 ) {
@@ -72,7 +72,6 @@ fun CustomizedNewsLettersScreen(
 
     when (uiState) {
         is UiState.Idle, is UiState.Loading -> {
-            // 로딩 중
             Box(
                 modifier = modifier
                     .fillMaxSize(),
@@ -140,7 +139,9 @@ fun CustomizedNewsLettersScreen(
                     ) { page ->
                         NewsLetterBigItem(
                             newsLetter = intersectionList[page],
-                            onClick = onNewsLetterClick
+                            onClick = { id ->
+                                onNewsLetterClick(id)
+                            }
                         )
                     }
                 }
@@ -155,7 +156,9 @@ fun CustomizedNewsLettersScreen(
 
                 RecommendOtherNewsLettersArea(
                     recommendedNewsLetters = unionList,
-                    onClick = onNewsLetterClick,
+                    onClick = { id ->
+                        onNewsLetterClick(id)
+                    },
                     onRefreshClick = { viewModel.getCustomizedNewsLetters() }
                 )
 
@@ -195,7 +198,7 @@ fun CustomizedNewsLettersDotsIndicator(
 @Composable
 fun RecommendOtherNewsLettersArea(
     recommendedNewsLetters: List<RecommendedNewsLetterModel>,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     onRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -237,13 +240,16 @@ fun RecommendOtherNewsLettersArea(
         recommendedNewsLetters.forEach { newsLetter ->
             NewsLetterSmallItem(
                 newsLetter = NewsLetterModel(
+                    newsLetter.id,
                     newsLetter.brandName,
                     newsLetter.imageUrl,
                     repeatTerm = newsLetter.publicationCycle,
                     introduction = newsLetter.firstDescription,
                     interests = newsLetter.interests
                 ),
-                onClick = onClick
+                onClick = {
+                    onClick(newsLetter.id)
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
