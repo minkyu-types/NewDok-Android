@@ -3,6 +3,7 @@ package com.and.data.repository
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
+import com.and.data.api.user.GetUserInfoApi
 import com.and.data.api.user.PatchUserIndustryApi
 import com.and.data.api.user.PatchUserInterestsApi
 import com.and.data.api.user.PatchUserNicknameApi
@@ -32,6 +33,7 @@ class UserRepositoryImpl @Inject constructor(
     private val preInvestigateNewsLettersApi: GetPreInvestigateNewsLettersApi,
     private val getUserByPhoneNumberApi: GetUserByPhoneNumberApi,
     private val getUserIdDuplicationApi: GetUserIdDuplicationApi,
+    private val getUserInfoApi: GetUserInfoApi,
     private val updateUserIndustryApi: PatchUserIndustryApi,
     private val patchUserInterestsApi: PatchUserInterestsApi,
     private val patchUserNicknameApi: PatchUserNicknameApi,
@@ -84,6 +86,33 @@ class UserRepositoryImpl @Inject constructor(
             },
             mapper = { response ->
                 userMapper.mapToDomain(response.user)
+            }
+        )
+    }
+
+    override suspend fun getUserInfo(): User {
+        return handleApiCall(
+            apiCall = {
+                getUserInfoApi.getUserInfo()
+            },
+            mapper = { response ->
+                User(
+                    id = response.id,
+                    loginId = response.loginId,
+                    password = response.password,
+                    phoneNumber = response.phoneNumber,
+                    nickname = response.nickname,
+                    birthYear = response.birthYear,
+                    gender = Gender.getGender(response.gender),
+                    emailIndex = response.emailIndex,
+                    subscribeEmail = response.subscribeEmail,
+                    subscribePassword = response.subscribePassword,
+                    createdAt = response.createdAt,
+                    industryId = response.industryId,
+                    interests = response.interests.map {
+                        InterestCategory.getInterestById(it.interestId)
+                    },
+                )
             }
         )
     }

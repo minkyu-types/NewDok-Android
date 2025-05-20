@@ -1,21 +1,25 @@
-package com.and.presentation.model
+package com.and.data.model.data
 
-import com.and.domain.model.type.Gender
-import com.and.domain.model.type.InterestCategory
 import java.time.Instant
 
-data class UserModel(
+data class UserInfoDto(
     val id: Int,
     val loginId: String,
     val password: String,
     val phoneNumber: String,
     val nickname: String,
     val birthYear: String,
-    val gender: Gender,
+    val gender: String,
     val emailIndex: String,
     val subscribeEmail: String,
     val subscribePassword: String,
     val createdAt: Instant,
     val industryId: Int,
-    val interests: List<InterestCategory>
-)
+    val interests: List<InterestModel>
+) {
+    data class InterestModel (
+        val userId: Int,
+        val interestId: Int,
+        val createdAt: String,
+    )
+}

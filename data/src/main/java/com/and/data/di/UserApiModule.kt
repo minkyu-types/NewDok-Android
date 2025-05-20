@@ -3,6 +3,7 @@ package com.and.data.di
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
+import com.and.data.api.user.GetUserInfoApi
 import com.and.data.api.user.PatchUserIndustryApi
 import com.and.data.api.user.PatchUserInterestsApi
 import com.and.data.api.user.PatchUserNicknameApi
@@ -60,4 +61,8 @@ object UserApiModule {
     @Provides
     @Singleton
     fun providesGetPreInvestigationNewsLettersApi(retrofit: Retrofit): GetPreInvestigateNewsLettersApi = retrofit.create(GetPreInvestigateNewsLettersApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetUserInfoApi(retrofit: Retrofit): GetUserInfoApi = retrofit.create(GetUserInfoApi::class.java)
 }

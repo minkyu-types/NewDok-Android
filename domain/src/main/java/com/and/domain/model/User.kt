@@ -7,13 +7,15 @@ import java.time.Instant
 data class User(
     val id: Int,
     val loginId: String,
+    val password: String,
     val phoneNumber: String,
-    val subscribeEmail: String,
     val nickname: String,
     val birthYear: String,
     val gender: Gender,
+    val emailIndex: String,
+    val subscribeEmail: String,
+    val subscribePassword: String,
     val createdAt: Instant,
     val industryId: Int,
-    val interests: List<InterestCategory>,
-    val accessToken: String,
+    val interests: List<InterestCategory>
 )

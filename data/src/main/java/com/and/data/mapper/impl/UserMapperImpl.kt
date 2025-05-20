@@ -11,14 +11,14 @@ import javax.inject.Inject
 class UserMapperImpl @Inject constructor(): UserMapper {
     override fun mapToData(input: User): UserDto {
         return UserDto(
-            input.id,
-            input.loginId,
-            input.phoneNumber,
+            id = input.id,
+            loginId = input.loginId,
+            phoneNumber = input.phoneNumber,
             input.subscribeEmail,
             input.nickname,
             input.birthYear,
             input.gender.value,
-            input.createdAt,
+            createdAt = input.createdAt,
             input.industryId,
             input.interests.map {
                 UserInterestDto(
@@ -32,19 +32,21 @@ class UserMapperImpl @Inject constructor(): UserMapper {
 
     override fun mapToDomain(input: UserDto): User {
         return User(
-            input.id,
+            id = input.id,
             input.loginId,
+            "",
             input.phoneNumber,
-            input.subscribeEmail,
             input.nickname,
             input.birthYear,
             Gender.getGender(input.gender),
-            input.createdAt,
+            "",
+            input.subscribeEmail,
+            "",
+            createdAt = input.createdAt,
             input.industryId,
             input.interests.map {
                 InterestCategory.getInterestById(it.interestId)
             },
-            ""
         )
     }
 }
