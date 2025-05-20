@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Alternative

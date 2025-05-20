@@ -43,7 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.and.presentation.R
 import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
@@ -61,6 +60,7 @@ import com.and.presentation.util.NICKNAME_MAX_LENGTH
 import com.and.presentation.util.nicknameValidation
 import com.and.presentation.util.removeRippleEffect
 import com.and.domain.model.type.Gender
+import com.and.newdok.presentation.R
 import java.time.LocalDate
 
 @Composable

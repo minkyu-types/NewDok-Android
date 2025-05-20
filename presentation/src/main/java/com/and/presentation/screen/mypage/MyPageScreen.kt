@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.Gender
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.UserModel
@@ -36,6 +36,7 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
+import java.time.Instant
 
 @Composable
 fun MyPageScreen(
@@ -63,7 +64,10 @@ fun MyPageScreen(
                 "",
                 Gender.MALE,
                 "",
-                1,
+                "",
+                "",
+                Instant.now(),
+                0,
                 emptyList(),
             ),
             onProfileEditClick = onProfileEditClick

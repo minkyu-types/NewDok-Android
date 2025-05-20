@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.textfield.HintErrorSecureTextField
 import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.topbar.TopBar

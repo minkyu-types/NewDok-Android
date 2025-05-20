@@ -25,8 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.OutlinedPrimaryButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.ui.Body2Normal
@@ -41,6 +42,7 @@ import com.and.presentation.ui.Line_Neutral
 fun NewsLetterSubscriptionItem(
     newsLetter: BriefNewsLetterModel,
     modifier: Modifier = Modifier,
+    isSubscribeResumed: Boolean,
     subscribeButtonVisible: Boolean = true,
     onSubscribeClick: (BriefNewsLetterModel) -> Unit = { }
 ) {
@@ -109,13 +111,23 @@ fun NewsLetterSubscriptionItem(
                 }
             }
             if (subscribeButtonVisible) {
-                OutlinedSecondaryButton(
-                    buttonText = stringResource(R.string.subscribe_paused),
-                    buttonSize = ButtonSize.SMALL,
-                    onClick = {
-                        onSubscribeClick(newsLetter)
-                    }
-                )
+                if (isSubscribeResumed) {
+                    OutlinedSecondaryButton(
+                        buttonText = stringResource(R.string.subscribe_paused),
+                        buttonSize = ButtonSize.SMALL,
+                        onClick = {
+                            onSubscribeClick(newsLetter)
+                        }
+                    )
+                } else  {
+                    OutlinedPrimaryButton(
+                        buttonText = stringResource(R.string.subscribe_resume),
+                        buttonSize = ButtonSize.SMALL,
+                        onClick = {
+                            onSubscribeClick(newsLetter)
+                        }
+                    )
+                }
             }
         }
     }
@@ -135,6 +147,7 @@ fun NewsLetterSubscriptionItemPreview() {
                 "평일 아침",
                 "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
             ),
+            isSubscribeResumed = true,
             onSubscribeClick = {
 
             }

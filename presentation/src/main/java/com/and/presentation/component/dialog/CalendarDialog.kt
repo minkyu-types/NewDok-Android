@@ -4,7 +4,6 @@ package com.and.presentation.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,15 +47,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.screen.login.LoginTheme
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Blue100
 import com.and.presentation.ui.Blue900
-import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body1Reading
 import com.and.presentation.ui.Body2Normal
-import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Error_Caption
 import com.and.presentation.ui.Gray400
 import com.and.presentation.ui.Gray700
@@ -66,7 +62,6 @@ import com.and.presentation.ui.Gray900
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.SUCCESS_NORMAL
 import com.and.presentation.util.removeRippleEffect
-import java.lang.ref.WeakReference
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth

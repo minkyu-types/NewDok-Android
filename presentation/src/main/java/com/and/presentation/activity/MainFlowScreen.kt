@@ -32,14 +32,14 @@ import com.and.presentation.screen.articledetail.ArticleDetailScreen
 import com.and.presentation.screen.bookmark.BookmarkScreen
 import com.and.presentation.screen.feed.FeedScreen
 import com.and.presentation.screen.home.HomeScreen
-import com.and.presentation.screen.mypage.AccountManagerScreen
+import com.and.presentation.screen.mypage.account.AccountManagerScreen
 import com.and.presentation.screen.mypage.FaqScreen
-import com.and.presentation.screen.mypage.IndustryEditScreen
-import com.and.presentation.screen.mypage.InterestEditScreen
+import com.and.presentation.screen.mypage.profile.IndustryEditScreen
+import com.and.presentation.screen.mypage.profile.InterestEditScreen
 import com.and.presentation.screen.mypage.MyPageScreen
-import com.and.presentation.screen.mypage.NicknameEditScreen
-import com.and.presentation.screen.mypage.NotificationSettingScreen
-import com.and.presentation.screen.mypage.ProfileEditScreen
+import com.and.presentation.screen.mypage.profile.NicknameEditScreen
+import com.and.presentation.screen.mypage.notification.NotificationSettingScreen
+import com.and.presentation.screen.mypage.profile.ProfileEditScreen
 import com.and.presentation.screen.mypage.ServiceFeedbackScreen
 import com.and.presentation.screen.mypage.TermsScreen
 import com.and.presentation.screen.newsletterdetail.NewsLetterDetailScreen
@@ -160,7 +160,10 @@ fun MainFlowScreen(
 
             composable("AccountManage") {
                 AccountManagerScreen(
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onLogout = {
+
+                    }
                 )
             }
 

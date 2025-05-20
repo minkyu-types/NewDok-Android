@@ -32,7 +32,7 @@ import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
-fun ArticleItem(
+fun SearchArticleItem(
     article: DailyArticleModel,
     onArticleClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier
@@ -98,7 +98,7 @@ fun ArticleItem(
 @Composable
 fun ArticleItemPreview() {
     DefaultWhiteTheme {
-        ArticleItem(
+        SearchArticleItem(
             article = DailyArticleModel(
                 "주간 컴퍼니타임스",
                 "",

@@ -134,7 +134,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
                 getUnSubscribedNewsLettersApi.getUnSubscribedNewsLetters()
             },
             mapper = { response ->
-                response.newsLetters.map { newsLetter ->
+                response.map { newsLetter ->
                     briefNewsLetterMapper.mapToDomain(newsLetter)
                 }
             }
@@ -145,7 +145,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
         if (wasSubscribed) {
             patchSubscriptionPauseApi.patchSubscriptionPause(
                 PatchSubscriptionPauseRequestDto(
-                    newsLetterId = newsLetterId.toString()
+                    newsletterId = newsLetterId.toString()
                 )
             )
         } else {

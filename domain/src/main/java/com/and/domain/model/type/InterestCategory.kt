@@ -1,6 +1,7 @@
 package com.and.domain.model.type
 
 enum class InterestCategory(val id: Int, val value: String) {
+    INTEREST_ALL                  (0,  "전체"),
     INTEREST_ECONOMY_AFFAIRS      (1,  "경제・시사"),
     INTEREST_BUSINESS             (2,  "비즈니스"),
     INTEREST_SCIENCE_TECH         (3,  "과학・기술"),

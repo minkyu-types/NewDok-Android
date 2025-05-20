@@ -13,9 +13,15 @@ import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class NewsLetterDetailViewModel @Inject constructor(
@@ -29,17 +35,15 @@ class NewsLetterDetailViewModel @Inject constructor(
     fun getNewsLetterDetail(
         id: Int
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _newsLetterDetailUiState.value = UiState.Loading
             
             runCatching {
-                withContext(Dispatchers.IO) {
-                    getNewsLetterByIdUseCase(
-                        GetNewsLetterByIdUseCase.GetNewsLetterByIdParams(
-                            id
-                        )
+                getNewsLetterByIdUseCase(
+                    GetNewsLetterByIdUseCase.GetNewsLetterByIdParams(
+                        id
                     )
-                }
+                )
             }.onSuccess { result ->
                 val data = newsLetterDetailMapper.mapToPresentation(result)
                 _newsLetterDetailUiState.value = UiState.Success(data)

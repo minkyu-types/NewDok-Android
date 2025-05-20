@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.and.data"
+    namespace = "com.and.newdok.data"
     compileSdk = 34
 
     defaultConfig {

@@ -37,9 +37,9 @@ fun SolidPrimaryButton(
 
     Box(
         modifier = modifier
+            .clip(RoundedCornerShape(4.dp))
             .clickable { onClick() }
             .heightIn(min = 32.dp)
-            .clip(RoundedCornerShape(4.dp))
             .background(backgroundColor)
             .padding(vertical = verticalPadding.dp, horizontal = horizontalPadding.dp),
         contentAlignment = Alignment.Center

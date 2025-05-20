@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.WebViewScreen
 import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.ui.Body1Normal

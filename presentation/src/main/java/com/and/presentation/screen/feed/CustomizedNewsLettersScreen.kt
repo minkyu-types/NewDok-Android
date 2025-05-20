@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.item.NewsLetterBigItem
 import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
@@ -66,10 +66,6 @@ fun CustomizedNewsLettersScreen(
 ) {
     val uiState by viewModel.customizedNewsLettersUiState
 
-    LaunchedEffect(Unit) {
-        viewModel.getCustomizedNewsLetters()
-    }
-
     when (uiState) {
         is UiState.Idle, is UiState.Loading -> {
             Box(
@@ -83,7 +79,6 @@ fun CustomizedNewsLettersScreen(
 
         is UiState.Error -> {
             val message = (uiState as UiState.Error).message
-            // 에러 화면
             Box(
                 modifier = modifier
                     .fillMaxSize()
@@ -103,12 +98,10 @@ fun CustomizedNewsLettersScreen(
         }
 
         is UiState.Success<*> -> {
-            // 성공: intersection, union 리스트 추출
             val data = (uiState as UiState.Success<RecommendedNewsLettersModel>).data
             val intersectionList = data.intersection
             val unionList = data.union
 
-            // pager 상태 (intersection 크기에 맞춤)
             val pagerState = rememberPagerState(pageCount = { intersectionList.size })
 
             Column(
@@ -159,7 +152,7 @@ fun CustomizedNewsLettersScreen(
                     onClick = { id ->
                         onNewsLetterClick(id)
                     },
-                    onRefreshClick = { viewModel.getCustomizedNewsLetters() }
+                    onRefreshClick = { viewModel.refreshUnionOnly() }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))

@@ -1,6 +1,7 @@
 package com.and.presentation.activity
 
-import com.and.presentation.R
+import com.and.newdok.presentation.R
+
 
 sealed class BottomNavigationItem(val route: String, val label: String, val icon: Int, val selectedIcon: Int) {
     data object Feed : BottomNavigationItem("FeedMain", "둘러보기", R.drawable.ic_line_newsletter, R.drawable.ic_fill_newsletter)

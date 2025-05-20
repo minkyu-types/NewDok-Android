@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.model.DailyArticleModel

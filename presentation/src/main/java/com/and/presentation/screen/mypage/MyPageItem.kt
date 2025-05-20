@@ -1,6 +1,5 @@
 package com.and.presentation.screen.mypage
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -12,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong

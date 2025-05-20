@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.IndustryCategory
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.IndustryDropDown
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal

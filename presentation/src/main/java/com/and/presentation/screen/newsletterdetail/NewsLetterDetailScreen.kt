@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.item.InterestTag
@@ -54,9 +53,9 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.newdok.presentation.R
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.component.item.ArticleHistoryItem
 import com.and.presentation.model.NewsLetterDetailModel

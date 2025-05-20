@@ -1,9 +1,9 @@
 package com.and.presentation.screen.subscription
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +23,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,13 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.item.NewsLetterSubscriptionItem
 import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.model.BriefNewsLetterModel
@@ -52,6 +53,7 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
+import com.and.presentation.util.CommonUiEvent
 import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 
@@ -61,8 +63,22 @@ fun SubscriptionScreen(
     modifier: Modifier = Modifier,
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.subscribedUiState
     var currentTab by remember { mutableStateOf(SubscriptionTab.ING) }
+    var brandToPause by remember { mutableStateOf<BriefNewsLetterModel?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventChannel.collect { event ->
+            when (event) {
+                is CommonUiEvent.ShowToast -> {
+                    Toast
+                        .makeText(context, event.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(currentTab) {
         when (currentTab) {
@@ -71,13 +87,29 @@ fun SubscriptionScreen(
         }
     }
 
+    if (brandToPause != null) {
+        SubscriptionPauseDialog(
+            brandName = brandToPause!!.brandName,
+            onLeftButtonClick = {
+                brandToPause = null
+            },
+            onRightButtonClick = {
+                viewModel.updateSubscription(brandToPause!!.id, true)
+                brandToPause = null
+            },
+            onDismiss = {
+                brandToPause = null
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
         MainTopBar(
-            title = stringResource(R.string.bookmark_title),
+            title = stringResource(R.string.subscription_title),
             onSearchClick = {
 
             },
@@ -102,11 +134,20 @@ fun SubscriptionScreen(
                 if (list.isEmpty()) {
                     SubscribedNewsLettersEmptyView()
                 } else {
+                    val isSubscriptionResumed = (currentTab == SubscriptionTab.ING)
                     SubscribedNewsLettersExistView(
                         newsLetters     = list,
-                        onSubscribeClick = {
-
-                        }
+                        onSubscribeClick = { brand ->
+                            if (isSubscriptionResumed) {
+                                brandToPause = brand
+                            } else {
+                                viewModel.updateSubscription(
+                                    brand.id,
+                                    false
+                                )
+                            }
+                        },
+                        isSubscribeResumed = isSubscriptionResumed
                     )
                 }
             }
@@ -129,10 +170,10 @@ fun SubscriptionSegmentedTab(
     onTabChange: (SubscriptionTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(selectedTab.index) }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 8.dp)
             .clip(RoundedCornerShape(6.dp))
@@ -154,7 +195,10 @@ fun SubscriptionSegmentedTab(
                 val isSelected = (index == selectedIndex)
                 Box(
                     modifier = Modifier
-                        .removeRippleEffect { selectedIndex = index }
+                        .removeRippleEffect {
+                            selectedIndex = index
+                            onTabChange(currentTab)
+                        }
                         .weight(1f)
                         .shadow(
                             elevation = if (isSelected) 2.dp else 0.dp,
@@ -219,6 +263,7 @@ fun SubscribedNewsLettersEmptyView(
 fun SubscribedNewsLettersExistView(
     newsLetters: List<BriefNewsLetterModel>,
     onSubscribeClick: (BriefNewsLetterModel) -> Unit,
+    isSubscribeResumed: Boolean,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -251,7 +296,11 @@ fun SubscribedNewsLettersExistView(
         items(newsLetters) { newsLetter ->
             NewsLetterSubscriptionItem(
                 newsLetter = newsLetter,
-                onSubscribeClick = onSubscribeClick
+                onSubscribeClick = {
+                    onSubscribeClick(newsLetter)
+                    newsLetter.brandName
+                },
+                isSubscribeResumed = isSubscribeResumed
             )
         }
     }

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.screen.login.LoginTheme

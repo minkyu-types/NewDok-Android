@@ -39,7 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.and.domain.model.type.IndustryCategory
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.screen.preinvestigation.IndustryDropDownItem
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive

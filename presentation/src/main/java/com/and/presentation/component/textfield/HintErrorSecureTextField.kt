@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Neutral

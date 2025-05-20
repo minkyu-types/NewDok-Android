@@ -1,4 +1,4 @@
-package com.and.presentation.screen.mypage
+package com.and.presentation.screen.login
 
 enum class FindAccountTab(val title: String) {
     FIND_ID("아이디 찾기"),

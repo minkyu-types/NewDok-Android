@@ -42,13 +42,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.NewsLetterFilterCategory
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.BottomSheetDialog
 import com.and.presentation.component.item.FilterChip
 import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Background_System
-import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.UiState

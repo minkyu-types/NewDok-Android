@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.and.clean.app"
+    namespace = "com.and.newdok.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.and.clean"
+        applicationId = "com.and.newdok"
         minSdk = 28
         targetSdk = 35
         versionCode = 1

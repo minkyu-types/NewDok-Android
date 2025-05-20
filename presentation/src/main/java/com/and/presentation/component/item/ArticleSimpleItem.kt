@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,17 +24,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Body2Normal
-import com.and.presentation.ui.Caption_Assistive
-import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Gray700
 import com.and.presentation.ui.Gray800
-import com.and.presentation.ui.Label1
-import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Neutral
 
 @Composable

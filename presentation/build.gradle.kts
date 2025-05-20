@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.and.presentation"
+    namespace = "com.and.newdok.presentation"
     compileSdk = 35
 
     defaultConfig {

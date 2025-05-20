@@ -35,10 +35,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.OutlinedPrimaryButton
-import com.and.presentation.component.item.ArticleItem
+import com.and.presentation.component.item.SearchArticleItem
 import com.and.presentation.component.item.NewsLetterSimpleItem
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.NewsLetterModel
@@ -355,7 +355,7 @@ private fun QueryArticleResult(
             LazyColumn {
                 items(articleCount) { index ->
                     articles[index]?.let { article ->
-                        ArticleItem(
+                        SearchArticleItem(
                             article = article,
                             onArticleClick = {
 
