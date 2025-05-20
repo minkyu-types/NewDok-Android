@@ -20,13 +20,14 @@ import com.and.data.model.request.PatchUserNicknameRequestDto
 import com.and.data.model.request.PatchUserPasswordRequestDto
 import com.and.data.model.request.PatchUserPhoneNumberRequestDto
 import com.and.data.model.request.SignUpRequestDto
-import com.and.data.util.TokenProvider
+import com.and.data.preference.AuthPreferenceStore
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -43,8 +44,12 @@ class UserRepositoryImpl @Inject constructor(
     private val signupApi: PostSignUpApi,
     private val userMapper: UserMapper,
     private val newsLetterMapper: NewsLetterMapper,
-    private val tokenProvider: TokenProvider
+    private val authPreferenceStore: AuthPreferenceStore
 ) : UserRepository, BaseRepository() {
+    override fun getUserAccessToken(): Flow<String?> {
+        return authPreferenceStore.getAccessToken()
+    }
+
     override suspend fun getPreInvestigateNewsLetters(
         industry: IndustryCategory,
         interests: List<InterestCategory>
@@ -210,10 +215,6 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    /**
-     * TODO
-     * accessToken PreferenceStore에 저장하기? refreshToken은?
-     */
     override suspend fun login(loginId: String, password: String): User {
         return handleApiCall(
             apiCall = {
@@ -223,7 +224,7 @@ class UserRepositoryImpl @Inject constructor(
                         password = password
                     )
                 ).also {
-                    tokenProvider.saveAccessToken(it.accessToken)
+                    authPreferenceStore.saveAccessToken(it.accessToken)
                 }
             },
             mapper = { response ->

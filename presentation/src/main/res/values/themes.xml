@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.NewDok" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_0</item>
+        <item name="colorPrimaryVariant">@color/primary_2</item>
+        <item name="colorOnPrimary">@color/neutral_0</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/neutral_10</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.NewDok.Splash"  parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/neutral_0</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/img_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.NewDok</item>
+    </style>
+
+</resources>

@@ -20,6 +20,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Blue50
@@ -45,12 +48,21 @@ import com.and.presentation.util.removeRippleEffect
 fun OnboardingScreen(
     onRegisterClick: () -> Unit,
     onLoginClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onAutoLogin: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: OnboardingViewModel = hiltViewModel()
 ) {
+    val loginSuccess: Boolean? by viewModel.loginSuccess
     val pagerState = rememberPagerState() { 3 }
 
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess == true) {
+            onAutoLogin()
+        }
+    }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 100.dp),
     ) {
@@ -226,6 +238,9 @@ fun OnboardingScreenPreview() {
 
             },
             onLoginClick = {
+
+            },
+            onAutoLogin = {
 
             }
         )

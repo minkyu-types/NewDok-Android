@@ -37,6 +37,7 @@ datastore-preferences = "1.1.1"
 ted-permission = "3.3.0"
 pager-indicator = "0.32.0"
 coil = "3.1.0"
+splash = "1.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -90,6 +91,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

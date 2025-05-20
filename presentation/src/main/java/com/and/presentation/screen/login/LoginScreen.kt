@@ -71,7 +71,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val loginSuccess: Boolean? by viewModel.loginSuccess // id 오류인지, pw 오류인지 구분하도록
+    val loginSuccess: Boolean? by viewModel.loginSuccess
     var userId by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
 

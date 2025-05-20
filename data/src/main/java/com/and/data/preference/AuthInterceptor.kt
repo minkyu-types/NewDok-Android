@@ -1,4 +1,4 @@
-package com.and.data.util
+package com.and.data.preference
 
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
@@ -7,11 +7,11 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val tokenProvider: TokenProvider
+    private val authPreferenceStore: AuthPreferenceStore
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking {
-            tokenProvider.getAccessToken().firstOrNull()
+            authPreferenceStore.getAccessToken().firstOrNull()
         } ?: ""
 
         val request = chain.request().newBuilder()

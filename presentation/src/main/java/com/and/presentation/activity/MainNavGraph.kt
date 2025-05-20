@@ -10,12 +10,14 @@ import com.and.presentation.screen.preinvestigation.InvestigationFlowScreen
 import com.and.presentation.screen.register.RegisterFlowScreen
 
 @Composable
-fun MainNavGraph() {
+fun MainNavGraph(
+    startDestination: String
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = ScreenFlow.ON_BOARDING.route,
+        startDestination = startDestination,
     ) {
         composable(ScreenFlow.ON_BOARDING.route) {
             OnboardingScreen(
@@ -24,6 +26,9 @@ fun MainNavGraph() {
                 },
                 onLoginClick = {
                     navController.navigate(ScreenFlow.LOGIN.route)
+                },
+                onAutoLogin = {
+                    navController.navigate(ScreenFlow.MAIN.route)
                 }
             )
         }

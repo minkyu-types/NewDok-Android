@@ -1,4 +1,4 @@
-package com.and.data.util
+package com.and.data.preference
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class UserTokenProvider @Inject constructor(
+class UserAuthPreferenceStore @Inject constructor(
     @ApplicationContext private val context: Context
-): TokenProvider {
+): AuthPreferenceStore {
 
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")

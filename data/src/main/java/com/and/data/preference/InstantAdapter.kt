@@ -1,4 +1,4 @@
-package com.and.data.util
+package com.and.data.preference
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson

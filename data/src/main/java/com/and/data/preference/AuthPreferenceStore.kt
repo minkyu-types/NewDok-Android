@@ -1,8 +1,8 @@
-package com.and.data.util
+package com.and.data.preference
 
 import kotlinx.coroutines.flow.Flow
 
-interface TokenProvider {
+interface AuthPreferenceStore {
     suspend fun saveAccessToken(token: String)
     fun getAccessToken(): Flow<String?>
     suspend fun clearAccessToken()

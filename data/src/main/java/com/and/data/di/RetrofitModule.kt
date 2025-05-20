@@ -2,8 +2,8 @@ package com.and.data.di
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
-import com.and.data.util.AuthInterceptor
-import com.and.data.util.InstantAdapter
+import com.and.data.preference.AuthInterceptor
+import com.and.data.preference.InstantAdapter
 import com.and.newdok.data.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

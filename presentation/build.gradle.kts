@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.ktx.runtime)
     implementation(libs.ktx.preference)
 
+    implementation(libs.splash)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

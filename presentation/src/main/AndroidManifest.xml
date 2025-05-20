@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name="com.and.presentation.activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.NewDok.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
