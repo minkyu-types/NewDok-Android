@@ -1,6 +1,6 @@
-package com.and.domain.model
+package com.and.presentation.model.bookmarkedarticle
 
-data class BookmarkedArticle(
+data class BookmarkedArticleModel(
     val brandName: String,
     val brandId: Int,
     val articleTitle: String,

@@ -1,26 +1,25 @@
-package com.and.data.mapper.impl
+package com.and.presentation.mapper
 
-import com.and.data.mapper.BookmarkedArticleMapper
-import com.and.data.model.response.GetBookmarkedArticlesResponseDto
 import com.and.domain.model.BookmarkedArticle
+import com.and.presentation.model.bookmarkedarticle.BookmarkedArticleModel
 import javax.inject.Inject
 
 class BookmarkedArticleMapperImpl @Inject constructor(
 
 ): BookmarkedArticleMapper {
-    override fun mapToData(input: BookmarkedArticle): GetBookmarkedArticlesResponseDto.BookmarkedArticleDto {
-        return GetBookmarkedArticlesResponseDto.BookmarkedArticleDto(
+    override fun mapToPresentation(input: BookmarkedArticle): BookmarkedArticleModel {
+        return BookmarkedArticleModel(
             brandName = input.brandName,
             brandId = input.brandId,
             articleTitle = input.articleTitle,
             articleId = input.articleId,
             sampleText = input.sampleText,
             date = input.date,
-            imageURL = input.thumbnailImageUrl
+            thumbnailImageUrl = input.thumbnailImageUrl,
         )
     }
 
-    override fun mapToDomain(input: GetBookmarkedArticlesResponseDto.BookmarkedArticleDto): BookmarkedArticle {
+    override fun mapToDomain(input: BookmarkedArticleModel): BookmarkedArticle {
         return BookmarkedArticle(
             brandName = input.brandName,
             brandId = input.brandId,
@@ -28,7 +27,7 @@ class BookmarkedArticleMapperImpl @Inject constructor(
             articleId = input.articleId,
             sampleText = input.sampleText,
             date = input.date,
-            thumbnailImageUrl = input.imageURL
+            thumbnailImageUrl = input.thumbnailImageUrl,
         )
     }
 }

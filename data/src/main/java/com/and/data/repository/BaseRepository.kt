@@ -1,9 +1,9 @@
 package com.and.data.repository
 
 import com.and.domain.util.ApiException
-import okio.IOException
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.lang.Exception
 
 abstract class BaseRepository {
 
@@ -26,7 +26,7 @@ abstract class BaseRepository {
                 JSONObject(raw).optString("message", e.message())
             }.getOrDefault(e.message())
             throw ApiException(e.code(), msg)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             e.printStackTrace()
             throw ApiException(-1, "네트워크 오류")
         }

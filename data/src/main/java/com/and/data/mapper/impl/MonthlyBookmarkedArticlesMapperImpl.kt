@@ -22,7 +22,7 @@ class MonthlyBookmarkedArticlesMapperImpl @Inject constructor(
                     articleId = article.articleId,
                     sampleText = article.sampleText,
                     date = article.date,
-                    imageURL = article.imageURL
+                    imageURL = article.thumbnailImageUrl
                 )
             }
         )
@@ -40,7 +40,7 @@ class MonthlyBookmarkedArticlesMapperImpl @Inject constructor(
                     articleId = article.articleId,
                     sampleText = article.sampleText,
                     date = article.date,
-                    imageURL = article.imageURL
+                    thumbnailImageUrl = article.imageURL
                 )
             }
         )
