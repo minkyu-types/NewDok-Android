@@ -1,12 +1,13 @@
 package com.and.domain.usecase.user
 
 import com.and.domain.repository.UserRepository
+import com.and.domain.usecase.BaseSuspendUseCase
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.UpdateUserIndustryUseCase.UpdateUserIndustryParams
 
 class UpdateUserIndustryUseCase(
     private val repository: UserRepository
-): BaseUseCase<UpdateUserIndustryParams, Unit> {
+): BaseSuspendUseCase<UpdateUserIndustryParams, Unit> {
 
     override suspend fun invoke(parameter: UpdateUserIndustryParams) {
         return repository.updateUserIndustry(

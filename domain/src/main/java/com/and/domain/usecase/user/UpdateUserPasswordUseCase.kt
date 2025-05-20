@@ -1,12 +1,13 @@
 package com.and.domain.usecase.user
 
 import com.and.domain.repository.UserRepository
+import com.and.domain.usecase.BaseSuspendUseCase
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.UpdateUserPasswordUseCase.UpdateUserPasswordParams
 
 class UpdateUserPasswordUseCase(
     private val repository: UserRepository
-): BaseUseCase<UpdateUserPasswordParams, Boolean> {
+): BaseSuspendUseCase<UpdateUserPasswordParams, Boolean> {
 
     override suspend fun invoke(parameter: UpdateUserPasswordParams): Boolean {
         return repository.updateUserPassword(

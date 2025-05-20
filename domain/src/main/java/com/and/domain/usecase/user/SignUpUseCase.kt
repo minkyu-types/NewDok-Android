@@ -3,12 +3,13 @@ package com.and.domain.usecase.user
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.repository.UserRepository
+import com.and.domain.usecase.BaseSuspendUseCase
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.SignUpUseCase.SignUpParam
 
 class SignUpUseCase(
     private val repository: UserRepository
-): BaseUseCase<SignUpParam, User> {
+): BaseSuspendUseCase<SignUpParam, User> {
 
     override suspend fun invoke(parameter: SignUpParam): User {
         return repository.signUp(
