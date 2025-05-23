@@ -71,7 +71,9 @@ fun MainNavGraph(
 
         composable(ScreenFlow.MAIN.route) {
             MainFlowScreen(
-
+                onLogout = {
+                    navController.navigate(ScreenFlow.ON_BOARDING.route)
+                }
             )
         }
     }

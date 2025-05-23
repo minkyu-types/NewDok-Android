@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     fun getUserAccessToken(): Flow<String?>
+    suspend fun deleteUserAccessToken(): Boolean
+
     suspend fun getPreInvestigateNewsLetters(industry: IndustryCategory, interests: List<InterestCategory>): List<NewsLetter>
     suspend fun getUserByPhoneNumber(phoneNumber: String): List<User>
     suspend fun getUserIdDuplication(loginId: String): User

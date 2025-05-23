@@ -51,6 +51,7 @@ import com.and.presentation.ui.Primary_Normal
 
 @Composable
 fun MainFlowScreen(
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -161,9 +162,7 @@ fun MainFlowScreen(
             composable("AccountManage") {
                 AccountManagerScreen(
                     onBack = { navController.popBackStack() },
-                    onLogout = {
-
-                    }
+                    onLogout = onLogout
                 )
             }
 

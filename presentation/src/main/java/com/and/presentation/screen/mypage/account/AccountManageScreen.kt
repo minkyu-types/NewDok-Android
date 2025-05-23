@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.TwoButtonDialog
 import com.and.presentation.component.topbar.TopBar
@@ -25,14 +27,25 @@ import com.and.presentation.screen.mypage.MyPageItem
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
+import kotlin.math.log
 
 @Composable
 fun AccountManagerScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AccountManageViewModel = hiltViewModel()
 ) {
+    val logoutResult by viewModel.logoutResult
     var showLogoutDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(logoutResult)
+    {
+        if (logoutResult == true) {
+            onLogout()
+        }
+        showLogoutDialog = false
+    }
 
     if (showLogoutDialog) {
         TwoButtonDialog(
@@ -44,7 +57,7 @@ fun AccountManagerScreen(
                 showLogoutDialog = false
             },
             onRightButtonClick = {
-
+                viewModel.clearUserData()
             },
             onDismiss = {
                 showLogoutDialog = false

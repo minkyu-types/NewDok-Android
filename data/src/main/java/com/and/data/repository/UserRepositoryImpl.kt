@@ -28,6 +28,7 @@ import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -48,6 +49,18 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository, BaseRepository() {
     override fun getUserAccessToken(): Flow<String?> {
         return authPreferenceStore.getAccessToken()
+    }
+
+    override suspend fun deleteUserAccessToken(): Boolean {
+        return handleApiCall(
+            apiCall = {
+                authPreferenceStore.clearAccessToken()
+            },
+            mapper = { result ->
+                val a = result
+                true
+            }
+        )
     }
 
     override suspend fun getPreInvestigateNewsLetters(

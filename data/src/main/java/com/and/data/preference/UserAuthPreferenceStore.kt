@@ -37,9 +37,15 @@ class UserAuthPreferenceStore @Inject constructor(
             }
     }
 
-    override suspend fun clearAccessToken() {
-        preferences.edit { settings ->
-            settings.remove(ACCESS_TOKEN_KEY)
+    override suspend fun clearAccessToken(): Boolean {
+        return try {
+            preferences.edit { settings ->
+                settings.remove(ACCESS_TOKEN_KEY)
+            }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 }

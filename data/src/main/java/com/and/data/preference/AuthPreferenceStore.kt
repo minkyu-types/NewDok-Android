@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 interface AuthPreferenceStore {
     suspend fun saveAccessToken(token: String)
     fun getAccessToken(): Flow<String?>
-    suspend fun clearAccessToken()
+    suspend fun clearAccessToken(): Boolean
 }
