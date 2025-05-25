@@ -10,6 +10,7 @@ import com.and.domain.model.User
 import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.model.NewsLetterSubscriptionModel
 import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.model.UserModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticleModel
@@ -18,6 +19,7 @@ import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesMod
 
 interface NewsLetterMapper: BaseMapper<NewsLetter, NewsLetterModel>
 interface NewsLetterDetailMapper: BaseMapper<NewsLetter, NewsLetterDetailModel>
+interface NewsLetterSubscriptionMapper: BaseMapper<NewsLetter, NewsLetterSubscriptionModel>
 interface RecommendedNewsLetterMapper: BaseMapper<RecommendedNewsLetter, RecommendedNewsLetterModel>
 interface BriefNewsLetterMapper: BaseMapper<BriefNewsLetter, BriefNewsLetterModel>
 

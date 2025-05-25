@@ -12,6 +12,8 @@ import com.and.presentation.mapper.NewsLetterDetailMapper
 import com.and.presentation.mapper.NewsLetterDetailMapperImpl
 import com.and.presentation.mapper.NewsLetterMapper
 import com.and.presentation.mapper.NewsLetterMapperImpl
+import com.and.presentation.mapper.NewsLetterSubscriptionMapper
+import com.and.presentation.mapper.NewsLetterSubscriptionMapperImpl
 import com.and.presentation.mapper.RecommendedNewsLetterMapper
 import com.and.presentation.mapper.RecommendedNewsLetterMapperImpl
 import com.and.presentation.mapper.UserMapper
@@ -43,6 +45,12 @@ interface MapperModule {
     fun bindsNewsLetterDetailMapper(
         newsLetterDetailMapperImpl: NewsLetterDetailMapperImpl
     ): NewsLetterDetailMapper
+
+    @Binds
+    @Singleton
+    fun bindsNewsLetterSubscriptionMapper(
+        newsLetterSubscriptionMapperImpl: NewsLetterSubscriptionMapperImpl
+    ): NewsLetterSubscriptionMapper
 
     @Binds
     @Singleton
