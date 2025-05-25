@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +40,7 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
+import kotlin.math.min
 
 @Composable
 fun SortFilterBottomSheet(
@@ -66,7 +69,7 @@ fun SortFilterBottomSheet(
     ) {
         Column(
             modifier =
-            Modifier.fillMaxHeight(0.5f)
+            modifier.wrapContentHeight()
         ) {
             Box(
                 modifier = Modifier
@@ -95,8 +98,10 @@ fun SortFilterBottomSheet(
             SortCategory.entries.forEach { category ->
                 SortItem(
                     sort = category,
+                    isSelected = selectedSort == category,
                     onClick = { sort ->
                         selectedSort = sort
+                        onDismiss(selectedSort)
                     }
                 )
             }
@@ -107,6 +112,7 @@ fun SortFilterBottomSheet(
 @Composable
 private fun SortItem(
     sort: SortCategory,
+    isSelected: Boolean,
     onClick: (SortCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -116,6 +122,7 @@ private fun SortItem(
                 onClick(sort)
             }
             .fillMaxWidth()
+            .heightIn(min = 64.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
@@ -126,14 +133,16 @@ private fun SortItem(
             modifier = Modifier
                 .align(Alignment.CenterStart),
         )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_checkmark),
-            contentDescription = stringResource(id = R.string.select),
-            tint = Primary_Normal,
-            modifier = Modifier
-                .height(48.dp)
-                .align(Alignment.CenterEnd)
-        )
+        if (isSelected) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_checkmark),
+                contentDescription = stringResource(id = R.string.select),
+                tint = Primary_Normal,
+                modifier = Modifier
+                    .height(48.dp)
+                    .align(Alignment.CenterEnd)
+            )
+        }
     }
 }
 
@@ -144,20 +153,10 @@ private fun SortItem(
 @Composable
 private fun AllNewsLettersFilterBottomSheetPreview() {
     DefaultWhiteTheme {
-        var sheetState = rememberModalBottomSheetState()
-
-        LaunchedEffect(Unit) {
-            sheetState.show()
-        }
-
-        SortFilterBottomSheet(
-            title = "정렬",
-            sheetState = sheetState,
-            prevSort = SortCategory.POPULARITY,
-            onDismiss = {
-
-            },
-            onHideRequested = {
+        SortItem(
+            sort = SortCategory.POPULARITY,
+            isSelected = false,
+            onClick = {
 
             }
         )

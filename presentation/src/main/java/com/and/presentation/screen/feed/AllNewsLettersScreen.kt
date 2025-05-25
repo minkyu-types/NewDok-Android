@@ -81,9 +81,9 @@ fun AllNewsLettersScreen(
     val sheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(currentSort)      { viewModel.setSort(currentSort) }
-    LaunchedEffect(currentIndustries){ viewModel.setIndustries(currentIndustries) }
-    LaunchedEffect(currentPublicationDays){ viewModel.setDays(currentPublicationDays) }
+    LaunchedEffect(currentSort) { viewModel.setSort(currentSort) }
+    LaunchedEffect(currentIndustries) { viewModel.setIndustries(currentIndustries) }
+    LaunchedEffect(currentPublicationDays) { viewModel.setDays(currentPublicationDays) }
 
     fun showFilter(filter: NewsLetterFilterCategory) {
         coroutineScope.launch {
@@ -172,7 +172,8 @@ fun AllNewsLettersScreen(
                 }
 
                 is UiState.Success -> {
-                    val newsLetters = (uiState as UiState.Success<List<NewsLetterSubscriptionModel>>).data
+                    val newsLetters =
+                        (uiState as UiState.Success<List<NewsLetterSubscriptionModel>>).data
                     items(newsLetters) { newsLetter ->
                         NewsLetterSmallSubscriptionItem(
                             newsLetter = newsLetter,
@@ -236,7 +237,28 @@ fun AllNewsLetterFilters(
                         )
                         .forEach { (filter, icon) ->
                             FilterChip(
-                                text = filter.default,
+                                text = when (filter) {
+                                    NewsLetterFilterCategory.SORT -> selectedFilters.sort.value
+                                    NewsLetterFilterCategory.INDUSTRY -> {
+                                        val size = selectedFilters.industries.size
+                                        if (size > 3) {
+                                            "산업 $size"
+                                        } else {
+                                            selectedFilters.industries
+                                                .map { it.value }
+                                                .take(2)
+                                                .joinToString("·")
+                                        }
+                                    }
+                                    NewsLetterFilterCategory.WHEN -> {
+                                        val size = selectedFilters.days.size
+                                        if (size > 1) {
+                                            "발행요일 $size"
+                                        } else {
+                                            selectedFilters.days.first().value
+                                        }
+                                    }
+                                },
                                 icon = icon,
                                 leastOneItemSelected = false,
                                 onClick = {
