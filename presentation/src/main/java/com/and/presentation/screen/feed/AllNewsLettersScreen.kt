@@ -31,30 +31,38 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.NewsLetterFilterCategory
+import com.and.domain.model.type.PublicationDay
+import com.and.domain.model.type.SortCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.BottomSheetDialog
 import com.and.presentation.component.item.FilterChip
-import com.and.presentation.component.item.NewsLetterSmallItem
-import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.component.item.NewsLetterSmallSubscriptionItem
+import com.and.presentation.model.NewsLetterSubscriptionModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.UiState
+import kotlinx.coroutines.launch
 
 /**
  * 모든 뉴스레터
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllNewsLettersScreen(
     onNewsLetterClick: (Int) -> Unit,
@@ -62,20 +70,77 @@ fun AllNewsLettersScreen(
     modifier: Modifier = Modifier,
     viewModel: AllNewsLettersViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.allNewsLettersUiState
-    var selectedFilters by remember { mutableStateOf(SelectedFilters()) }
-    val sheetState = rememberModalBottomSheetState()
+    val uiState by viewModel.newsLettersUiState.collectAsState()
 
-    LaunchedEffect(selectedFilters) {
-        viewModel.getAllNewsLetters(
-            selectedFilters.sort,
-            selectedFilters.industries,
-            selectedFilters.date
-        )
+    var selectedFilter by remember { mutableStateOf<NewsLetterFilterCategory?>(null) }
+
+    var currentSort by remember { mutableStateOf(SortCategory.POPULARITY) }
+    var currentIndustries by remember { mutableStateOf(listOf(IndustryCategory.DEFAULT)) }
+    var currentPublicationDays by remember { mutableStateOf(listOf(PublicationDay.MONDAY)) }
+
+    val sheetState = rememberModalBottomSheetState()
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(currentSort)      { viewModel.setSort(currentSort) }
+    LaunchedEffect(currentIndustries){ viewModel.setIndustries(currentIndustries) }
+    LaunchedEffect(currentPublicationDays){ viewModel.setDays(currentPublicationDays) }
+
+    fun showFilter(filter: NewsLetterFilterCategory) {
+        coroutineScope.launch {
+            selectedFilter = filter
+            sheetState.show()
+        }
+    }
+
+    fun hideFilter() {
+        coroutineScope.launch {
+            sheetState.hide()
+            selectedFilter = null
+        }
+    }
+
+    if (selectedFilter != null) {
+        when (selectedFilter) {
+            NewsLetterFilterCategory.SORT -> {
+                SortFilterBottomSheet(
+                    title = currentSort.value,
+                    sheetState = sheetState,
+                    prevSort = currentSort,
+                    onDismiss = {
+                        currentSort = it
+                        hideFilter()
+                    },
+                    onHideRequested = {
+                        hideFilter()
+                    }
+                )
+            }
+
+            NewsLetterFilterCategory.INDUSTRY, NewsLetterFilterCategory.WHEN -> {
+                IndustryAndDayBottomSheet(
+                    title = stringResource(R.string.filter),
+                    sheetState = sheetState,
+                    prevIndustryCategory = currentIndustries,
+                    prevDayId = currentPublicationDays,
+                    onDismiss = { industryCategory, publicationDay ->
+                        currentIndustries = industryCategory
+                        currentPublicationDays = publicationDay
+                        hideFilter()
+                    },
+                    onHideRequested = {
+                        hideFilter()
+                    }
+                )
+            }
+
+            else -> {
+
+            }
+        }
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Background_System)
     ) {
@@ -84,9 +149,16 @@ fun AllNewsLettersScreen(
         ) {
             item {
                 AllNewsLetterFilters(
-                    selectedFilters = selectedFilters,
+                    selectedFilters = SelectedFilters(
+                        sort = currentSort,
+                        industries = currentIndustries,
+                        days = currentPublicationDays
+                    ),
                     onResetClick = {
-                        selectedFilters = SelectedFilters()
+                        // 필터 초기화
+                    },
+                    onFilterClick = { filter ->
+                        showFilter(filter)
                     }
                 )
             }
@@ -100,12 +172,15 @@ fun AllNewsLettersScreen(
                 }
 
                 is UiState.Success -> {
-                    val newsLetters = (uiState as UiState.Success<List<NewsLetterModel>>).data
+                    val newsLetters = (uiState as UiState.Success<List<NewsLetterSubscriptionModel>>).data
                     items(newsLetters) { newsLetter ->
-                        NewsLetterSmallItem(
+                        NewsLetterSmallSubscriptionItem(
                             newsLetter = newsLetter,
                             onClick = {
-                                onNewsLetterClick(newsLetter.id)
+                                onNewsLetterClick(newsLetter.brandId)
+                            },
+                            onSubscribeClick = {
+                                it
                             },
                             modifier = Modifier
                                 .padding(horizontal = 24.dp)
@@ -127,8 +202,9 @@ fun AllNewsLettersScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllNewsLetterFilters(
-    selectedFilters:  SelectedFilters,
+    selectedFilters: SelectedFilters,
     onResetClick: () -> Unit,
+    onFilterClick: (NewsLetterFilterCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -162,12 +238,9 @@ fun AllNewsLetterFilters(
                             FilterChip(
                                 text = filter.default,
                                 icon = icon,
-                                leastOneItemSelected = SelectedFilters.getIsChanged(
-                                    selectedFilters,
-                                    filter
-                                ),
+                                leastOneItemSelected = false,
                                 onClick = {
-
+                                    onFilterClick(filter)
                                 }
                             )
                             Spacer(modifier = Modifier.width(4.dp))

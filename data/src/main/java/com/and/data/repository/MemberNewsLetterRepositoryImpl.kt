@@ -45,14 +45,14 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     override suspend fun getNewsLetters(
         orderOption: SortCategory,
         industry: IndustryCategory,
-        date: ZonedDateTime
+        dayId: Int
     ): List<NewsLetter> {
         return handleApiCall(
             apiCall = {
                 getNewsLettersApi.getAllNewsLetters(
                     orderOpt = orderOption.value,
                     industry = industry.id.toString(),
-                    day = date.dayOfWeek.value.toString()
+                    day = dayId.toString()
                 )
             },
             mapper = { response ->

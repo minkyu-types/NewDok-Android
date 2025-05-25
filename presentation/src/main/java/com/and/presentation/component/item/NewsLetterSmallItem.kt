@@ -118,7 +118,7 @@ fun NewsLetterSmallItem(
 }
 
 @Composable
-fun InterestLazyRow(
+private fun InterestLazyRow(
     newsLetter: NewsLetterModel,
     modifier: Modifier = Modifier
 ) {

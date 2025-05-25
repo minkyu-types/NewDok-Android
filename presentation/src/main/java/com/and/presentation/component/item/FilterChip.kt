@@ -2,6 +2,7 @@ package com.and.presentation.component.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,6 +44,7 @@ fun FilterChip(
 
     Row(
         modifier = Modifier
+            .clickable { onClick() }
             .clip(RoundedCornerShape(100.dp))
             .border(
                 width = 1.dp,

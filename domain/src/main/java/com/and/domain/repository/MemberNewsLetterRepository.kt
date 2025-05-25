@@ -13,7 +13,7 @@ interface MemberNewsLetterRepository {
     suspend fun getNewsLetters(
         orderOption: SortCategory,
         industry: IndustryCategory,
-        date: ZonedDateTime
+        dayId: Int
     ): List<NewsLetter>
     suspend fun getNewsLetterById(
         newsLetterId: Int,

@@ -19,13 +19,13 @@ class GetNewsLettersUseCase @Inject constructor(
         return repository.getNewsLetters(
             parameter.orderOption,
             parameter.industry,
-            parameter.date
+            parameter.dayId
         )
     }
 
     data class GetNewsLettersParams(
         val orderOption: SortCategory,
         val industry: IndustryCategory,
-        val date: ZonedDateTime
+        val dayId: Int
     )
 }
