@@ -50,9 +50,6 @@ fun RegisterFlowScreen(
                 RegisterStep2Screen(
                     onNext = { navController.navigate(RegisterStep.STEP_3_PASSWORD.route) },
                     onBack = { navController.popBackStack() },
-                    onCheckDuplicate = {
-                        true
-                    }
                 )
             }
             composable(RegisterStep.STEP_3_PASSWORD.route) {

@@ -3,6 +3,7 @@ package com.and.presentation.screen.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -142,9 +144,9 @@ fun HomeTopBar(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 12.dp),
+            .padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -152,17 +154,26 @@ fun HomeTopBar(
             contentDescription = null
         )
         Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            painter = painterResource(R.drawable.ic_line_search),
-            contentDescription = null,
-            modifier = Modifier.size(28.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            painter = painterResource(R.drawable.ic_line_bell),
-            contentDescription = null,
-            modifier = Modifier.size(28.dp)
-        )
+        IconButton(
+            onClick = onSearchClick
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_line_search),
+                contentDescription = null,
+                modifier = Modifier.size(28.dp)
+                    .clickable { onSearchClick() }
+            )
+        }
+        IconButton(
+            onClick = onAlarmClick
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_line_bell),
+                contentDescription = null,
+                modifier = Modifier.size(28.dp)
+                    .clickable { onAlarmClick() }
+            )
+        }
     }
 }
 

@@ -57,6 +57,7 @@ fun HintErrorTextField(
                     color = Caption_Assistive
                 )
             },
+            maxLines = 1,
             leadingIcon = icon?.let {
                 {
                     Icon(

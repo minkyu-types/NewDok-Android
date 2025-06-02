@@ -1,5 +1,6 @@
 package com.and.domain.repository
 
+import com.and.domain.model.Account
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.model.type.IndustryCategory
@@ -13,7 +14,7 @@ interface UserRepository {
 
     suspend fun getPreInvestigateNewsLetters(industry: IndustryCategory, interests: List<InterestCategory>): List<NewsLetter>
     suspend fun getUserByPhoneNumber(phoneNumber: String): List<User>
-    suspend fun getUserIdDuplication(loginId: String): User
+    suspend fun getUserIdDuplication(loginId: String): Account
     suspend fun getUserInfo(): User
     suspend fun updateUserIndustry(industryId: Int)
     suspend fun updateUserInterests(interestIds: List<Int>)

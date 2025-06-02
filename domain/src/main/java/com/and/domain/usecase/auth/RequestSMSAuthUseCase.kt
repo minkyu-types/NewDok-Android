@@ -4,8 +4,9 @@ import com.and.domain.repository.AuthRepository
 import com.and.domain.usecase.BaseSuspendUseCase
 import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.auth.RequestSMSAuthUseCase.RequestSMSAuthParams
+import javax.inject.Inject
 
-class RequestSMSAuthUseCase(
+class RequestSMSAuthUseCase @Inject constructor(
     private val repository: AuthRepository
 ): BaseSuspendUseCase<RequestSMSAuthParams, Unit> {
 

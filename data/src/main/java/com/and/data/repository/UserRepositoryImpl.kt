@@ -21,6 +21,7 @@ import com.and.data.model.request.PatchUserPasswordRequestDto
 import com.and.data.model.request.PatchUserPhoneNumberRequestDto
 import com.and.data.model.request.SignUpRequestDto
 import com.and.data.preference.AuthPreferenceStore
+import com.and.domain.model.Account
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
@@ -28,7 +29,6 @@ import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -97,13 +97,18 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserIdDuplication(loginId: String): User {
+    override suspend fun getUserIdDuplication(loginId: String): Account {
         return handleApiCall(
             apiCall = {
                 getUserIdDuplicationApi.getUserIdDuplication(loginId)
             },
             mapper = { response ->
-                userMapper.mapToDomain(response.user)
+                Account(
+                    id = response.id,
+                    loginId = response.loginId,
+                    phoneNumber = response.phoneNumber,
+                    createdAt = response.createdAt,
+                )
             }
         )
     }
