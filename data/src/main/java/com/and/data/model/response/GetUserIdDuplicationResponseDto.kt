@@ -1,7 +1,10 @@
 package com.and.data.model.response
 
-import com.and.data.model.data.UserDto
+import java.time.Instant
 
 data class GetUserIdDuplicationResponseDto(
-    val user: UserDto
+    val id: Int,
+    val loginId: String,
+    val phoneNumber: String,
+    val createdAt: Instant
 )

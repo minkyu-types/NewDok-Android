@@ -1,16 +1,16 @@
 package com.and.domain.usecase.user
 
-import com.and.domain.model.User
+import com.and.domain.model.Account
 import com.and.domain.repository.UserRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.CheckUserIdDuplicationUseCase.GetUserIdDuplicationParams
+import javax.inject.Inject
 
-class CheckUserIdDuplicationUseCase(
+class CheckUserIdDuplicationUseCase @Inject constructor(
     private val repository: UserRepository
-): BaseSuspendUseCase<GetUserIdDuplicationParams, User> {
+): BaseSuspendUseCase<GetUserIdDuplicationParams, Account> {
 
-    override suspend fun invoke(parameter: GetUserIdDuplicationParams): User {
+    override suspend fun invoke(parameter: GetUserIdDuplicationParams): Account {
         return repository.getUserIdDuplication(
             parameter.loginId
         )
