@@ -16,6 +16,6 @@ data class UserModel(
     val subscribeEmail: String,
     val subscribePassword: String,
     val createdAt: Instant,
-    val industryId: Int,
+    val industryId: Int?,
     val interests: List<InterestCategory>
 )

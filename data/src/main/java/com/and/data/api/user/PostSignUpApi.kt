@@ -9,7 +9,7 @@ import retrofit2.http.POST
 interface PostSignUpApi {
 
     @POST("/users/signup")
-    fun signUp(
+    suspend fun signUp(
         @Body request: SignUpRequestDto
     ): PostSignUpResponseDto
 }

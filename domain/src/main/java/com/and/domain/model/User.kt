@@ -16,6 +16,6 @@ data class User(
     val subscribeEmail: String,
     val subscribePassword: String,
     val createdAt: Instant,
-    val industryId: Int,
-    val interests: List<InterestCategory>
+    val industryId: Int?,
+    val interests: List<InterestCategory> = emptyList()
 )

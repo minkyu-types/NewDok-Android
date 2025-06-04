@@ -18,6 +18,6 @@ class UpdateUserInterestsUseCase @Inject constructor(
     }
 
     data class UpdateUserInterestsParams(
-        val interests: List<InterestCategory>
+        val interests: Set<InterestCategory>
     )
 }

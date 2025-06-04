@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.WebViewScreen
 import com.and.presentation.component.button.ConditionalNextButton
@@ -53,7 +54,8 @@ import kotlinx.coroutines.launch
 fun RegisterStep5Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
@@ -105,8 +107,8 @@ fun RegisterStep5Screen(
             Text(
                 text = stringResource(R.string.register_terms_title),
                 style = Heading2,
-                fontWeight = FontWeight.Bold,
                 color = Caption_Heavy,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(48.dp))
@@ -165,9 +167,11 @@ fun RegisterStep5Screen(
 
         ConditionalNextButton(
             buttonText = stringResource(R.string.register_terms_complete),
-            enabled = true,
-//            enabled = isTerm1Checked && isTerm2Checked && isTerm3Checked,
-            onClick = onNext,
+            enabled = isTerm1Checked && isTerm2Checked && isTerm3Checked,
+            onClick = {
+                viewModel.signUp()
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
@@ -291,7 +295,8 @@ fun RegisterStep5ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

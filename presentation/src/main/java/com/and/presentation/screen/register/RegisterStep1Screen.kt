@@ -63,7 +63,7 @@ fun RegisterStep1Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: RegisterViewModel
 ) {
     var phoneNumber by remember { mutableStateOf("") }
     var authCode by remember { mutableStateOf("") }
@@ -112,7 +112,10 @@ fun RegisterStep1Screen(
 
         ConditionalNextButton(
             enabled = true, // 여기서 인증번호 일치 여부 확인
-            onClick = onNext,
+            onClick = {
+                viewModel.setUserPhoneNumber(phoneNumber = phoneNumber)
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
@@ -338,7 +341,8 @@ fun RegisterStep1ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.and.data.repository
 
+import android.util.Log
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
@@ -69,8 +70,8 @@ class UserRepositoryImpl @Inject constructor(
     ): List<NewsLetter> {
         return handleApiCall(
             apiCall = {
-                val industryName = industry.name
-                val interestName = interests.map { it.value }
+                val industryName = industry.id.toString()
+                val interestName = interests.map { it.id.toString() }
                 preInvestigateNewsLettersApi.getPreInvestigateNewsLetters(
                     industryName,
                     interestName
@@ -258,7 +259,7 @@ class UserRepositoryImpl @Inject constructor(
         nickname: String,
         birthYear: String,
         gender: Gender
-    ): User {
+    ): String {
         return handleApiCall(
             apiCall = {
                 signupApi.signUp(
@@ -268,15 +269,12 @@ class UserRepositoryImpl @Inject constructor(
                         phoneNumber = phoneNumber,
                         nickname = nickname,
                         birthYear = birthYear,
-                        gender = when (gender) {
-                            Gender.MALE -> "남자"
-                            Gender.FEMALE -> "여자"
-                        }
+                        gender = gender.value
                     )
                 )
             },
             mapper = { response ->
-                userMapper.mapToDomain(response.user)
+                response.accessToken
             }
         )
     }

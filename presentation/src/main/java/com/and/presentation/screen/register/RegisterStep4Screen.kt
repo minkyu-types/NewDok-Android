@@ -43,6 +43,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
@@ -67,13 +69,14 @@ import java.time.LocalDate
 fun RegisterStep4Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel
 ) {
     var userNickname by rememberSaveable { mutableStateOf("") }
     val isNicknameValid = userNickname.nicknameValidation()
     val years = (1970..LocalDate.now().year.minus(12)).map { it.toString() }
     var userGender by rememberSaveable { mutableStateOf<Gender?>(null) }
-    var selectedItem: String? by rememberSaveable { mutableStateOf(null) }
+    var selectedYear: String? by rememberSaveable { mutableStateOf(null) }
 
     Column(
         modifier = Modifier
@@ -132,9 +135,9 @@ fun RegisterStep4Screen(
             Spacer(modifier = Modifier.height(32.dp))
             RegisterBirthYear(
                 years = years,
-                selectedItem = selectedItem,
+                selectedItem = selectedYear,
                 onSelect = { year ->
-                    selectedItem = year
+                    selectedYear = year
                 }
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -145,9 +148,15 @@ fun RegisterStep4Screen(
         }
 
         ConditionalNextButton(
-//            enabled = isNicknameValid && isBirthYearSelected && (userGender != null),
-            enabled = true,
-            onClick = onNext,
+            enabled = isNicknameValid && (selectedYear != null) && (userGender != null),
+            onClick = {
+                viewModel.setUserNicknameBirthGender(
+                    nickname = userNickname,
+                    birth = selectedYear,
+                    gender = userGender
+                )
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
@@ -398,7 +407,8 @@ fun RegisterStep4ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

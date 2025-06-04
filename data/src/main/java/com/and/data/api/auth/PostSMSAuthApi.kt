@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface PostSMSAuthApi {
 
     @POST("/auth/SMS")
-    fun postSMSAuth(
+    suspend fun postSMSAuth(
         @Body request: PostSMSAuthRequestDto
-    ): Unit
+    ): String
 }

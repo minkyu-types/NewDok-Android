@@ -19,7 +19,7 @@ class UserMapperImpl @Inject constructor(): UserMapper {
             input.birthYear,
             input.gender.value,
             createdAt = input.createdAt,
-            input.industryId,
+            input.industryId ?: -1,
             input.interests.map {
                 UserInterestDto(
                     input.id,

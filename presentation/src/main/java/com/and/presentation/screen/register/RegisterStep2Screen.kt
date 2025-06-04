@@ -48,7 +48,7 @@ fun RegisterStep2Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: RegisterViewModel
 ) {
     var userId by remember { mutableStateOf("") }
     val isIdValid = userId.length in ID_MIN_LENGTH..ID_MAX_LENGTH
@@ -176,7 +176,10 @@ fun RegisterStep2Screen(
 
         ConditionalNextButton(
             enabled = !isIdDuplicated,
-            onClick = onNext,
+            onClick = {
+                viewModel.setUserId(userId)
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
@@ -196,6 +199,7 @@ fun RegisterStep2ScreenPreview() {
             onBack = {
 
             },
+            viewModel = hiltViewModel()
         )
     }
 }

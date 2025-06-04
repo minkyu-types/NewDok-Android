@@ -29,5 +29,5 @@ interface UserRepository {
         nickname: String,
         birthYear: String,
         gender: Gender
-    ): User
+    ): String
 }

@@ -5,10 +5,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.and.domain.model.type.Gender
 import com.and.domain.usecase.auth.RequestSMSAuthUseCase
 import com.and.domain.usecase.auth.RequestSMSAuthUseCase.RequestSMSAuthParams
 import com.and.domain.usecase.user.CheckUserIdDuplicationUseCase
 import com.and.domain.usecase.user.CheckUserIdDuplicationUseCase.GetUserIdDuplicationParams
+import com.and.domain.usecase.user.LoginParams
+import com.and.domain.usecase.user.LoginUseCase
+import com.and.domain.usecase.user.SignUpUseCase
+import com.and.presentation.model.UserModel
+import com.and.presentation.model.UserRegisterModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +25,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val getSMSAuthUseCase: RequestSMSAuthUseCase,
-    private val getCheckUserIdDuplicationUseCase: CheckUserIdDuplicationUseCase
+    private val getCheckUserIdDuplicationUseCase: CheckUserIdDuplicationUseCase,
+    private val signUpUseCase: SignUpUseCase,
+    private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
     private val _authCodeRequestedState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
@@ -27,6 +35,8 @@ class RegisterViewModel @Inject constructor(
 
     private val _idDuplicationState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
     val idDuplicationState: State<UiState<Boolean>> = _idDuplicationState
+
+    private var userRegisterModel = UserRegisterModel()
 
     fun requestSmsAuthCode(
         phoneNumber: String
@@ -50,6 +60,14 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun setUserPhoneNumber(
+        phoneNumber: String
+    ) {
+        userRegisterModel = userRegisterModel.copy(
+            phoneNumber = phoneNumber
+        )
+    }
+
     fun expireAuthCodeTimer() {
         _authCodeRequestedState.value = UiState.Idle
     }
@@ -69,7 +87,6 @@ class RegisterViewModel @Inject constructor(
             }.onSuccess { result ->
                 _idDuplicationState.value = UiState.Error("이미 존재하는 아이디")
             }.onFailure { error ->
-                Log.e("RegisterViewModel", error.message ?: "오류")
                 _idDuplicationState.value = UiState.Success(true)
             }
         }
@@ -77,5 +94,59 @@ class RegisterViewModel @Inject constructor(
 
     fun resetIdDuplication() {
         _idDuplicationState.value = UiState.Idle
+    }
+
+    fun setUserId(
+        loginId: String
+    ) {
+        userRegisterModel = userRegisterModel.copy(
+            loginId = loginId
+        )
+    }
+
+    fun setUserPassword(
+        password: String
+    ) {
+        userRegisterModel = userRegisterModel.copy(
+            password = password
+        )
+    }
+
+    fun setUserNicknameBirthGender(
+        nickname: String,
+        birth: String?,
+        gender: Gender?
+    ) {
+        userRegisterModel = userRegisterModel.copy(
+            nickname = nickname,
+            birthYear = requireNotNull(birth),
+            gender = requireNotNull(gender),
+        )
+    }
+
+    fun signUp() {
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                signUpUseCase(
+                    SignUpUseCase.SignUpParam(
+                        loginId = userRegisterModel.loginId,
+                        password = userRegisterModel.password,
+                        phoneNumber = userRegisterModel.phoneNumber,
+                        nickname = userRegisterModel.nickname,
+                        birthYear = userRegisterModel.birthYear,
+                        gender = requireNotNull(userRegisterModel.gender),
+                    )
+                )
+            }.onSuccess { result ->
+                loginUseCase(
+                    LoginParams(
+                        userRegisterModel.loginId,
+                        userRegisterModel.password
+                    )
+                )
+            }.onFailure { error ->
+                error.printStackTrace()
+            }
+        }
     }
 }

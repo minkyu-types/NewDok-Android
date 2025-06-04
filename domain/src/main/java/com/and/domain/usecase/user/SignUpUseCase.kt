@@ -1,17 +1,16 @@
 package com.and.domain.usecase.user
 
-import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.repository.UserRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.SignUpUseCase.SignUpParam
+import javax.inject.Inject
 
-class SignUpUseCase(
+class SignUpUseCase @Inject constructor(
     private val repository: UserRepository
-): BaseSuspendUseCase<SignUpParam, User> {
+): BaseSuspendUseCase<SignUpParam, String> {
 
-    override suspend fun invoke(parameter: SignUpParam): User {
+    override suspend fun invoke(parameter: SignUpParam): String {
         return repository.signUp(
             parameter.loginId,
             parameter.password,
