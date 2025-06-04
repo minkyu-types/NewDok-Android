@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.newsletter.member.GetRecommendedNewsLettersUseCase
-import com.and.domain.usecase.newsletter.member.UpdateSubscriptionUseCase
 import com.and.domain.util.ApiException
 import com.and.presentation.mapper.RecommendedNewsLetterMapper
 import com.and.presentation.model.RecommendedNewsLetterModel
@@ -14,7 +13,6 @@ import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,5 +1,6 @@
 package com.and.presentation.screen.mypage
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,17 +13,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.Gender
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
@@ -35,6 +44,7 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 import java.time.Instant
 
@@ -47,31 +57,51 @@ fun MyPageScreen(
     onFeedbackClick: () -> Unit,
     onTermClick: () -> Unit,
     onVersionClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.userInfoUiState
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        MyPageProfileArea(
-            user = UserModel(
-                1,
-                "",
-                "",
-                "lion9638@naver.com",
-                "닉네임최대열두글자",
-                "",
-                Gender.MALE,
-                "",
-                "",
-                "",
-                Instant.now(),
-                0,
-                emptyList(),
-            ),
-            onProfileEditClick = onProfileEditClick
-        )
+        when (uiState) {
+            is UiState.Idle, UiState.Loading -> {
+                MyPageProfileArea(
+                    user = UserModel(
+                        -1,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        Gender.MALE,
+                        "",
+                        "",
+                        "",
+                        Instant.now(),
+                        -1,
+                        emptyList(),
+                    ),
+                    onProfileEditClick = onProfileEditClick
+                )
+            }
+
+            is UiState.Success -> {
+                val user: UserModel = (uiState as UiState.Success).data
+                MyPageProfileArea(
+                    user = user,
+                    onProfileEditClick = onProfileEditClick
+                )
+            }
+            else -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+        }
         MyPageServiceArea(
             onAccountManageClick,
             onAlarmSettingClick
@@ -87,11 +117,14 @@ fun MyPageScreen(
 }
 
 @Composable
-fun MyPageProfileArea(
+private fun MyPageProfileArea(
     user: UserModel,
     onProfileEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,7 +154,7 @@ fun MyPageProfileArea(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        // 구독 이메일 팝업 표시
+                        // 팝업 다이얼로그 표시
                     }
             )
         }
@@ -135,17 +168,26 @@ fun MyPageProfileArea(
             Row (
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_line_copy),
-                    tint = Primary_Normal,
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = user.subscribeEmail,
                     style = Body2Normal,
                     fontWeight = FontWeight.Normal,
                     color = Caption_Heavy
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_line_copy),
+                    tint = Primary_Normal,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50.dp))
+                        .clickable {
+                            clipboardManager.setText(AnnotatedString(user.subscribeEmail))
+                            Toast
+                                .makeText(context, "구독 이메일이 복사되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 )
             }
         }
@@ -238,7 +280,7 @@ fun MyPageCustomerServiceArea(
     showBackground = true
 )
 @Composable
-fun MyPageScreenPreview() {
+private fun MyPageScreenPreview() {
     DefaultWhiteTheme {
         MyPageScreen(
             onProfileEditClick = {
@@ -261,7 +303,7 @@ fun MyPageScreenPreview() {
             },
             onVersionClick = {
 
-            }
+            },
         )
     }
 }

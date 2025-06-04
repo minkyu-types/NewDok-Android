@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.and.domain.model.NewsLetter
 import com.and.domain.usecase.newsletter.member.GetNewsLetterByIdUseCase
 import com.and.domain.usecase.newsletter.member.UpdateSubscriptionUseCase
 import com.and.domain.util.ApiException
@@ -13,15 +12,9 @@ import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class NewsLetterDetailViewModel @Inject constructor(
