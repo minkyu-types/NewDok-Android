@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 interface PatchUserIndustryApi {
 
     @PATCH("/users/mypage/industry")
-    fun patchUserIndustry(
+    suspend fun patchUserIndustry(
         @Body request: PatchUserIndustryRequestDto
-    ): Response<PatchUserIndustryResponseDto>
+    ): PatchUserIndustryResponseDto
 }

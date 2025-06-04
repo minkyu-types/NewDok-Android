@@ -40,7 +40,7 @@ fun InvestigationStep1Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: InvestigationViewModel = hiltViewModel()
+    viewModel: InvestigationViewModel
 ) {
     var selectedIndustry: IndustryCategory? by rememberSaveable { mutableStateOf(null) }
 
@@ -81,7 +81,7 @@ fun InvestigationStep1Screen(
         ConditionalNextButton(
             enabled = (selectedIndustry != null),
             onClick = {
-                viewModel.updateIndustry(selectedIndustry!!)
+                viewModel.updateIndustry(requireNotNull(selectedIndustry))
                 onNext()
             },
             modifier = Modifier.padding(24.dp),
@@ -136,7 +136,8 @@ fun InvestigationStep1ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

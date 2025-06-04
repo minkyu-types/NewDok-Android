@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 interface PatchUserInterestsApi {
 
     @PATCH("/users/mypage/interest")
-    fun patchUserInterests(
+    suspend fun patchUserInterests(
         @Body request: PatchUserInterestRequestDto
-    ): Response<PatchUserInterestResponseDto>
+    ): PatchUserInterestResponseDto
 }

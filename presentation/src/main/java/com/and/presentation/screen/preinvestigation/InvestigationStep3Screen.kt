@@ -22,6 +22,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
@@ -52,6 +55,7 @@ import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Neutral90
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 
 @Composable
@@ -59,10 +63,21 @@ fun InvestigationStep3Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     onSubscribeClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: InvestigationViewModel
 ) {
-    val coroutineScope = rememberCoroutineScope()
     var bottomSheetOpen by remember { mutableStateOf(false) }
+    val uiState by viewModel.preInvestigateNewsLettersUiState
+    val newsLetters: List<NewsLetterModel> = when (uiState) {
+        is UiState.Success -> (uiState as UiState.Success).data
+        else -> emptyList()
+    }
+    val nickname by viewModel.nickname.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getPreInvestigationNewsLetters()
+        viewModel.loadUserInfo()
+    }
 
     Column(
         modifier = Modifier
@@ -76,7 +91,7 @@ fun InvestigationStep3Screen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = stringResource(R.string.pre_investigation_curation_title, "%닉네임%"),
+                text = stringResource(R.string.pre_investigation_curation_title, nickname ?: ""),
                 style = Heading2,
                 fontWeight = FontWeight.Bold,
                 color = Caption_Heavy,
@@ -92,7 +107,7 @@ fun InvestigationStep3Screen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             InvestigationNewLetterList(
-                emptyList(),
+                newsLetters,
                 onSubscribeClick = {
                     onSubscribeClick()
                     // 사용자 구독용 이메일을 클립보드에 복사한 후
@@ -268,7 +283,8 @@ fun InvestigationStep3ScreenPreview() {
             },
             onSubscribeClick = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }
