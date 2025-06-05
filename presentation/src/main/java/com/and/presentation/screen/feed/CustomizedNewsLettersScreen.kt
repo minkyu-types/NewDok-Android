@@ -1,5 +1,6 @@
 package com.and.presentation.screen.feed
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
@@ -21,7 +22,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -32,7 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,7 +64,15 @@ fun CustomizedNewsLettersScreen(
     modifier: Modifier = Modifier,
     viewModel: CustomizedNewsLettersViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.customizedNewsLettersUiState
+
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Error) {
+            val message = (uiState as UiState.Error).message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     when (uiState) {
         is UiState.Idle, is UiState.Loading -> {
@@ -78,23 +86,7 @@ fun CustomizedNewsLettersScreen(
         }
 
         is UiState.Error -> {
-            val message = (uiState as UiState.Error).message
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "오류가 발생했습니다.", style = Body1Normal, color = Color.Red)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = message ?: "알 수 없는 오류", style = Body2Normal)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.getCustomizedNewsLetters() }) {
-                        Text("다시 시도")
-                    }
-                }
-            }
+            Box(modifier = modifier.fillMaxSize())
         }
 
         is UiState.Success<*> -> {
