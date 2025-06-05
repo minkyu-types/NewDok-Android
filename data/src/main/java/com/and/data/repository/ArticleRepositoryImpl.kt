@@ -50,7 +50,7 @@ class ArticleRepositoryImpl @Inject constructor(
     override suspend fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles {
         return handleApiCall(
             apiCall = {
-                getBookmarkedArticlesApi.getBookmarkedArticles(interest.value)
+                getBookmarkedArticlesApi.getBookmarkedArticles(interest.id.toString())
             },
             mapper = { response ->
                 bookmarkedArticlesMapper.mapToDomain(response.data)
