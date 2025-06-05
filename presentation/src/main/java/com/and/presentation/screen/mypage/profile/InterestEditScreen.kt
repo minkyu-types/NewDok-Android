@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.InvestigationInterestList
@@ -27,7 +28,8 @@ import com.and.presentation.ui.Headline
 @Composable
 fun InterestEditScreen(
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProfileEditViewModel
 ) {
     val prevInterests = rememberSaveable { mutableStateOf(listOf(InterestCategory.INTEREST_CONTENTS, InterestCategory.INTEREST_TREND)) }
     val selectedInterests = rememberSaveable { mutableStateOf(emptySet<InterestCategory>()) }
@@ -74,7 +76,7 @@ fun InterestEditScreen(
         ConditionalNextButton(
             enabled = (prevInterests != selectedInterests),
             onClick = {
-                // 관심사 변경 적용 후 뒤로가기
+                viewModel.updateInterests(interests = selectedInterests.value)
                 onBack()
             },
             buttonText = stringResource(R.string.edit),
@@ -95,7 +97,8 @@ fun InterestEditScreenPreview() {
         InterestEditScreen(
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

@@ -2,10 +2,10 @@ package com.and.domain.usecase.user
 
 import com.and.domain.repository.UserRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.user.UpdateUserNicknameUseCase.UpdateUserNickNameParams
+import javax.inject.Inject
 
-class UpdateUserNicknameUseCase(
+class UpdateUserNicknameUseCase @Inject constructor(
     private val repository: UserRepository
 ): BaseSuspendUseCase<UpdateUserNickNameParams, Boolean> {
 

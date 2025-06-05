@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.IndustryCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.IndustryDropDown
@@ -26,7 +27,8 @@ import com.and.presentation.ui.DefaultWhiteTheme
 fun IndustryEditScreen(
     industry: IndustryCategory?,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProfileEditViewModel
 ) {
     var currIndustry: IndustryCategory? by remember { mutableStateOf(industry) }
 
@@ -50,7 +52,7 @@ fun IndustryEditScreen(
         ConditionalNextButton(
             enabled = (industry != null),
             onClick = {
-                // 닉네임 변경 후 뒤로 가기
+                viewModel.updateIndustry(requireNotNull(industry))
                 onBack()
             },
             buttonText = stringResource(R.string.edit),
@@ -71,7 +73,8 @@ fun IndustryEditScreenPreview() {
             industry = null,
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel<ProfileEditViewModel>()
         )
     }
 }

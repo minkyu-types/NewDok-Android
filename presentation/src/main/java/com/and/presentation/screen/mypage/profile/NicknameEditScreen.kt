@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.textfield.HintErrorTextField
@@ -32,7 +33,8 @@ import com.and.presentation.util.nicknameValidation
 @Composable
 fun NicknameEditScreen(
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProfileEditViewModel
 ) {
     var nickname by remember { mutableStateOf("김미느규") }
     val isNicknameValid = nickname.nicknameValidation()
@@ -89,7 +91,7 @@ fun NicknameEditScreen(
         ConditionalNextButton(
             enabled = isNicknameValid,
             onClick = {
-                // 닉네임 변경 후 뒤로 가기
+                viewModel.updateNickName(nickname)
                 onBack()
             },
             buttonText = stringResource(R.string.edit),
@@ -109,7 +111,8 @@ fun NicknameEditScreenPreview() {
         NicknameEditScreen(
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }
