@@ -53,7 +53,7 @@ class InvestigationViewModel @Inject constructor(
     fun updateInterests(
         interests: Set<InterestCategory>
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             updateInterestsUseCase(
                 UpdateUserInterestsUseCase.UpdateUserInterestsParams(
                     interests
@@ -66,7 +66,7 @@ class InvestigationViewModel @Inject constructor(
         industry: IndustryCategory
     ) {
         selectedIndustry = industry
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             updateIndustryUseCase(
                 UpdateUserIndustryUseCase.UpdateUserIndustryParams(
                     industry.id
@@ -89,7 +89,7 @@ class InvestigationViewModel @Inject constructor(
     }
 
     fun getPreInvestigationNewsLetters() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _preInvestigateNewsLettersUiState.value = UiState.Loading
 
             runCatching {

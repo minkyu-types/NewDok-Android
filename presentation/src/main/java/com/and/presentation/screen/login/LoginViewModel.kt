@@ -27,17 +27,18 @@ class LoginViewModel @Inject constructor(
         id: String,
         password: String
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
+        viewModelScope.launch {
+            runCatching {
                 loginUseCase(
                     LoginParams(
                         loginId = id,
                         password = password
                     )
                 )
+            }.onSuccess { result ->
                 _loginSuccess.value = true
-            } catch (e: ApiException) {
-                e.printStackTrace()
+            }.onFailure { error ->
+                error.printStackTrace()
                 _loginSuccess.value = false
             }
         }

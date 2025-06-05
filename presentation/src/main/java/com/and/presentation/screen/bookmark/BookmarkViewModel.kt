@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,53 +27,59 @@ class BookmarkViewModel @Inject constructor(
     var selectedInterests by mutableStateOf(setOf(InterestCategory.INTEREST_ALL))
         private set
 
-    private val _interestedArticlesUiState = mutableStateOf<UiState<BookmarkedArticlesModel>>(UiState.Idle)
-    val interestedArticlesUiState: State<UiState<BookmarkedArticlesModel>> = _interestedArticlesUiState
+    private val _interestedArticlesUiState =
+        mutableStateOf<UiState<BookmarkedArticlesModel>>(UiState.Idle)
+    val interestedArticlesUiState: State<UiState<BookmarkedArticlesModel>> =
+        _interestedArticlesUiState
 
     init {
         fetchAndMergeBookmarkedArticles()
     }
 
     private fun fetchAndMergeBookmarkedArticles() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _interestedArticlesUiState.value = UiState.Loading
 
-            try {
-                val interestsToFetch = if (selectedInterests == setOf(InterestCategory.INTEREST_ALL)) {
-                    listOf(InterestCategory.INTEREST_ALL)
-                } else {
-                    selectedInterests.toList()
-                }
+            runCatching {
+                supervisorScope {
+                    val interestsToFetch =
+                        if (selectedInterests == setOf(InterestCategory.INTEREST_ALL)) {
+                            listOf(InterestCategory.INTEREST_ALL)
+                        } else {
+                            selectedInterests.toList()
+                        }
 
-                val deferredResults = interestsToFetch.map { interest ->
-                    async {
-                        getBookmarkedArticlesUseCase(
-                            GetBookmarkedArticlesUseCase.GetBookmarkedArticlesParams(
-                                interest
+                    val deferredResults = interestsToFetch.map { interest ->
+                        async {
+                            getBookmarkedArticlesUseCase(
+                                GetBookmarkedArticlesUseCase.GetBookmarkedArticlesParams(
+                                    interest
+                                )
                             )
-                        )
+                        }
                     }
-                }
 
-                val results = deferredResults.awaitAll()
-                val mergedResults = results
-                    .map {
-                        bookmarkedArticlesMapper.mapToPresentation(it)
-                    }
-                val finalResults = BookmarkedArticlesModel(
-                    totalAmount = mergedResults.sumOf { it.totalAmount },
-                    bookmarkForMonth = mergedResults.flatMap { it.bookmarkForMonth }
-                )
-                _interestedArticlesUiState.value = UiState.Success(finalResults)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _interestedArticlesUiState.value = UiState.Error(e.message ?: "")
+                    val results = deferredResults.awaitAll()
+                    val mergedResults = results
+                        .map {
+                            bookmarkedArticlesMapper.mapToPresentation(it)
+                        }
+                    BookmarkedArticlesModel(
+                        totalAmount = mergedResults.sumOf { it.totalAmount },
+                        bookmarkForMonth = mergedResults.flatMap { it.bookmarkForMonth }
+                    )
+                }
+            }.onSuccess { result ->
+                _interestedArticlesUiState.value = UiState.Success(result)
+            }.onFailure { error ->
+                error.printStackTrace()
+                _interestedArticlesUiState.value = UiState.Error(error.message ?: "")
             }
         }
     }
 
     fun toggleInterest(interest: InterestCategory) {
-        selectedInterests = when(interest) {
+        selectedInterests = when (interest) {
             InterestCategory.INTEREST_ALL -> setOf(InterestCategory.INTEREST_ALL)
             else -> {
                 val withoutAll = selectedInterests - InterestCategory.INTEREST_ALL

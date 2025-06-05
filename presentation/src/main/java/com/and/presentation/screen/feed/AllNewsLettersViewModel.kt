@@ -17,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class AllNewsLettersViewModel @Inject constructor(
     private val getAllNewsLettersUseCase: GetNewsLettersUseCase,
     private val newsLetterSubscriptionMapper: NewsLetterSubscriptionMapper
-): ViewModel() {
+) : ViewModel() {
     private val _sortFlow = MutableStateFlow(SortCategory.POPULARITY)
     private val _industriesFlow = MutableStateFlow(listOf(IndustryCategory.DEFAULT))
     private val _daysFlow = MutableStateFlow(listOf(PublicationDay.MONDAY))
@@ -36,9 +37,11 @@ class AllNewsLettersViewModel @Inject constructor(
     fun setSort(sort: SortCategory) {
         _sortFlow.value = sort
     }
+
     fun setIndustries(list: List<IndustryCategory>) {
         _industriesFlow.value = list
     }
+
     fun setDays(list: List<PublicationDay>) {
         _daysFlow.value = list
     }
@@ -62,10 +65,15 @@ class AllNewsLettersViewModel @Inject constructor(
             }
             emit(UiState.Success(aggregated))
         }.flowOn(Dispatchers.IO)
+            .catch { error ->
+                error.printStackTrace()
+                emit(UiState.Error(error.message ?: ""))
+            }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = UiState.Idle
     )
-    val newsLettersUiState: StateFlow<UiState<List<NewsLetterSubscriptionModel>>> = _newsLetterUiState
+    val newsLettersUiState: StateFlow<UiState<List<NewsLetterSubscriptionModel>>> =
+        _newsLetterUiState
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.user.DeleteUserAccessTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +18,7 @@ class AccountManageViewModel @Inject constructor(
     val logoutResult: State<Boolean?> = _logoutResult
 
     fun clearUserData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 deleteUserAccessTokenUseCase(Unit)
             }.onSuccess { result ->

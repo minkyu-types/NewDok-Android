@@ -28,7 +28,7 @@ class NewsLetterDetailViewModel @Inject constructor(
     fun getNewsLetterDetail(
         id: Int
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _newsLetterDetailUiState.value = UiState.Loading
             
             runCatching {
@@ -54,13 +54,11 @@ class NewsLetterDetailViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) {
-                    updateSubscriptionUseCase(
-                        UpdateSubscriptionUseCase.UpdateSubscriptionParams(
-                            newsLetterId, wasSubscribed
-                        )
+                updateSubscriptionUseCase(
+                    UpdateSubscriptionUseCase.UpdateSubscriptionParams(
+                        newsLetterId, wasSubscribed
                     )
-                }
+                )
             }.onSuccess { result ->
 
             }.onFailure { error ->

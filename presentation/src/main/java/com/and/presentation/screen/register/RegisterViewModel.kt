@@ -43,13 +43,11 @@ class RegisterViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) {
-                    getSMSAuthUseCase(
-                        RequestSMSAuthParams(
-                            phoneNumber = phoneNumber
-                        )
+                getSMSAuthUseCase(
+                    RequestSMSAuthParams(
+                        phoneNumber = phoneNumber
                     )
-                }
+                )
             }.onSuccess { result ->
                 _authCodeRequestedState.value = UiState.Success(true)
             }.onFailure { error ->
@@ -77,13 +75,11 @@ class RegisterViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) {
-                    getCheckUserIdDuplicationUseCase(
-                        GetUserIdDuplicationParams(
-                            loginId = loginId
-                        )
+                getCheckUserIdDuplicationUseCase(
+                    GetUserIdDuplicationParams(
+                        loginId = loginId
                     )
-                }
+                )
             }.onSuccess { result ->
                 _idDuplicationState.value = UiState.Error("이미 존재하는 아이디")
             }.onFailure { error ->
@@ -125,7 +121,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun signUp() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 signUpUseCase(
                     SignUpUseCase.SignUpParam(

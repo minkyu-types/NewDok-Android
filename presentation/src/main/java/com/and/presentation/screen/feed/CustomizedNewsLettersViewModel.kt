@@ -27,11 +27,15 @@ class CustomizedNewsLettersViewModel @Inject constructor(
     val customizedNewsLettersUiState: State<UiState<RecommendedNewsLettersModel>> =
         _customizedNewsLettersUiState
 
+    companion object {
+        private const val ERROR_MESSAGE_CUSTOMIZED_NEWSLETTERS = "뉴스레터 조회 중 오류가 발생했습니다"
+    }
+
     init {
         getCustomizedNewsLetters()
     }
 
-    fun getCustomizedNewsLetters() {
+    private fun getCustomizedNewsLetters() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 getRecommendedNewsLettersUseCase(Unit)
@@ -49,8 +53,7 @@ class CustomizedNewsLettersViewModel @Inject constructor(
                 _customizedNewsLettersUiState.value = UiState.Success(data)
             }.onFailure { error ->
                 error.printStackTrace()
-                val message = (error as? ApiException)?.message ?: error.localizedMessage
-                _customizedNewsLettersUiState.value = UiState.Error(message)
+                _customizedNewsLettersUiState.value = UiState.Error(ERROR_MESSAGE_CUSTOMIZED_NEWSLETTERS)
             }
         }
     }

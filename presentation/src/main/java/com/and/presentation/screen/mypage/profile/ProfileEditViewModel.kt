@@ -4,7 +4,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.and.domain.model.type.IndustryCategory
+import com.and.domain.model.type.InterestCategory
 import com.and.domain.usecase.user.GetUserInfoUseCase
+import com.and.domain.usecase.user.UpdateUserIndustryUseCase
+import com.and.domain.usecase.user.UpdateUserInterestsUseCase
+import com.and.domain.usecase.user.UpdateUserNicknameUseCase
 import com.and.presentation.mapper.UserMapper
 import com.and.presentation.model.UserModel
 import com.and.presentation.util.UiState
@@ -16,6 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val updateInterestsUseCase: UpdateUserInterestsUseCase,
+    private val updateIndustryUseCase: UpdateUserIndustryUseCase,
+    private val updateUserNicknameUseCase: UpdateUserNicknameUseCase,
     private val userMapper: UserMapper
 ): ViewModel() {
 
@@ -27,7 +35,7 @@ class ProfileEditViewModel @Inject constructor(
     }
 
     private fun getUserInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 getUserInfoUseCase(Unit)
             }.onSuccess { result ->
@@ -36,6 +44,42 @@ class ProfileEditViewModel @Inject constructor(
             }.onFailure { error ->
                 error.printStackTrace()
             }
+        }
+    }
+
+    fun updateInterests(
+        interests: Set<InterestCategory>
+    ) {
+        viewModelScope.launch {
+            updateInterestsUseCase(
+                UpdateUserInterestsUseCase.UpdateUserInterestsParams(
+                    interests
+                )
+            )
+        }
+    }
+
+    fun updateIndustry(
+        industry: IndustryCategory
+    ) {
+        viewModelScope.launch {
+            updateIndustryUseCase(
+                UpdateUserIndustryUseCase.UpdateUserIndustryParams(
+                    industry.id
+                )
+            )
+        }
+    }
+
+    fun updateNickName(
+        nickname: String
+    ) {
+        viewModelScope.launch {
+            updateUserNicknameUseCase(
+                UpdateUserNicknameUseCase.UpdateUserNickNameParams(
+                    nickname = nickname
+                )
+            )
         }
     }
 }

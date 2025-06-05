@@ -38,7 +38,7 @@ class SubscriptionViewModel @Inject constructor(
         newsLetterId: Int,
         wasSubscribed: Boolean
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 updateSubscriptionUseCase(
                     UpdateSubscriptionUseCase.UpdateSubscriptionParams(
@@ -62,10 +62,10 @@ class SubscriptionViewModel @Inject constructor(
     }
 
     fun getSubscribedNewsLetters() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _subscribedUiState.value = UiState.Loading
 
-            kotlin.runCatching {
+            runCatching {
                 val newsLetters = getSubscribedNewsLettersUseCase(Unit)
                 newsLetters.map {
                     briefNewsLetterMapper.mapToPresentation(it)
@@ -81,10 +81,10 @@ class SubscriptionViewModel @Inject constructor(
     }
 
     fun getUnsubscribedNewsLetters() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _subscribedUiState.value = UiState.Loading
 
-            kotlin.runCatching {
+            runCatching {
                 val newsLetters = getUnSubscribedNewsLettersUseCase(Unit)
                 newsLetters.map {
                     briefNewsLetterMapper.mapToPresentation(it)
