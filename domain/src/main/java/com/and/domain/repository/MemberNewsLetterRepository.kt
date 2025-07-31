@@ -23,4 +23,5 @@ interface MemberNewsLetterRepository {
     suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter>
     suspend fun getUnSubscribedNewsLetters(): List<BriefNewsLetter>
     suspend fun updateSubscription(newsLetterId: Int, wasSubscribed: Boolean)
+    suspend fun getSubscribedNewsLettersCount(): Int
 }

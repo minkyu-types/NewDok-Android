@@ -5,6 +5,7 @@ import com.and.data.api.newsletter.GetMemberNewsLettersApi
 import com.and.data.api.newsletter.GetRecommendedNewsLettersApi
 import com.and.data.api.newsletter.GetSearchedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersApi
+import com.and.data.api.newsletter.GetSubscribedNewsLettersCountApi
 import com.and.data.api.newsletter.GetUnSubscribedNewsLettersApi
 import com.and.data.api.newsletter.PatchSubscriptionPauseApi
 import com.and.data.api.newsletter.PatchSubscriptionResumeApi
@@ -36,6 +37,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     private val briefNewsLetterMapper: BriefNewsLetterMapper,
     private val newsLetterDetailMapper: NewsLetterDetailMapper,
     private val recommendedNewsLetterMapper: RecommendedNewsLetterMapper,
+    private val getSubscribedNewsLettersCountApi: GetSubscribedNewsLettersCountApi
 ): MemberNewsLetterRepository, BaseRepository() {
 
     companion object {
@@ -155,5 +157,16 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
                 )
             )
         }
+    }
+
+    override suspend fun getSubscribedNewsLettersCount(): Int {
+        return handleApiCall(
+            apiCall = {
+                getSubscribedNewsLettersCountApi.getSubscribedNewsLetters()
+            },
+            mapper = { response ->
+                response.count
+            }
+        )
     }
 }

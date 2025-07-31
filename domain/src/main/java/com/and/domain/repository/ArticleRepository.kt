@@ -13,4 +13,5 @@ interface ArticleRepository {
     suspend fun searchArticles(keyword: String): List<Article>
     suspend fun getTodayArticles(): List<Article>
     suspend fun updateBookmark(articleId: Int)
+    suspend fun getReceivedArticlesCount(): Int
 }

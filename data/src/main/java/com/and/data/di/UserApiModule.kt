@@ -1,5 +1,7 @@
 package com.and.data.di
 
+import com.and.data.api.article.GetReceivedArticlesCountApi
+import com.and.data.api.newsletter.GetSubscribedNewsLettersCountApi
 import com.and.data.api.user.DeleteUserApi
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
@@ -70,4 +72,12 @@ object UserApiModule {
     @Provides
     @Singleton
     fun providesDeleteUserApi(retrofit: Retrofit): DeleteUserApi = retrofit.create(DeleteUserApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetSubscribedNewsLettersCountApi(retrofit: Retrofit): GetSubscribedNewsLettersCountApi = retrofit.create(GetSubscribedNewsLettersCountApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetReceivedArticlesCountApi(retrofit: Retrofit): GetReceivedArticlesCountApi = retrofit.create(GetReceivedArticlesCountApi::class.java)
 }
