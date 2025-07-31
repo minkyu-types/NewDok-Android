@@ -42,7 +42,7 @@ fun InvestigationStep1Screen(
     modifier: Modifier = Modifier,
     viewModel: InvestigationViewModel
 ) {
-    var selectedIndustry: IndustryCategory? by rememberSaveable { mutableStateOf(null) }
+    var selectedIndustry: IndustryCategory by rememberSaveable { mutableStateOf(IndustryCategory.DEFAULT) }
 
     Column(
         modifier = Modifier
@@ -79,9 +79,9 @@ fun InvestigationStep1Screen(
             )
         }
         ConditionalNextButton(
-            enabled = (selectedIndustry != null),
+            enabled = (selectedIndustry != IndustryCategory.DEFAULT),
             onClick = {
-                viewModel.updateIndustry(requireNotNull(selectedIndustry))
+                viewModel.updateIndustry(selectedIndustry)
                 onNext()
             },
             modifier = Modifier.padding(24.dp),
