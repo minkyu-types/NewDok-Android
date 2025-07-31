@@ -27,10 +27,9 @@ import com.and.presentation.screen.mypage.MyPageItem
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
-import kotlin.math.log
 
 @Composable
-fun AccountManagerScreen(
+fun AccountManageScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier,
@@ -115,7 +114,7 @@ fun AccountManagerScreen(
 @Composable
 fun AccountManagerScreenPreview() {
     DefaultWhiteTheme {
-        AccountManagerScreen(
+        AccountManageScreen(
             onBack = {
 
             },
