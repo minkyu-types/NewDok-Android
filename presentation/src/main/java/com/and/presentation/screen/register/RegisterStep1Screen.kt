@@ -100,6 +100,9 @@ fun RegisterStep1Screen(
                 onPhoneNumberChange = { phoneNum->
                     phoneNumber = phoneNum
                 },
+                onAuthCodeChange = { code ->
+                    authCode = code
+                },
                 startAuthCodeTimer = isAuthCodeStart,
                 onAuthCodeExpired = {
                     viewModel.expireAuthCodeTimer()
@@ -126,6 +129,7 @@ fun PhoneAuthView(
     phoneNumber: String,
     authCode: String,
     onPhoneNumberChange: (String) -> Unit,
+    onAuthCodeChange: (String) -> Unit,
     startAuthCodeTimer: Boolean,
     onAuthCodeExpired: () -> Unit,
     onAuthButtonClick: (String) -> Unit,
@@ -145,6 +149,7 @@ fun PhoneAuthView(
 
     AuthTextField(
         value = authCode,
+        onValueChange = onAuthCodeChange,
         isError = false,
         startTimer = startAuthCodeTimer,
         onTimerExpire = onAuthCodeExpired
