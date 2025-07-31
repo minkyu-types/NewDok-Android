@@ -17,8 +17,8 @@ class AuthRepositoryImpl @Inject constructor(
                     )
                 )
             },
-            mapper = {
-
+            mapper = { response ->
+                response.code
             }
         )
     }
