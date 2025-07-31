@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +52,7 @@ fun RegisterStep2Screen(
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     var userId by remember { mutableStateOf("") }
     val isIdValid = userId.length in ID_MIN_LENGTH..ID_MAX_LENGTH
     val idDuplicateState by viewModel.idDuplicationState
@@ -59,6 +62,15 @@ fun RegisterStep2Screen(
     }
 
     val isDuplicateButtonClickable = isIdValid && (idDuplicateState !is UiState.Success)
+
+    LaunchedEffect(idDuplicateState) {
+        when (idDuplicateState) {
+            is UiState.Success -> {
+                keyboardController?.hide()
+            }
+            else -> {}
+        }
+    }
 
     Column(
         modifier = modifier
@@ -107,9 +119,6 @@ fun RegisterStep2Screen(
                 Button(
                     onClick = {
                         viewModel.checkUserIdDuplication(userId)
-                        // 중복이 아닌 경우 TextField border Primary0으로 색상 변경
-                        // 중복이라면 중복 확인 다시 클릭하도록 error 발생시켜주기
-
                     },
                     enabled = isDuplicateButtonClickable,
                     shape = RoundedCornerShape(4.dp),
