@@ -30,4 +30,5 @@ interface UserRepository {
         birthYear: String,
         gender: Gender
     ): String
+    suspend fun withdrawal(): Pair<Boolean, String>
 }

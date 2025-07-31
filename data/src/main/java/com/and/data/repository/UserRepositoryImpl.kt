@@ -1,6 +1,6 @@
 package com.and.data.repository
 
-import android.util.Log
+import com.and.data.api.user.DeleteUserApi
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
@@ -44,6 +44,7 @@ class UserRepositoryImpl @Inject constructor(
     private val updateUserPhoneNumberApi: PatchUserPhoneNumberApi,
     private val loginApi: PostLoginApi,
     private val signupApi: PostSignUpApi,
+    private val withdrawalApi: DeleteUserApi,
     private val userMapper: UserMapper,
     private val newsLetterMapper: NewsLetterMapper,
     private val authPreferenceStore: AuthPreferenceStore
@@ -275,6 +276,17 @@ class UserRepositoryImpl @Inject constructor(
             },
             mapper = { response ->
                 response.accessToken
+            }
+        )
+    }
+
+    override suspend fun withdrawal(): Pair<Boolean, String> {
+        return handleApiCall(
+            apiCall = {
+                withdrawalApi.deleteUser()
+            },
+            mapper = { response ->
+                Pair(true, response.message)
             }
         )
     }

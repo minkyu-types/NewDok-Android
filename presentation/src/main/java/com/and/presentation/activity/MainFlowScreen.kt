@@ -14,16 +14,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.and.domain.model.type.IndustryCategory
@@ -32,7 +35,6 @@ import com.and.presentation.screen.articledetail.ArticleDetailScreen
 import com.and.presentation.screen.bookmark.BookmarkScreen
 import com.and.presentation.screen.feed.FeedScreen
 import com.and.presentation.screen.home.HomeScreen
-import com.and.presentation.screen.mypage.account.AccountManagerScreen
 import com.and.presentation.screen.mypage.FaqScreen
 import com.and.presentation.screen.mypage.profile.IndustryEditScreen
 import com.and.presentation.screen.mypage.profile.InterestEditScreen
@@ -42,7 +44,11 @@ import com.and.presentation.screen.mypage.notification.NotificationSettingScreen
 import com.and.presentation.screen.mypage.profile.ProfileEditScreen
 import com.and.presentation.screen.mypage.ServiceFeedbackScreen
 import com.and.presentation.screen.mypage.TermsScreen
+import com.and.presentation.screen.mypage.account.AccountManageScreen
+import com.and.presentation.screen.mypage.account.WithdrawalStep2Screen
+import com.and.presentation.screen.mypage.profile.ProfileEditViewModel
 import com.and.presentation.screen.newsletterdetail.NewsLetterDetailScreen
+import com.and.presentation.screen.preinvestigation.InvestigationStep
 import com.and.presentation.screen.search.SearchScreen
 import com.and.presentation.screen.subscription.SubscriptionScreen
 import com.and.presentation.ui.Caption_Alternative
@@ -51,6 +57,7 @@ import com.and.presentation.ui.Primary_Normal
 
 @Composable
 fun MainFlowScreen(
+    rootNavController: NavController,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -160,9 +167,26 @@ fun MainFlowScreen(
             }
 
             composable("AccountManage") {
-                AccountManagerScreen(
+                AccountManageScreen(
                     onBack = { navController.popBackStack() },
                     onLogout = onLogout
+                )
+            }
+
+            composable("Withdrawal") {
+                WithdrawalStep2Screen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onWithdrawal = {
+                        rootNavController.navigate(ScreenFlow.LOGIN.route) {
+                            popUpTo(rootNavController.graph.startDestinationId) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    },
+                    viewModel = hiltViewModel()
                 )
             }
 
@@ -199,23 +223,46 @@ fun MainFlowScreen(
                 )
             }
 
-            composable("NicknameEdit") {
-                NicknameEditScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
+            navigation(
+                route = "profile_edit_graph",
+                startDestination = InvestigationStep.STEP_1_INDUSTRY.route
+            ) {
+                composable("NicknameEdit") { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("profile_edit_graph")
+                    }
+                    val viewModel: ProfileEditViewModel = hiltViewModel(parentEntry)
 
-            composable("IndustryEdit") {
-                IndustryEditScreen(
-                    industry = IndustryCategory.FASHION,
-                    onBack = { navController.popBackStack() }
-                )
-            }
+                    NicknameEditScreen(
+                        onBack = { navController.popBackStack() },
+                        viewModel = viewModel
+                    )
+                }
 
-            composable("InterestEdit") {
-                InterestEditScreen(
-                    onBack = { navController.popBackStack() }
-                )
+                composable("IndustryEdit") { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("profile_edit_graph")
+                    }
+                    val viewModel: ProfileEditViewModel = hiltViewModel(parentEntry)
+
+                    IndustryEditScreen(
+                        industry = IndustryCategory.FASHION,
+                        onBack = { navController.popBackStack() },
+                        viewModel = viewModel
+                    )
+                }
+
+                composable("InterestEdit") { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("profile_edit_graph")
+                    }
+                    val viewModel: ProfileEditViewModel = hiltViewModel(parentEntry)
+
+                    InterestEditScreen(
+                        onBack = { navController.popBackStack() },
+                        viewModel = viewModel
+                    )
+                }
             }
 
             composable("ArticleDetail") {

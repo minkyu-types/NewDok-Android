@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.topbar.TopBar
@@ -40,6 +41,8 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun WithdrawalStep2Screen(
     onBack: () -> Unit,
+    onWithdrawal: () -> Unit,
+    viewModel: WithdrawalViewModel,
     modifier: Modifier = Modifier
 ) {
     var isReason1Checked by remember { mutableStateOf(false) }
@@ -113,7 +116,8 @@ fun WithdrawalStep2Screen(
             ConditionalNextButton(
                 enabled = isAnyChecked,
                 onClick = {
-                    onBack()
+                    viewModel.withdrawal()
+                    onWithdrawal()
                 },
                 buttonText = stringResource(R.string.withdrawal_button),
             )
@@ -168,7 +172,11 @@ private fun WithdrawalStep2ScreenPreview() {
         WithdrawalStep2Screen(
             onBack = {
 
-            }
+            },
+            onWithdrawal = {
+
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

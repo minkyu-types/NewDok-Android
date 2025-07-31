@@ -1,5 +1,6 @@
 package com.and.data.di
 
+import com.and.data.api.user.DeleteUserApi
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
 import com.and.data.api.user.GetUserIdDuplicationApi
@@ -65,4 +66,8 @@ object UserApiModule {
     @Provides
     @Singleton
     fun providesGetUserInfoApi(retrofit: Retrofit): GetUserInfoApi = retrofit.create(GetUserInfoApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesDeleteUserApi(retrofit: Retrofit): DeleteUserApi = retrofit.create(DeleteUserApi::class.java)
 }
