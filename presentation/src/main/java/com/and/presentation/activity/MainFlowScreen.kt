@@ -45,6 +45,7 @@ import com.and.presentation.screen.mypage.profile.ProfileEditScreen
 import com.and.presentation.screen.mypage.ServiceFeedbackScreen
 import com.and.presentation.screen.mypage.TermsScreen
 import com.and.presentation.screen.mypage.account.AccountManageScreen
+import com.and.presentation.screen.mypage.account.WithdrawalStep1Screen
 import com.and.presentation.screen.mypage.account.WithdrawalStep2Screen
 import com.and.presentation.screen.mypage.profile.ProfileEditViewModel
 import com.and.presentation.screen.newsletterdetail.NewsLetterDetailScreen
@@ -169,11 +170,26 @@ fun MainFlowScreen(
             composable("AccountManage") {
                 AccountManageScreen(
                     onBack = { navController.popBackStack() },
-                    onLogout = onLogout
+                    onLogout = onLogout,
+                    onTryWithdrawal = {
+                        navController.navigate("WithdrawalStep1")
+                    }
                 )
             }
 
-            composable("Withdrawal") {
+            composable("WithdrawalStep1") {
+                WithdrawalStep1Screen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onNext = {
+                        navController.navigate("WithdrawalStep2")
+                    },
+                    viewModel = hiltViewModel()
+                )
+            }
+
+            composable("WithdrawalStep2") {
                 WithdrawalStep2Screen(
                     onBack = {
                         navController.popBackStack()

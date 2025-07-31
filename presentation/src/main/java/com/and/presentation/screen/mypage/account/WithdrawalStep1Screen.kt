@@ -25,9 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.topbar.TopBar
+import com.and.presentation.model.UserModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -37,13 +39,31 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 
 @Composable
 fun WithdrawalStep1Screen(
     onBack: () -> Unit,
+    onNext: () -> Unit,
+    viewModel: WithdrawalViewModel,
     modifier: Modifier = Modifier
 ) {
     var isChecked by remember { mutableStateOf(false) }
+    val userCountUiState by viewModel.userCountInfoUiState
+    val userInfoUiState by viewModel.userInfoUiState
+
+    val (newsCount, articleCount) = when (userCountUiState) {
+        is UiState.Success -> {
+            (userCountUiState as UiState.Success<Pair<Int, Int>>).data
+        }
+        else -> 0 to 0
+    }
+    val userNickname = when (userInfoUiState) {
+        is UiState.Success -> {
+            (userInfoUiState as UiState.Success<UserModel>).data.nickname
+        }
+        else -> ""
+    }
 
     Column(
         modifier = modifier
@@ -59,7 +79,7 @@ fun WithdrawalStep1Screen(
                 .padding(24.dp)
         ) {
             Text(
-                text = stringResource(R.string.withdrawal_title, "구구루빵뿜"),
+                text = stringResource(R.string.withdrawal_title, userNickname),
                 style = Heading2,
                 fontWeight = FontWeight.Bold,
                 color = Caption_Heavy,
@@ -74,8 +94,8 @@ fun WithdrawalStep1Screen(
             )
             Spacer(modifier = Modifier.height(48.dp))
             WithdrawalInfos(
-                newsLetterCount = 8,
-                articleCount = 21,
+                newsLetterCount = newsCount,
+                articleCount = articleCount,
             )
             Spacer(modifier = Modifier.height(48.dp))
             WithdrawalAgreeCheckbox(
@@ -88,7 +108,7 @@ fun WithdrawalStep1Screen(
             ConditionalNextButton(
                 enabled = isChecked,
                 onClick = {
-                    onBack()
+                    onNext()
                 },
                 buttonText = stringResource(R.string.continue_process),
             )
@@ -189,7 +209,11 @@ private fun WithdrawalStep1ScreenPreview() {
         WithdrawalStep1Screen(
             onBack = {
 
-            }
+            },
+            onNext = {
+
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

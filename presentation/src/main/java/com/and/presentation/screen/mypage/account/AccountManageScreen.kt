@@ -1,6 +1,7 @@
 package com.and.presentation.screen.mypage.account
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import com.and.presentation.ui.Label1
 fun AccountManageScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
+    onTryWithdrawal: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountManageViewModel = hiltViewModel()
 ) {
@@ -101,6 +103,10 @@ fun AccountManageScreen(
                 style = Label1.copy(textDecoration = TextDecoration.Underline),
                 fontWeight = FontWeight.Medium,
                 color = Caption_Neutral,
+                modifier = Modifier
+                    .clickable {
+                        onTryWithdrawal()
+                    }
             )
         }
     }
@@ -120,6 +126,9 @@ fun AccountManagerScreenPreview() {
             },
             onLogout = {
                 
+            },
+            onTryWithdrawal = {
+
             }
         )
     }

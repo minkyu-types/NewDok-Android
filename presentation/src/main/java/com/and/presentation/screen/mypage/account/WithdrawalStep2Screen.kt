@@ -15,6 +15,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ fun WithdrawalStep2Screen(
     var isReasonGuitarChecked by remember { mutableStateOf(false) }
 
     val isAnyChecked = isReason1Checked || isReason2Checked || isReason3Checked || isReasonGuitarChecked
+    val withdrawalUiState by viewModel.userWithdrawalUiState
 
     Column(
         modifier = Modifier
@@ -106,9 +108,9 @@ fun WithdrawalStep2Screen(
                 )
                 WithdrawalReasonCheckbox(
                     text = stringResource(R.string.guitar),
-                    isChecked = isReason3Checked,
+                    isChecked = isReasonGuitarChecked,
                     onCheckChange = {
-                        isReason3Checked = !isReason3Checked
+                        isReasonGuitarChecked = !isReasonGuitarChecked
                     }
                 )
             }
