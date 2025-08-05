@@ -3,11 +3,9 @@ package com.and.presentation.screen.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,8 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
-import com.and.presentation.component.HintErrorTextField
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.newdok.presentation.R
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
@@ -44,16 +43,13 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Error_Fill
-import com.and.presentation.ui.Error_Stroke
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Disabled
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.ID_MAX_LENGTH
-import com.and.presentation.util.clearFocusOnKeyboardDismiss
-import com.and.presentation.util.passwordValidation
+import com.and.presentation.util.UiState
 import com.and.presentation.util.phoneNumberValidation
 import kotlinx.coroutines.delay
 
@@ -66,13 +62,20 @@ import kotlinx.coroutines.delay
 fun RegisterStep1Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel
 ) {
     var phoneNumber by remember { mutableStateOf("") }
     var authCode by remember { mutableStateOf("") }
 
+    val uiState by viewModel.authCodeRequestedState
+    val isAuthCodeStart: Boolean = when (uiState) {
+        is UiState.Success -> (uiState as UiState.Success).data
+        else -> false
+    }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.White),
     ) {
@@ -91,32 +94,66 @@ fun RegisterStep1Screen(
             )
             Spacer(modifier = Modifier.height(48.dp))
 
-            PhoneTextField(
+            PhoneAuthView(
                 phoneNumber = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                onAuthButtonClick = { phoneNum ->
-                    // 전화번호로 인증 문자 전송
-                    true
+                authCode = authCode,
+                onPhoneNumberChange = { phoneNum->
+                    phoneNumber = phoneNum
                 },
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            AuthTextField(
-                value = authCode,
-                isError = false,
-                onValueChange = { authCode = it }
+                onAuthCodeChange = { code ->
+                    authCode = code
+                },
+                startAuthCodeTimer = isAuthCodeStart,
+                onAuthCodeExpired = {
+                    viewModel.expireAuthCodeTimer()
+                },
+                onAuthButtonClick = { phoneNum ->
+                    viewModel.requestSmsAuthCode(phoneNum)
+                }
             )
         }
 
         ConditionalNextButton(
-            enabled = true,
-            onClick = onNext,
+            enabled = true, // 여기서 인증번호 일치 여부 확인
+            onClick = {
+                viewModel.setUserPhoneNumber(phoneNumber = phoneNumber)
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
+}
+
+@Composable
+fun PhoneAuthView(
+    phoneNumber: String,
+    authCode: String,
+    onPhoneNumberChange: (String) -> Unit,
+    onAuthCodeChange: (String) -> Unit,
+    startAuthCodeTimer: Boolean,
+    onAuthCodeExpired: () -> Unit,
+    onAuthButtonClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    PhoneTextField(
+        phoneNumber = phoneNumber,
+        onValueChange = onPhoneNumberChange,
+        onAuthButtonClick = { phoneNum ->
+            onAuthButtonClick(phoneNum)
+        },
+        modifier = Modifier
+            .fillMaxWidth(),
+    )
+
+    Spacer(modifier = Modifier.height(32.dp))
+
+    AuthTextField(
+        value = authCode,
+        onValueChange = onAuthCodeChange,
+        isError = false,
+        startTimer = startAuthCodeTimer,
+        onTimerExpire = onAuthCodeExpired
+    )
 }
 
 @Composable
@@ -124,7 +161,7 @@ fun PhoneTextField(
     phoneNumber: String,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
-    onAuthButtonClick: (String) -> Boolean
+    onAuthButtonClick: (String) -> Unit
 ) {
     // 전화번호 정규식 검사
     val isPhoneNumberValid = phoneNumber.phoneNumberValidation()
@@ -158,7 +195,6 @@ fun PhoneTextField(
                     val result = onAuthButtonClick(phoneNumber)
                     // 중복이 아닌 경우 TextField border Primary0으로 색상 변경
                     // 중복이라면 중복 확인 다시 클릭하도록 error 발생시켜주기
-
                 },
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
@@ -193,15 +229,23 @@ fun PhoneTextField(
 fun AuthTextField(
     value: String,
     isError: Boolean,
+    startTimer: Boolean,
     modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
+    onTimerExpire: () -> Unit = {}
 ) {
-    var timeLeft by remember { mutableIntStateOf(180) }
+    var timeLeft by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        while (timeLeft > 0) {
-            delay(1000L)
-            timeLeft--
+    LaunchedEffect(startTimer) {
+        if (startTimer) {
+            timeLeft = 180
+
+            while (timeLeft > 0) {
+                delay(1000L)
+                timeLeft--
+            }
+
+            onTimerExpire()
         }
     }
 
@@ -244,7 +288,7 @@ fun AuthTextField(
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 0.dp),
+                .height(48.dp),
             colors = TextFieldDefaults.colors(
                 // 인증번호 6자리 (숫자만) 입력되면 Primary_Normal 적용
                 focusedIndicatorColor = Primary_Normal,
@@ -253,13 +297,15 @@ fun AuthTextField(
                 unfocusedContainerColor = Color.White,
             ),
             trailingIcon = {
-                Text(
-                    text = formattedTime,
-                    style = Label1,
-                    fontWeight = FontWeight.Medium,
-                    color = Caption_Strong,
-                    modifier = Modifier.padding(end = 20.dp)
-                )
+                if (timeLeft > 0) {
+                    Text(
+                        text = formattedTime,
+                        style = Label1,
+                        fontWeight = FontWeight.Medium,
+                        color = Caption_Strong,
+                        modifier = Modifier.padding(end = 20.dp)
+                    )
+                }
             }
         )
 
@@ -275,7 +321,6 @@ fun AuthTextField(
                     .padding(start = 4.dp)
             )
         } else {
-            // TODO - 인증번호가 틀린 경우 -> 인증번호를 다시 확인해주세요
             Text(
                 text = stringResource(id = R.string.register_phone_auth_number_error_1),
                 style = Label1,
@@ -284,7 +329,6 @@ fun AuthTextField(
                 modifier = Modifier
                     .padding(start = 4.dp)
             )
-            // 인증 시간이 만료된 경우 -> 인증번호를 재전송해주세요
         }
     }
 }
@@ -302,7 +346,8 @@ fun RegisterStep1ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

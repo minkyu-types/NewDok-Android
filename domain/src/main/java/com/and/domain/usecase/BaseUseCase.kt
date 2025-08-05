@@ -1,4 +1,3 @@
 package com.and.domain.usecase
 
-interface BaseUseCase {
-}
+interface BaseUseCase<in Parameter, out Result>

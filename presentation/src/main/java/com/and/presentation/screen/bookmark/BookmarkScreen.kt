@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class
+)
 
 package com.and.presentation.screen.bookmark
 
@@ -25,15 +28,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,13 +49,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.ArticleSortCategory
 import com.and.domain.model.type.InterestCategory
-import com.and.presentation.R
-import com.and.presentation.component.item.ArticleItem
+import com.and.newdok.presentation.R
 import com.and.presentation.component.item.SelectableInterestTag
 import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
+import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -64,54 +68,36 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Headline
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun BookmarkScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BookmarkViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
     val refreshState = rememberPullToRefreshState()
-    var existInterests by remember { mutableStateOf(InterestCategory.entries) }
-    var selectedInterests by remember {
-        mutableStateOf(
-            setOf(
-                InterestCategory.INTEREST_CULTURE,
-                InterestCategory.INTEREST_TREND
-            )
-        )
-    }
+    val selectedInterests = viewModel.selectedInterests
     var currentSort by remember { mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED) }
-    val filteredArticles = listOf(
-        DailyArticleModel(
-            "주간 컴퍼니타임스",
-            "",
-            "신입사원 시절 '최악의 실수'는?",
-            1,
-            "",
-        ),
-        DailyArticleModel(
-            "고구마팜",
-            "",
-            "(광고) SNS에서 주목받는 브랜드의 비법 노트",
-            1,
-            "",
-        ),
-        DailyArticleModel(
-            "머니레터",
-            "",
-            "어피티 퇴사, 그 이후..",
-            1,
-            "",
-        ),
-    )
+    val uiState by viewModel.interestedArticlesUiState
+    val articleCount by remember(uiState) {
+        derivedStateOf {
+            (uiState as? UiState.Success<BookmarkedArticlesModel>)?.data?.totalAmount ?: 0
+        }
+    }
+    val monthlyArticles by remember(uiState) {
+        derivedStateOf {
+            (uiState as? UiState.Success<BookmarkedArticlesModel>)?.data?.bookmarkForMonth
+                ?: emptyList()
+        }
+    }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
@@ -125,27 +111,20 @@ fun BookmarkScreen(
             }
         )
         BookmarkFilters(
-            interests = existInterests,
             selectedInterests = selectedInterests,
             onInterestClick = { interest ->
-                val prevList = selectedInterests.toMutableSet()
-                if (interest in prevList) {
-                    prevList.remove(interest)
-                } else {
-                    prevList.add(interest)
-                }
-                selectedInterests = prevList
+                viewModel.toggleInterest(interest)
             }
         )
         BookmarkResultBar(
             currentSort = currentSort,
-            articleCount = filteredArticles.size,
+            articleCount = articleCount,
             onSortClick = {
-
+                // 바텀 시트 오픈
             }
         )
         BookmarkArticleList(
-            articles = emptyList(),
+            monthlyBookmarkedArticles = monthlyArticles,
             onArticleClick = { article ->
                 // 아티클 상세 화면으로 이동
             },
@@ -164,11 +143,12 @@ fun BookmarkScreen(
 
 @Composable
 fun BookmarkFilters(
-    interests: List<InterestCategory>,
     selectedInterests: Set<InterestCategory>,
     onInterestClick: (InterestCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interests = InterestCategory.entries
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -243,7 +223,7 @@ fun BookmarkResultBar(
 
 @Composable
 fun BookmarkArticleList(
-    articles: List<DailyArticleModel>,
+    monthlyBookmarkedArticles: List<MonthlyBookmarkedArticlesModel>,
     onArticleClick: (DailyArticleModel) -> Unit,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
@@ -265,12 +245,11 @@ fun BookmarkArticleList(
             )
         },
     ) {
-        // TODO 아티클 년-월 기준으로 년-월 헤더 추가해서 리스트로
-        if (articles.isEmpty()) {
+        if (monthlyBookmarkedArticles.isEmpty()) {
             ArticleEmptyView()
         } else {
             ArticleExistView(
-                articles = articles,
+                articles = monthlyBookmarkedArticles,
                 onArticleClick = onArticleClick
             )
         }
@@ -279,7 +258,7 @@ fun BookmarkArticleList(
 
 @Composable
 fun ArticleExistView(
-    articles: List<DailyArticleModel>,
+    articles: List<MonthlyBookmarkedArticlesModel>,
     onArticleClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -288,27 +267,25 @@ fun ArticleExistView(
         modifier = modifier
             .fillMaxSize()
             .background(Background_System)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        contentPadding = PaddingValues(vertical = 20.dp)
     ) {
-        item {
-            Spacer(modifier = Modifier.height(20.dp))
+        items(articles) { monthModel ->
             Text(
-                text = "2023년 11월",
+                text = monthModel.month,
                 style = Headline,
                 fontWeight = FontWeight.Bold,
                 color = Caption_Strong,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier
+                    .padding(start = 8.dp, bottom = 4.dp)
             )
-            Spacer(modifier = Modifier.height(4.dp))
-        }
-        items(articles) { article ->
-            ArticleItem(
-                article = article,
-                onArticleClick = onArticleClick
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.height(20.dp))
+            monthModel.articles.forEach { article ->
+                BookmarkArticleItem(
+                    article = article,
+                    onArticleClick = onArticleClick
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
@@ -354,7 +331,6 @@ fun ArticleEmptyView(
 fun BookmarkScreenPreview() {
     DefaultWhiteTheme {
         BookmarkScreen(
-
         )
     }
 }

@@ -2,6 +2,7 @@ package com.and.presentation.component.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.DefaultWhiteTheme
@@ -36,12 +37,14 @@ fun FilterChip(
     text: String,
     icon: Painter,
     leastOneItemSelected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val mainColor = if (leastOneItemSelected) Primary_Normal else Caption_Assistive
 
     Row(
         modifier = Modifier
+            .clickable { onClick() }
             .clip(RoundedCornerShape(100.dp))
             .border(
                 width = 1.dp,
@@ -77,7 +80,10 @@ fun FilterChipPreview() {
         FilterChip(
             text = "인기순",
             icon = painterResource(R.drawable.ic_line_arrow_transfer),
-            leastOneItemSelected = true
+            leastOneItemSelected = true,
+            onClick = {
+
+            }
         )
     }
 }

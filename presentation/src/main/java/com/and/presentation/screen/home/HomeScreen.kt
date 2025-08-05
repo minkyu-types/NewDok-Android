@@ -3,11 +3,13 @@ package com.and.presentation.screen.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,9 +22,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +40,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
-import com.and.presentation.model.DailyArticleModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.domain.model.Article
+import com.and.newdok.presentation.R
+import com.and.presentation.component.dialog.CalendarDialog
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -47,69 +53,86 @@ import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
+import com.and.presentation.util.removeRippleEffect
 import com.and.presentation.util.toLocalDateWithKRFormat
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    onArticleClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onAlarmClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    var refreshing by remember { mutableStateOf(false) }
+    val uiState by viewModel.articlesUiState
+
+    var showDialog by remember { mutableStateOf(false) }
+    var currSelectedDate: LocalDate by remember { mutableStateOf(LocalDate.now()) }
+    val refreshing by remember { derivedStateOf { uiState is UiState.Loading } }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            refreshing = true
-            // 데이터 갱신 후
-            refreshing = false
+            viewModel.getArticlesByYearMonth(
+                currSelectedDate.year,
+                currSelectedDate.monthValue,
+                currSelectedDate.dayOfMonth
+            )
         }
     )
+
+    LaunchedEffect(currSelectedDate) {
+        viewModel.getArticlesByYearMonth(
+            currSelectedDate.year,
+            currSelectedDate.monthValue,
+            currSelectedDate.dayOfMonth
+        )
+    }
+
+    if (showDialog) {
+        CalendarDialog(
+            onDismiss = {
+                showDialog = false
+            },
+            onDateSelected = { date ->
+                currSelectedDate = date
+            },
+            initialDate = currSelectedDate
+        )
+    }
 
     Column(
         modifier = Modifier
             .pullRefresh(pullRefreshState)
+            .fillMaxSize()
             .background(color = Background_System)
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
         HomeTopBar(
-            onSearchClick = {
-
-            },
-            onAlarmClick = {
-
-            }
+            onSearchClick = onSearchClick,
+            onAlarmClick = onAlarmClick
         )
         Spacer(modifier = Modifier.height(8.dp))
         HomeCalendarBar(
+            date = currSelectedDate,
             onCalendarClick = {
-
+                showDialog = true
             }
         )
         Spacer(modifier = Modifier.height(8.dp))
         HomeArticleList(
-            articles = listOf(
-                DailyArticleModel(
-                    "머니레터",
-                    "",
-                    "모이님의 희망 은퇴 연령은?",
-                    1,
-                    "read"
-                ),
-                DailyArticleModel(
-                    "Daily Byte",
-                    "",
-                    "애플, 9년만에 내놓은 신제품은?",
-                    1,
-                    "Unread"
-                ),
-            ),
+            articles = when (uiState) {
+                is UiState.Success<List<Article>> -> {
+                    (uiState as UiState.Success).data
+                }
+                else -> emptyList()
+            },
             onRefreshClick = {
-
+                // 아티클 리스트 갱신
             },
-            onItemClick = {
-
-            },
-            modifier = Modifier.weight(1f)
+            onItemClick = onArticleClick,
         )
     }
 }
@@ -121,63 +144,80 @@ fun HomeTopBar(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 12.dp),
+            .padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(R.drawable.logo),
+            painter = painterResource(R.drawable.img_logo),
             contentDescription = null
         )
         Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            painter = painterResource(R.drawable.ic_line_search),
-            contentDescription = null,
-            modifier = Modifier.size(28.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            painter = painterResource(R.drawable.ic_line_bell),
-            contentDescription = null,
-            modifier = Modifier.size(28.dp)
-        )
+        IconButton(
+            onClick = onSearchClick
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_line_search),
+                contentDescription = null,
+                modifier = Modifier.size(28.dp)
+                    .clickable { onSearchClick() }
+            )
+        }
+        IconButton(
+            onClick = onAlarmClick
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_line_bell),
+                contentDescription = null,
+                modifier = Modifier.size(28.dp)
+                    .clickable { onAlarmClick() }
+            )
+        }
     }
 }
 
 @Composable
 fun HomeCalendarBar(
+    date: LocalDate,
     onCalendarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = Color.White)
-            .padding(vertical = 12.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = modifier
+            .removeRippleEffect {
+                onCalendarClick()
+            }
     ) {
-        Text(
-            text = LocalDate.now().toLocalDateWithKRFormat(),
-            style = Body1Normal,
-            fontWeight = FontWeight.Bold,
-            color = Caption_Strong,
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .padding(end = 12.dp)
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_calendar),
-            contentDescription = null
-        )
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.White)
+                .padding(vertical = 12.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = date.toLocalDateWithKRFormat(),
+                style = Body1Normal,
+                fontWeight = FontWeight.Bold,
+                color = Caption_Strong,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 12.dp)
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_calendar),
+                contentDescription = null
+            )
+        }
     }
 }
 
 @Composable
 fun HomeArticleList(
     onRefreshClick: () -> Unit,
-    articles: List<DailyArticleModel>,
+    articles: List<Article>,
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -185,7 +225,7 @@ fun HomeArticleList(
         modifier = modifier
             .clip(shape = RoundedCornerShape(12.dp))
             .background(color = Color.White)
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 8.dp),
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -199,26 +239,31 @@ fun HomeArticleList(
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
-            TextButton(
-                onClick = onRefreshClick,
-                contentPadding = PaddingValues(0.dp)
+            Box(
+                modifier = Modifier
+                    .removeRippleEffect { onRefreshClick() }
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_line_reload),
-                    tint = Primary_Normal,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = stringResource(R.string.refresh),
-                    style = Body2Normal,
-                    fontWeight = FontWeight.Medium,
-                    color = Primary_Normal
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_line_reload),
+                        tint = Primary_Normal,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.refresh),
+                        style = Body2Normal,
+                        fontWeight = FontWeight.Medium,
+                        color = Primary_Normal
+                    )
+                }
             }
         }
+        Spacer(modifier = Modifier.height(20.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -231,10 +276,10 @@ fun HomeArticleList(
 
 @Composable
 fun HomeArticleListItem(
-    article: DailyArticleModel,
+    article: Article,
     modifier: Modifier = Modifier
 ) {
-    val isArticleRead = article.isRead()
+    val isArticleRead = Article.getIsRead(article.status)
 
     Row(
         modifier = Modifier
@@ -251,7 +296,7 @@ fun HomeArticleListItem(
             .padding(16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.img_logo),
             contentDescription = null,
             modifier = Modifier
                 .size(56.dp)
@@ -288,7 +333,7 @@ fun HomeArticleListItem(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = article.articleTitle,
+                text = article.title,
                 style = Body2Normal,
                 fontWeight = FontWeight.Medium,
                 color = Caption_Strong
@@ -306,7 +351,15 @@ fun HomeArticleListItem(
 fun HomeScreenPreview() {
     DefaultWhiteTheme {
         HomeScreen(
+            onArticleClick = {
 
+            },
+            onSearchClick = {
+
+            },
+            onAlarmClick = {
+
+            }
         )
     }
 }

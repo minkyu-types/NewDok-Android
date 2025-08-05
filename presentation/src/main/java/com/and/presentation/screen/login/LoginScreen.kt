@@ -18,9 +18,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,9 +36,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.and.presentation.R
-import com.and.presentation.component.HintErrorSecureTextField
-import com.and.presentation.component.HintErrorTextField
+import com.and.newdok.presentation.R
+import com.and.presentation.component.textfield.HintErrorSecureTextField
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
@@ -66,12 +68,18 @@ fun LoginScreen(
     onRegister: () -> Unit,
     onFindIdPassword: () -> Unit,
     onBack: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val loginFailed: Boolean by viewModel.loginFailed // id 오류인지, pw 오류인지 구분하도록
-    val userId by remember { mutableStateOf("") }
-    val userPassword by remember { mutableStateOf("") }
+    val loginSuccess: Boolean? by viewModel.loginSuccess
+    var userId by remember { mutableStateOf("") }
+    var userPassword by remember { mutableStateOf("") }
+
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess == true) {
+            onLoginSuccess()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -102,7 +110,10 @@ fun LoginScreen(
                 maxLength = ID_MAX_LENGTH,
                 value = userId,
                 valueHint = stringResource(id = R.string.login_id_hint),
-                isError = loginFailed,
+                isError = loginSuccess == false,
+                onValueChange = { id ->
+                    userId = id
+                },
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -112,8 +123,11 @@ fun LoginScreen(
                 value = userPassword,
                 valueTitle = stringResource(id = R.string.password),
                 valueHint = stringResource(id = R.string.login_password_hint),
-                isError = loginFailed,
+                isError = loginSuccess == false,
                 errorMessage = stringResource(id = R.string.login_password_error),
+                onValueChange = { pw ->
+                    userPassword = pw
+                },
                 modifier = Modifier
                     .padding(bottom = 12.dp)
                     .fillMaxWidth()
@@ -124,10 +138,12 @@ fun LoginScreen(
             )
         }
         ConditionalNextButton(
-            enabled = false,
+            enabled = true,
             onClick = {
-                // 로그인 검증 성공 시 홈 화면 이동
-                onLoginSuccess()
+                viewModel.login(
+                    id = userId,
+                    password = userPassword
+                )
             },
             modifier = Modifier.padding(16.dp),
             buttonText = stringResource(R.string.login)
@@ -170,7 +186,7 @@ fun LoginFindIdPassword(
 @Composable
 fun LoginLogoView(modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.logo),
+        painter = painterResource(id = R.drawable.img_logo),
         contentDescription = stringResource(id = R.string.logo_image),
         modifier = Modifier
             .padding(vertical = 32.dp)

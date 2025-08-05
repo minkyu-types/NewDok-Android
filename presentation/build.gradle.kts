@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.and.presentation"
+    namespace = "com.and.newdok.presentation"
     compileSdk = 35
 
     defaultConfig {
@@ -52,6 +52,7 @@ dependencies {
     // Compose
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
+    implementation(libs.paging.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
@@ -98,6 +99,7 @@ dependencies {
     implementation(libs.ktx.runtime)
     implementation(libs.ktx.preference)
 
+    implementation(libs.splash)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

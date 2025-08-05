@@ -43,8 +43,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.and.presentation.R
-import com.and.presentation.component.HintErrorTextField
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
@@ -61,19 +62,21 @@ import com.and.presentation.util.NICKNAME_MAX_LENGTH
 import com.and.presentation.util.nicknameValidation
 import com.and.presentation.util.removeRippleEffect
 import com.and.domain.model.type.Gender
+import com.and.newdok.presentation.R
 import java.time.LocalDate
 
 @Composable
 fun RegisterStep4Screen(
     onNext: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel
 ) {
     var userNickname by rememberSaveable { mutableStateOf("") }
     val isNicknameValid = userNickname.nicknameValidation()
     val years = (1970..LocalDate.now().year.minus(12)).map { it.toString() }
     var userGender by rememberSaveable { mutableStateOf<Gender?>(null) }
-    var selectedItem: String? by rememberSaveable { mutableStateOf(null) }
+    var selectedYear: String? by rememberSaveable { mutableStateOf(null) }
 
     Column(
         modifier = Modifier
@@ -132,9 +135,9 @@ fun RegisterStep4Screen(
             Spacer(modifier = Modifier.height(32.dp))
             RegisterBirthYear(
                 years = years,
-                selectedItem = selectedItem,
+                selectedItem = selectedYear,
                 onSelect = { year ->
-                    selectedItem = year
+                    selectedYear = year
                 }
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -145,9 +148,15 @@ fun RegisterStep4Screen(
         }
 
         ConditionalNextButton(
-//            enabled = isNicknameValid && isBirthYearSelected && (userGender != null),
-            enabled = true,
-            onClick = onNext,
+            enabled = isNicknameValid && (selectedYear != null) && (userGender != null),
+            onClick = {
+                viewModel.setUserNicknameBirthGender(
+                    nickname = userNickname,
+                    birth = selectedYear,
+                    gender = userGender
+                )
+                onNext()
+            },
             modifier = Modifier.padding(24.dp)
         )
     }
@@ -189,6 +198,7 @@ fun RegisterBirthYear(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
+                    .height(48.dp)
                     .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -330,7 +340,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.MALE) },
                 modifier = Modifier
                     .padding(end = 4.dp)
-                    .height(56.dp)
+                    .height(48.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,
@@ -353,7 +363,7 @@ fun RegisterGenderRadioGroup(
                 onClick = { onClick(Gender.FEMALE) },
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .height(56.dp)
+                    .height(48.dp)
                     .weight(1f)
                     .border(
                         width = 1.dp,
@@ -397,7 +407,8 @@ fun RegisterStep4ScreenPreview() {
             },
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }

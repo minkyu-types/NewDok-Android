@@ -3,9 +3,10 @@ package com.and.presentation.model
 import com.and.domain.model.type.InterestCategory
 
 data class NewsLetterModel(
+    val id: Int,
     val name: String,
-    val profileImage: String,
+    val profileImageUrl: String,
     val repeatTerm: String,
     val introduction: String,
-    val categories: List<InterestCategory>
+    val interests: List<InterestCategory>,
 )

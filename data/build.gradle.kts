@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.and.data"
+    namespace = "com.and.newdok.data"
     compileSdk = 34
 
     defaultConfig {
@@ -15,6 +15,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "BASE_URL_DEV", "\"http://3.38.79.19\"")
+        buildConfigField("String", "BASE_URL_PRODUCT", "\"https://newdok.store\"")
     }
 
     buildTypes {
@@ -25,6 +28,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -50,7 +56,11 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.okhttp3.logging)
     implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.moshi.converter)
+
+    // DataStore
+    implementation(libs.datastore.preferences)
 
     // Paging3
     implementation(libs.paging.runtime)

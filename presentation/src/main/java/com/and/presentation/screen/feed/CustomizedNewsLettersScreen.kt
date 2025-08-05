@@ -1,5 +1,6 @@
 package com.and.presentation.screen.feed
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,21 +22,28 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
-import com.and.presentation.component.item.BrandBigItem
-import com.and.presentation.component.item.BrandSmallItem
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.newdok.presentation.R
+import com.and.presentation.component.item.NewsLetterBigItem
+import com.and.presentation.component.item.NewsLetterSmallItem
 import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.model.RecommendedNewsLetterModel
+import com.and.presentation.model.RecommendedNewsLettersModel
 import com.and.presentation.ui.Blue50
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -42,6 +51,7 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 
 /**
  * 추천 뉴스레터 페이지 - 회원 프로필이 등록된 경우
@@ -50,53 +60,96 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun CustomizedNewsLettersScreen(
     nickname: String,
-    newsLetters: List<NewsLetterModel>,
-    recommendedNewsLetters: List<NewsLetterModel>,
-    modifier: Modifier = Modifier
+    onNewsLetterClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CustomizedNewsLettersViewModel = hiltViewModel()
 ) {
-    val pagerState = rememberPagerState() { newsLetters.size }
+    val context = LocalContext.current
+    val uiState by viewModel.customizedNewsLettersUiState
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-    ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = stringResource(R.string.feed_recommend_title, nickname),
-            style = Heading2,
-            fontWeight = FontWeight.Bold,
-            color = Caption_Heavy,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        CompositionLocalProvider(
-            LocalOverscrollConfiguration provides null
-        ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(start = 24.dp, end = 40.dp)
-            ) { page ->
-                BrandBigItem(newsLetters[page])
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Error) {
+            val message = (uiState as UiState.Error).message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    when (uiState) {
+        is UiState.Idle, is UiState.Loading -> {
+            Box(
+                modifier = modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
-        CustomizedNewsLettersDotsIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        )
-        RecommendOtherNewsLettersArea(
-            recommendedNewsLetters = recommendedNewsLetters,
-            onRefreshClick = {
 
+        is UiState.Error -> {
+            Box(modifier = modifier.fillMaxSize())
+        }
+
+        is UiState.Success<*> -> {
+            val data = (uiState as UiState.Success<RecommendedNewsLettersModel>).data
+            val intersectionList = data.intersection
+            val unionList = data.union
+
+            val pagerState = rememberPagerState(pageCount = { intersectionList.size })
+
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(R.string.feed_recommend_title, nickname),
+                    style = Heading2,
+                    fontWeight = FontWeight.Bold,
+                    color = Caption_Heavy,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                CompositionLocalProvider(
+                    LocalOverscrollConfiguration provides null
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentPadding = PaddingValues(start = 24.dp, end = 40.dp)
+                    ) { page ->
+                        NewsLetterBigItem(
+                            newsLetter = intersectionList[page],
+                            onClick = { id ->
+                                onNewsLetterClick(id)
+                            }
+                        )
+                    }
+                }
+                CustomizedNewsLettersDotsIndicator(
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                RecommendOtherNewsLettersArea(
+                    recommendedNewsLetters = unionList,
+                    onClick = { id ->
+                        onNewsLetterClick(id)
+                    },
+                    onRefreshClick = { viewModel.refreshUnionOnly() }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
             }
-        )
-        Spacer(modifier = Modifier.height(20.dp))
+        }
     }
 }
 
@@ -129,7 +182,8 @@ fun CustomizedNewsLettersDotsIndicator(
 
 @Composable
 fun RecommendOtherNewsLettersArea(
-    recommendedNewsLetters: List<NewsLetterModel>,
+    recommendedNewsLetters: List<RecommendedNewsLetterModel>,
+    onClick: (Int) -> Unit,
     onRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -169,7 +223,19 @@ fun RecommendOtherNewsLettersArea(
             }
         }
         recommendedNewsLetters.forEach { newsLetter ->
-            BrandSmallItem(newsLetter)
+            NewsLetterSmallItem(
+                newsLetter = NewsLetterModel(
+                    newsLetter.id,
+                    newsLetter.brandName,
+                    newsLetter.imageUrl,
+                    repeatTerm = newsLetter.publicationCycle,
+                    introduction = newsLetter.firstDescription,
+                    interests = newsLetter.interests
+                ),
+                onClick = {
+                    onClick(newsLetter.id)
+                }
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))

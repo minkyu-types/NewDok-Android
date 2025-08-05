@@ -18,10 +18,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Blue50
 import com.and.presentation.ui.Body2Normal
@@ -43,17 +44,25 @@ import com.and.presentation.ui.Heading1
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     onRegisterClick: () -> Unit,
     onLoginClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onAutoLogin: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: OnboardingViewModel = hiltViewModel()
 ) {
+    val loginSuccess: Boolean? by viewModel.loginSuccess
     val pagerState = rememberPagerState() { 3 }
 
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess == true) {
+            onAutoLogin()
+        }
+    }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 100.dp),
     ) {
@@ -88,7 +97,6 @@ fun OnboardingScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingHeader(
     pagerState: PagerState,
@@ -131,7 +139,6 @@ fun OnboardingHeader(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingIndicator(
     modifier: Modifier = Modifier,
@@ -159,7 +166,6 @@ fun OnboardingIndicator(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingImageViewPager(
     modifier: Modifier,
@@ -170,9 +176,9 @@ fun OnboardingImageViewPager(
         modifier = modifier
     ) { page ->
         val imageRes = when (page) {
-            0 -> R.drawable.onboarding_1
-            1 -> R.drawable.onboarding_2
-            else -> R.drawable.onboarding_3
+            0 -> R.drawable.img_onboarding_1
+            1 -> R.drawable.img_onboarding_2
+            else -> R.drawable.img_onboarding_3
         }
 
         Box(
@@ -188,27 +194,6 @@ fun OnboardingImageViewPager(
                 modifier = Modifier.fillMaxSize()
             )
         }
-    }
-}
-
-@Composable
-fun OnboardingRegisterButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp),
-        shape = RoundedCornerShape(15.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFD9D9D9),
-        )
-    ) {
-        Text(
-            text = stringResource(id = R.string.register)
-        )
     }
 }
 
@@ -253,6 +238,9 @@ fun OnboardingScreenPreview() {
 
             },
             onLoginClick = {
+
+            },
+            onAutoLogin = {
 
             }
         )

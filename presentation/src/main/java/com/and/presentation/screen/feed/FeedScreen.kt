@@ -18,9 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.and.presentation.R
-import com.and.presentation.model.NewsLetterModel
-import com.and.domain.model.type.InterestCategory
+import com.and.newdok.presentation.R
 import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Alternative
@@ -30,68 +28,13 @@ import com.and.presentation.ui.Primary_Normal
 
 @Composable
 fun FeedScreen(
+    onNewsLetterClick: (Int) -> Unit,
+    onSearchClick: () -> Unit,
+    onAlarmClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(FeedTab.RECOMMEND) }
     val isProfileRegistered by remember { mutableStateOf(true) }
-
-    val newsLetters = listOf(
-        NewsLetterModel(
-            "NEWNEEK",
-            "프로필 이미지",
-            "매주 평일 아침",
-            "세상 돌아가는 소식, 뉴닉으로!",
-            listOf(
-                InterestCategory.INTEREST_GAME,
-                InterestCategory.INTEREST_CULTURE,
-                InterestCategory.INTEREST_ART_DESIGN,
-            ),
-        ),
-        NewsLetterModel(
-            "오렌지레터",
-            "프로필 이미지",
-            "매주 수요일",
-            "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-            listOf(
-                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-                InterestCategory.INTEREST_BUSINESS,
-                InterestCategory.INTEREST_TREND,
-            ),
-        ),
-        NewsLetterModel(
-            "오렌지레터",
-            "프로필 이미지",
-            "매주 수요일",
-            "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-            listOf(
-                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-                InterestCategory.INTEREST_BUSINESS,
-                InterestCategory.INTEREST_TREND,
-            ),
-        ),
-        NewsLetterModel(
-            "오렌지레터",
-            "프로필 이미지",
-            "매주 수요일",
-            "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-            listOf(
-                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-                InterestCategory.INTEREST_BUSINESS,
-                InterestCategory.INTEREST_TREND,
-            ),
-        ), NewsLetterModel(
-            "오렌지레터",
-            "프로필 이미지",
-            "매주 수요일",
-            "다양한 삶의 관점을 배우며 함께 성장하는 디자인 커뮤니티",
-            listOf(
-                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
-                InterestCategory.INTEREST_BUSINESS,
-                InterestCategory.INTEREST_TREND,
-            ),
-        )
-    )
-    val recommendedNewsLetters = newsLetters.take(3)
 
     Column(
         modifier = Modifier
@@ -100,12 +43,8 @@ fun FeedScreen(
     ) {
         MainTopBar(
             title = stringResource(R.string.feed_title),
-            onSearchClick = {
-
-            },
-            onAlarmClick = {
-
-            }
+            onSearchClick = onSearchClick,
+            onAlarmClick = onAlarmClick
         )
         FeedTabIndicator(
             selectedTab = selectedTab,
@@ -118,8 +57,9 @@ fun FeedScreen(
                 if (isProfileRegistered) {
                     CustomizedNewsLettersScreen(
                         nickname = "기무민규",
-                        newsLetters = newsLetters,
-                        recommendedNewsLetters = recommendedNewsLetters
+                        onNewsLetterClick = { id ->
+                            onNewsLetterClick(id)
+                        }
                     )
                 } else {
                     RecommendNewsLetterForNoUserProfile()
@@ -128,7 +68,9 @@ fun FeedScreen(
 
             FeedTab.ALL -> {
                 AllNewsLettersScreen(
-                    newsLetters = newsLetters,
+                    onNewsLetterClick = { id ->
+                        onNewsLetterClick(id)
+                    },
                     onResetClick = {
 
                     }
@@ -197,7 +139,15 @@ fun RecommendNewsLetterForNoUserProfile(
 fun FeedScreenPreview() {
     DefaultWhiteTheme {
         FeedScreen(
+            onNewsLetterClick = {
 
+            },
+            onSearchClick = {
+
+            },
+            onAlarmClick = {
+
+            }
         )
     }
 }

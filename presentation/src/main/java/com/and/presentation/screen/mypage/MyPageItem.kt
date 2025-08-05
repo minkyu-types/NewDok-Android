@@ -1,0 +1,51 @@
+package com.and.presentation.screen.mypage
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.and.newdok.presentation.R
+import com.and.presentation.ui.Body1Normal
+import com.and.presentation.ui.Caption_Neutral
+import com.and.presentation.ui.Caption_Strong
+import com.and.presentation.util.removeRippleEffect
+
+@Composable
+fun MyPageItem(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .removeRippleEffect {
+                onClick()
+            }
+            .padding(vertical = 12.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = text,
+                style = Body1Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Strong,
+                modifier = Modifier
+                    .weight(1f)
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_line_right),
+                contentDescription = null,
+                tint = Caption_Neutral
+            )
+        }
+    }
+}

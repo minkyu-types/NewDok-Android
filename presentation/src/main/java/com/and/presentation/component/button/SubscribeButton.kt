@@ -14,9 +14,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.ui.Caption
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.Tint80
@@ -45,11 +47,27 @@ fun SubscribeButton(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = if (isSubscribed) stringResource(R.string.subscribing)
+            text = if (isSubscribed) stringResource(R.string.subscribe_ing)
             else stringResource(R.string.subscribe),
             style = Caption,
             fontWeight = FontWeight.Medium,
             color = if (isSubscribed) Color.White else Primary_Normal
+        )
+    }
+}
+
+@Preview(
+    name = "SubscribeButton Preview",
+    showBackground = true
+)
+@Composable
+fun SubscribeButtonPreview() {
+    DefaultWhiteTheme {
+        SubscribeButton(
+            isSubscribed = true,
+            onSubscribeClick = {
+
+            }
         )
     }
 }

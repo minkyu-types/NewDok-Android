@@ -2,7 +2,9 @@
     <string name="app_name">NewDok</string>
 
     <string name="next">다음</string>
+    <string name="count">%d개</string>
     <string name="select">선택</string>
+    <string name="add">추가</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
     <string name="nickname">닉네임</string>
@@ -12,7 +14,11 @@
     <string name="gender_female">여자</string>
     <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
+    <string name="close">닫기</string>
+    <string name="cancel">취소</string>
     <string name="back">뒤로가기</string>
+    <string name="edit">변경하기</string>
+    <string name="search">검색</string>
     <string name="register">회원가입</string>
     <string name="login">로그인</string>
     <string name="auth_request">인증요청</string>
@@ -20,16 +26,31 @@
     <string name="phone_number_title">휴대폰 번호</string>
     <string name="subscription_email">구독 이메일</string>
     <string name="subscribe">구독하기</string>
-    <string name="subscribing">구독중</string>
+    <string name="continue_process">계속하기</string>
+    <string name="article">아티클</string>
+    <string name="new_things">새 소식</string>
     <string name="move_to_main">메인으로</string>
     <string name="industry_category">종사산업</string>
+    <string name="interest_category">관심사</string>
     <string name="profile_setting">프로필 설정</string>
     <string name="refresh">새로고침</string>
     <string name="reset">초기화</string>
     <string name="read">읽음</string>
     <string name="unread">안읽음</string>
+    <string name="search_result_empty">검색 결과가 없어요</string>
+    <string name="find_id_password">ID/PW 찾기</string>
+    <string name="alarm">알람</string>
+    <string name="today">오늘</string>
+    <string name="since_last_week">이전 7일</string>
+    <string name="withdrawal">회원탈퇴</string>
+    <string name="guitar">기타</string>
+    <string name="industry_category_2">산업 카테고리</string>
+    <string name="publication_day">발행요일</string>
+    <string name="filter">필터</string>
+
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
+    <string name="snackbar_password_edit_success">비밀번호가 재설정되었습니다.</string>
 
     <!-- 다이얼로그 -->
     <string name="auth_fail_title">인증 실패</string>
@@ -109,39 +130,12 @@
     <string name="register_additional_button_text">뉴스레터 추천받기</string>
 
     <!-- 사전조사 Step1 -->
+    <string name="pre_investigation_interests_title">정확한 추천을 위해\n관심사를 3개 이상 선택해주세요</string>
+    <string name="pre_investigation_interests_body">취향에 맞는 뉴스레터를 추천해드려요</string>
+
     <string name="pre_investigation_industry_title">종사 중인 산업을\n선택해주세요</string>
     <string name="pre_investigation_industry_body">선택하신 산업과 관련된 뉴스레터를 찾아드려요.</string>
     <string name="pre_investigation_industry_dropdown_placeholder">산업군을 선택해주세요</string>
-
-    <!-- 사전조사 Step2 -->
-    <string name="pre_investigation_interests_title">정확한 추천을 위해\n관심사를 3개 이상 선택해주세요</string>
-    <string name="pre_investigation_interests_body">취향에 맞는 뉴스레터를 추천해드려요</string>
-    <string name="pre_investigation_interests_1">시사·상식</string>
-    <string name="pre_investigation_interests_2">비즈니스</string>
-    <string name="pre_investigation_interests_3">과학·기술</string>
-    <string name="pre_investigation_interests_4">트렌드</string>
-    <string name="pre_investigation_interests_5">재테크</string>
-    <string name="pre_investigation_interests_6">콘텐츠</string>
-    <string name="pre_investigation_interests_7">라이프스타일</string>
-    <string name="pre_investigation_interests_8">비즈니스</string>
-    <string name="pre_investigation_interests_9">건강</string>
-    <string name="pre_investigation_interests_10">멘탈케어</string>
-    <string name="pre_investigation_interests_11">푸드·드링크</string>
-    <string name="pre_investigation_interests_12">자연·환경</string>
-    <string name="pre_investigation_interests_13">공간·인테리어</string>
-    <string name="pre_investigation_interests_14">미술·디자인</string>
-    <string name="pre_investigation_interests_15">음악</string>
-    <string name="pre_investigation_interests_16">게임</string>
-    <string name="pre_investigation_interests_17">콘서트·공연</string>
-    <string name="pre_investigation_interests_18">문화</string>
-    <string name="pre_investigation_interests_19">문학·도서</string>
-    <string name="pre_investigation_interests_20">언어</string>
-    <string name="pre_investigation_interests_21">영화</string>
-    <string name="pre_investigation_interests_22">여행</string>
-    <string name="pre_investigation_interests_23">쇼핑</string>
-    <string name="pre_investigation_interests_24">가족</string>
-    <string name="pre_investigation_interests_25">반려동물</string>
-    <string name="pre_investigation_interests_26">사회공헌</string>
 
     <!-- 사전조사 Step2 -->
     <string name="pre_investigation_curation_header">추천 뉴스레터</string>
@@ -164,6 +158,31 @@
     <string name="bookmark_empty_title">저장한 아티클이 없어요.</string>
     <string name="bookmark_empty_body">북마크를 눌러 다시 보고 싶은 아티클을 저장해보세요.</string>
 
+    <!-- 구독 관리 -->
+    <string name="subscription_title">내 구독</string>
+    <string name="subscribe_ing">구독중</string>
+    <string name="subscribe_paused">구독 중지</string>
+    <string name="subscribe_resume">구독 재개</string>
+    <string name="subscribe_count_title">총 %d개의 뉴스레터를 구독중이에요</string>
+    <string name="subscribe_count_body">구독신청 후 첫 아티클을 수신받으면 내 구독에 추가돼요.</string>
+    <string name="subscribe_empty_title">구독 중인 뉴스레터가 없어요.</string>
+    <string name="subscribe_pause_title">‘%1$s’\n구독 중지</string>
+    <string name="subscribe_pause_body">구독을 중지하면 더이상 새로운 아티클을 수신되지 않아요.</string>
+    <string name="subscribe_pause_info">구독 재개로 언제든 아티클을 다시 받아볼 수 있어요.</string>
+
+    <!-- 검색 -->
+    <string name="search_placeholder">검색어를 입력하세요</string>
+    <string name="search_popular_queries_title">인기검색어</string>
+    <string name="search_popular_queries_update_date">%s 업데이트</string>
+    <string name="search_result_newsletter_title">뉴스레터</string>
+    <string name="search_result_article_title">아티클(%d)</string>
+    <string name="search_newsletter_empty_body">찾는 뉴스레터가 없다면 등록을 요청해보세요.</string>
+    <string name="search_article_empty_body">띄어쓰기를 포함하여 검색어가 정확한지 확인해주세요.</string>
+    <string name="search_newsletter_request">뉴스레터 등록 요청하기</string>
+
+    <!-- 뉴스레터 홈-->
+    <string name="newsletter_home_title">뉴스레터 홈</string>
+    <string name="newsletter_history_title">지난 아티클 보기</string>
 
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>
@@ -179,5 +198,84 @@
     <string name="my_page_customer_service_item3">약관 및 정책</string>
     <string name="my_page_customer_service_item4">버전</string>
 
+    <!-- 계정 관리-->
+    <string name="account_manage_phone">휴대폰 번호 변경</string>
+    <string name="account_manage_password">비밀번호 변경</string>
+    <string name="account_manage_logout">로그아웃</string>
+    <string name="account_manage_logout_question">로그아웃 할까요?</string>
+
+    <!-- 비밀번호 변경-->
+    <string name="password_edit_current_error">현재 비밀번호가 일치하지 않습니다</string>
+    <string name="password_edit_current_title">현재 비밀번호</string>
+    <string name="password_edit_new_title">새 비밀번호</string>
+    <string name="password_edit_new_confirm_title">새 비밀번호 확인</string>
+    <string name="password_edit_current_body">현재 비밀번호 입력</string>
+
+    <!-- 회원 탈퇴-->
+    <string name="withdrawal_title">\'%s\'님 정말 떠나시나요?</string>
+    <string name="withdrawal_body">뉴독을 탈퇴하면 활동 내용이 다 사라져요.</string>
+    <string name="withdrawal_subscribed_title">구독 중인 뉴스레터</string>
+    <string name="withdrawal_recieved_articles_title">지금까지 수신받은 아티클</string>
+    <string name="withdrawal_agreement">탈퇴하시면 등록한 정보는 모두 삭제되어 복구할 수 없습니다.</string>
+    <string name="withdrawal_reason_title">떠나시는 이유는 무엇인가요?</string>
+    <string name="withdrawal_reason_body">하나 이상의 항목을 선택하시면 탈퇴가 완료돼요.</string>
+
+    <string name="withdrawal_reason_1">뉴스레터 관리 기능이 부족해서</string>
+    <string name="withdrawal_reason_2">콘텐츠가 부족해서</string>
+    <string name="withdrawal_reason_3">더이상 필요가 없어서</string>
+    <string name="withdrawal_button">탈퇴완료</string>
+
+    <!-- 프로필 편집 -->
+    <string name="profile_edit_head">등록하신 정보에 맞춰\n뉴스레터를 추천해드려요</string>
+    <string name="profile_edit_industry_placeholder">산업군을 선택해주세요.</string>
+    <string name="profile_edit_interest_placeholder">관심사를 선택해주세요.</string>
+    <string name="profile_edit_nickname_title">닉네임 변경</string>
+    <string name="profile_edit_industry_title">종사산업 변경</string>
+    <string name="profile_edit_interest_title">관심사 변경</string>
+    <string name="profile_edit_interest_body">최소 3가지 이상을 선택해주세요.</string>
+
+    <!-- FAQ-->
+    <string name="faq_title">FAQ</string>
+
+    <!-- 서비스 피드백 -->
+    <string name="service_feedback">서비스 피드백</string>
+    <string name="service_feedback_title">뉴독에 대한 회원님의\n목소리를 들려주세요</string>
+    <string name="service_feedback_body">서비스 사용 시 좋았떤 점이나 불편했던 점,\n뉴스레터 등록 신청 혹은 문의사항을 편하게 남겨주세요!</string>
+
+    <!-- 약관 및 정책-->
+    <string name="terms">약관 및 정책</string>
+    <string name="terms_common">이용약관</string>
+    <string name="terms_service">서비스 이용약관</string>
+    <string name="terms_personal">개인정보 처리방침</string>
+    <string name="terms_service_url">https://newdok.notion.site/18aacf9713bc427a850ae8da92b69087?pvs=4</string>
+    <string name="terms_personal_url">https://newdok.notion.site/82ef5aea46d84623b7b19bb951b6043c</string>
+
+    <!-- 알림 설정 -->
+    <string name="notification_setting_title_1">새로운 아티클</string>
+    <string name="notification_setting_body_1">구독 중인 뉴스레터의 새로운 아티클이 수신되었을 때 알려드려요</string>
+    <string name="notification_setting_title_2">업데이트</string>
+    <string name="notification_setting_body_2">새로운 뉴스레터 브랜드가 등록되었거나, 뉴독의 업데이트 소식이 있을 때 알려드려요</string>
+    <string name="notification_setting_title_3">뉴스레터 추천</string>
+    <string name="notification_setting_body_3">놓치면 후회할 인기 뉴스레터나, 최근 떠오르는 뉴스레터를 알려드려요</string>
+
+    <string name="notification_setting_bottom_1">알림 수신에 동의하셨음에도 알림이 오지 않는 경우, 기기 자체 설정을 확인해 주세요</string>
+    <string name="notification_setting_bottom_2">*확인 경로: [휴대폰 설정>알림>뉴독]</string>
+
+    <!-- 계정 찾기-->
+    <string name="find_account">계정찾기</string>
+    <string name="find_auth_code_sent">가입 당시 입력한 휴대폰 번호로\n인증번호를 발송했어요.</string>
+
+    <string name="find_account_id">아이디 찾기</string>
+    <string name="find_account_id_title">가입 당시 입력한\n휴대폰 번호를 입력해주세요.</string>
+    <string name="find_account_id_found_title">입력하신 번호로\n%d개의 계정을 찾았습니다.</string>
+    <string name="find_account_id_found_body">로그인을 원하시면 계정을 선택해주세요.</string>
+    <string name="find_account_id_found_more">전체 아이디 확인을 원하시면 여기로 문의해주세요</string>
+
+    <string name="find_account_password">비밀번호 찾기</string>
+    <string name="find_account_password_title">가입한 아이디를\n입력해주세요.</string>
+    <string name="find_account_password_not_found_title">가입되지 않은 아이디 입니다.</string>
+    <string name="find_account_password_not_found_body">아이디를 다시 확인해주세요.</string>
+    <string name="find_account_password_new_password_title">새로운 비밀번호를\n입력해주세요.</string>
+    <string name="find_account_password_new_password_confirm">비밀번호 재설정</string>
 
 </resources>

@@ -1,11 +1,15 @@
 package com.and.presentation.component.topbar
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.screen.login.LoginTheme
@@ -19,26 +23,50 @@ fun ProgressTopBar(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {}
 ) {
-    // TopBar 하단에 진행 상태를 나타내는 ProgressBar가 존재해야 함
-    val progressFraction = if (maxProgress > 0) {
+    val progressFraction: Float = if (maxProgress > 0) {
         currentProgress.toFloat() / maxProgress
     } else {
-        0f
+        1f
     }
 
-    Column(modifier = modifier) {
-        // 실제 TopBar (예: 타이틀, 뒤로가기 버튼 등)
-        // Text("제목") 등 필요한 UI 요소 배치
-
-        // 하단에 Progress 표시
+    Column {
         TopBar(
             title = title,
             onNavigationIconClick = onNavigationIconClick,
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Color.White)
         )
-        LinearProgressIndicator(
-            progress = { progressFraction },
-            modifier = Modifier.fillMaxWidth().height(4.dp),
-            color = Primary_Normal,
+        LinearProgressBar(
+            progressFraction = progressFraction,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp),
+            progressColor = Primary_Normal,
+        )
+    }
+}
+
+@Composable
+fun LinearProgressBar(
+    progressFraction: Float,
+    modifier: Modifier = Modifier,
+    progressColor: Color = Color.Blue,
+    trackColor: Color = Color.LightGray
+) {
+    Canvas(modifier = modifier) {
+        val progressWidth = (size.width * progressFraction).toInt().toFloat()
+
+        drawRect(
+            color = progressColor,
+            topLeft = Offset(0f, 0f),
+            size = Size(progressWidth, size.height)
+        )
+
+        drawRect(
+            color = trackColor,
+            topLeft = Offset(progressWidth, 0f),
+            size = Size(size.width - progressWidth, size.height)
         )
     }
 }
@@ -54,7 +82,7 @@ fun ProgressTopBarPreview() {
         ProgressTopBar(
             title = "회원가입",
             currentProgress = 1,
-            maxProgress = 5,
+            maxProgress = 6,
             onNavigationIconClick = {
 
             }

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.R
+import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -60,7 +60,7 @@ fun RegisterStep6Screen(
             )
             Spacer(modifier = Modifier.height(48.dp))
             Image(
-                painter = painterResource(id = R.drawable.sign_up_1),
+                painter = painterResource(id = R.drawable.img_sign_up_1),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
