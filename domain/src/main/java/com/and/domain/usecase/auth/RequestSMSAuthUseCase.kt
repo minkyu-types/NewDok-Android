@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class RequestSMSAuthUseCase @Inject constructor(
     private val repository: AuthRepository
-): BaseSuspendUseCase<RequestSMSAuthParams, Unit> {
+): BaseSuspendUseCase<RequestSMSAuthParams, String> {
 
-    override suspend fun invoke(parameter: RequestSMSAuthParams) {
+    override suspend fun invoke(parameter: RequestSMSAuthParams): String {
         return repository.requestSMSAuth(
             parameter.phoneNumber
         )

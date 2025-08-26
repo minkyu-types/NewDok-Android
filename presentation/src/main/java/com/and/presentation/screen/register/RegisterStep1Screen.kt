@@ -68,10 +68,14 @@ fun RegisterStep1Screen(
     var phoneNumber by remember { mutableStateOf("") }
     var authCode by remember { mutableStateOf("") }
 
-    val uiState by viewModel.authCodeRequestedState
-    val isAuthCodeStart: Boolean = when (uiState) {
-        is UiState.Success -> (uiState as UiState.Success).data
-        else -> false
+    val authRequestUi by viewModel.authCodeRequestedState
+    val verifyUi by viewModel.authVerificationState
+    val nextEnabled by viewModel.isNextEnabled
+    val isRequestingEnabled = authRequestUi is UiState.Idle
+
+    val isAuthCodeStart: Pair<Boolean, String?> = when (authRequestUi) {
+        is UiState.Success -> (authRequestUi as UiState.Success).data
+        else -> Pair(false, null)
     }
 
     Column(
@@ -102,6 +106,7 @@ fun RegisterStep1Screen(
                 },
                 onAuthCodeChange = { code ->
                     authCode = code
+                    viewModel.verifyAuthCode(code)
                 },
                 startAuthCodeTimer = isAuthCodeStart,
                 onAuthCodeExpired = {
@@ -109,12 +114,14 @@ fun RegisterStep1Screen(
                 },
                 onAuthButtonClick = { phoneNum ->
                     viewModel.requestSmsAuthCode(phoneNum)
-                }
+                },
+                verifyUi = verifyUi,
+                isRequestingEnabled = isRequestingEnabled
             )
         }
 
         ConditionalNextButton(
-            enabled = true, // 여기서 인증번호 일치 여부 확인
+            enabled = nextEnabled,
             onClick = {
                 viewModel.setUserPhoneNumber(phoneNumber = phoneNumber)
                 onNext()
@@ -130,9 +137,11 @@ fun PhoneAuthView(
     authCode: String,
     onPhoneNumberChange: (String) -> Unit,
     onAuthCodeChange: (String) -> Unit,
-    startAuthCodeTimer: Boolean,
+    startAuthCodeTimer: Pair<Boolean, String?>,
     onAuthCodeExpired: () -> Unit,
     onAuthButtonClick: (String) -> Unit,
+    verifyUi: UiState<Boolean>,
+    isRequestingEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     PhoneTextField(
@@ -141,6 +150,7 @@ fun PhoneAuthView(
         onAuthButtonClick = { phoneNum ->
             onAuthButtonClick(phoneNum)
         },
+        isRequestingEnabled = isRequestingEnabled,
         modifier = Modifier
             .fillMaxWidth(),
     )
@@ -152,7 +162,8 @@ fun PhoneAuthView(
         onValueChange = onAuthCodeChange,
         isError = false,
         startTimer = startAuthCodeTimer,
-        onTimerExpire = onAuthCodeExpired
+        onTimerExpire = onAuthCodeExpired,
+        verifyUi = verifyUi
     )
 }
 
@@ -161,7 +172,8 @@ fun PhoneTextField(
     phoneNumber: String,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
-    onAuthButtonClick: (String) -> Unit
+    onAuthButtonClick: (String) -> Unit,
+    isRequestingEnabled: Boolean
 ) {
     // 전화번호 정규식 검사
     val isPhoneNumberValid = phoneNumber.phoneNumberValidation()
@@ -186,11 +198,12 @@ fun PhoneTextField(
                 onValueChange = { onValueChange(it) },
                 valueHint = stringResource(id = R.string.register_phone_auth_placeholder),
                 isError = phoneNumber.isNotBlank() && !isPhoneNumberValid,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier
                     .weight(1f)
             )
             Button(
-                enabled = isPhoneNumberValid,
+                enabled = isPhoneNumberValid && isRequestingEnabled,
                 onClick = {
                     val result = onAuthButtonClick(phoneNumber)
                     // 중복이 아닌 경우 TextField border Primary0으로 색상 변경
@@ -204,7 +217,7 @@ fun PhoneTextField(
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(5.dp),
-                        color = if (isPhoneNumberValid) Primary_Normal else Line_Disabled
+                        color = if (isPhoneNumberValid && isRequestingEnabled) Primary_Normal else Line_Disabled
                     ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -217,7 +230,7 @@ fun PhoneTextField(
                     text = stringResource(R.string.auth_request),
                     style = Body2Normal,
                     fontWeight = FontWeight.Bold,
-                    color = if (isPhoneNumberValid) Primary_Normal else Caption_Disabled,
+                    color = if (isPhoneNumberValid && isRequestingEnabled) Primary_Normal else Caption_Disabled,
                     maxLines = 1
                 )
             }
@@ -229,7 +242,8 @@ fun PhoneTextField(
 fun AuthTextField(
     value: String,
     isError: Boolean,
-    startTimer: Boolean,
+    startTimer: Pair<Boolean, String?>,
+    verifyUi: UiState<Boolean>,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
     onTimerExpire: () -> Unit = {}
@@ -237,7 +251,7 @@ fun AuthTextField(
     var timeLeft by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(startTimer) {
-        if (startTimer) {
+        if (startTimer.first == true) {
             timeLeft = 180
 
             while (timeLeft > 0) {
@@ -311,24 +325,28 @@ fun AuthTextField(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        if (!isError) {
-            Text(
-                text = stringResource(id = R.string.register_phone_auth_number_hint),
-                style = Label1,
-                color = Caption_Neutral,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-            )
-        } else {
-            Text(
-                text = stringResource(id = R.string.register_phone_auth_number_error_1),
-                style = Label1,
-                color = Caption_Neutral,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-            )
+        when (verifyUi) {
+            is UiState.Success -> {
+                Text(
+                    text = stringResource(id = R.string.register_phone_auth_number_success),
+                    style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+            is UiState.Error -> {
+                Text(
+                    text = verifyUi.message,
+                    style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+            else -> {
+                Text(
+                    text = stringResource(id = R.string.register_phone_auth_number_hint),
+                    style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
         }
     }
 }
