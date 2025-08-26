@@ -1,10 +1,12 @@
 package com.and.presentation.component.textfield
 
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -32,8 +34,9 @@ fun HintErrorTextField(
     value: String,
     valueHint: String,
     isError: Boolean,
-    modifier: Modifier = Modifier,
     icon: Int? = null,
+    keyboardOptions: KeyboardOptions? = null,
+    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {}
 ) {
     Column(
@@ -79,6 +82,7 @@ fun HintErrorTextField(
                 disabledContainerColor = Color.White,
                 errorContainerColor = Color.White
             ),
+            keyboardOptions = keyboardOptions ?: KeyboardOptions.Default
         )
     }
 }

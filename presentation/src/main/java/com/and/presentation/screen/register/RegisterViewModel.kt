@@ -30,13 +30,21 @@ class RegisterViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    private val _authCodeRequestedState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
-    val authCodeRequestedState: State<UiState<Boolean>> = _authCodeRequestedState
+    private val _authCodeRequestedState = mutableStateOf<UiState<Pair<Boolean, String?>>>(UiState.Idle)
+    val authCodeRequestedState: State<UiState<Pair<Boolean, String?>>> = _authCodeRequestedState
+
+    private val _authVerificationState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
+    val authVerificationState: State<UiState<Boolean>> = _authVerificationState
 
     private val _idDuplicationState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
     val idDuplicationState: State<UiState<Boolean>> = _idDuplicationState
 
+    private val _isNextEnabled = mutableStateOf(false)
+    val isNextEnabled: State<Boolean> = _isNextEnabled
+
     private var userRegisterModel = UserRegisterModel()
+
+    private var issuedAuthCode: String? = null
 
     fun requestSmsAuthCode(
         phoneNumber: String
@@ -48,14 +56,33 @@ class RegisterViewModel @Inject constructor(
                         phoneNumber = phoneNumber
                     )
                 )
-            }.onSuccess { result ->
-                _authCodeRequestedState.value = UiState.Success(true)
+            }.onSuccess { authCode ->
+                issuedAuthCode = authCode
+                _authVerificationState.value = UiState.Idle
+                _authCodeRequestedState.value = UiState.Success(true to authCode)
             }.onFailure { error ->
+                issuedAuthCode = null
                 _authCodeRequestedState.value = UiState.Error(
                     error.message ?: "인증 요청 중 오류가 발생했습니다"
                 )
             }
+            refreshNextEnabled()
         }
+    }
+
+    fun verifyAuthCode(userInput: String): Boolean {
+        if (userInput.length < 6) {
+            _authVerificationState.value = UiState.Idle
+            _isNextEnabled.value = false
+            return false
+        }
+
+        val expected = issuedAuthCode
+        val ok = userInput.isNotBlank() && userInput.length == 6 && expected != null && userInput == expected
+        _authVerificationState.value = if (ok) UiState.Success(true)
+        else UiState.Error("인증번호가 일치하지 않습니다. 다시 시도해주세요.")
+        refreshNextEnabled()
+        return ok
     }
 
     fun setUserPhoneNumber(
@@ -67,7 +94,10 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun expireAuthCodeTimer() {
+        issuedAuthCode = null
         _authCodeRequestedState.value = UiState.Idle
+        _authVerificationState.value = UiState.Error("인증 시간이 만료되었습니다. 다시 요청해주세요.")
+        refreshNextEnabled()
     }
 
     fun checkUserIdDuplication(
@@ -118,6 +148,14 @@ class RegisterViewModel @Inject constructor(
             birthYear = requireNotNull(birth),
             gender = requireNotNull(gender),
         )
+    }
+
+    private fun isAuthVerified(): Boolean =
+        (authVerificationState.value as? UiState.Success)?.data == true
+
+    private fun refreshNextEnabled() {
+        val phoneOk = userRegisterModel.phoneNumber.isNotBlank()
+        _isNextEnabled.value = phoneOk && isAuthVerified()
     }
 
     fun signUp() {

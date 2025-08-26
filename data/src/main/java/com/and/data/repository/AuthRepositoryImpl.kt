@@ -8,7 +8,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val postSMSAuthApi: PostSMSAuthApi
 ): AuthRepository, BaseRepository() {
-    override suspend fun requestSMSAuth(phoneNumber: String) {
+    override suspend fun requestSMSAuth(phoneNumber: String): String {
         return handleApiCall(
             apiCall = {
                 postSMSAuthApi.postSMSAuth(

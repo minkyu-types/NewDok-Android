@@ -1,5 +1,6 @@
 package com.and.presentation.screen.mypage.account
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +40,7 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 
 @Composable
 fun WithdrawalStep2Screen(
@@ -46,6 +49,7 @@ fun WithdrawalStep2Screen(
     viewModel: WithdrawalViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     var isReason1Checked by remember { mutableStateOf(false) }
     var isReason2Checked by remember { mutableStateOf(false) }
     var isReason3Checked by remember { mutableStateOf(false) }
@@ -119,7 +123,14 @@ fun WithdrawalStep2Screen(
                 enabled = isAnyChecked,
                 onClick = {
                     viewModel.withdrawal()
-                    onWithdrawal()
+
+                    when (withdrawalUiState) {
+                        is UiState.Success<Boolean> -> onWithdrawal()
+                        is UiState.Error -> Toast.makeText(context, "회원탈퇴에 실패했습니다", Toast.LENGTH_SHORT).show()
+                        else -> {
+
+                        }
+                    }
                 },
                 buttonText = stringResource(R.string.withdrawal_button),
             )
