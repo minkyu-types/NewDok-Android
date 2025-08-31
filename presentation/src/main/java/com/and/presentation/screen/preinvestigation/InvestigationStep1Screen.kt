@@ -72,6 +72,7 @@ fun InvestigationStep1Screen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             IndustryDropDown(
+                initialValue = IndustryCategory.DEFAULT,
                 onSelect = {
                     selectedIndustry = it
                 },

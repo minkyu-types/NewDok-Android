@@ -42,6 +42,7 @@ fun IndustryEditScreen(
             onNavigationIconClick = onBack,
         )
         IndustryDropDown(
+            initialValue = industry ?: IndustryCategory.DEFAULT,
             onSelect = { industry ->
                 currIndustry = industry
             },
@@ -52,7 +53,7 @@ fun IndustryEditScreen(
         ConditionalNextButton(
             enabled = (industry != null),
             onClick = {
-                viewModel.updateIndustry(requireNotNull(industry))
+                viewModel.updateIndustry(requireNotNull(currIndustry))
                 onBack()
             },
             buttonText = stringResource(R.string.edit),

@@ -269,12 +269,13 @@ fun MainFlowScreen(
                     onNickNameClick = {
                         navController.navigate("NicknameEdit")
                     },
-                    onIndustryClick = {
-                        navController.navigate("IndustryEdit")
+                    onIndustryClick = { industry ->
+                        navController.navigate("IndustryEdit/${industry.name}")
                     },
                     onInterestClick = {
                         navController.navigate("InterestEdit")
-                    }
+                    },
+                    viewModel = hiltViewModel()
                 )
             }
 
@@ -294,14 +295,23 @@ fun MainFlowScreen(
                     )
                 }
 
-                composable("IndustryEdit") { backStackEntry ->
+                composable(
+                    route = "IndustryEdit",
+                    arguments = listOf(
+                        navArgument("industry") { type = NavType.StringType }
+                    )
+                ) { backStackEntry ->
                     val parentEntry = remember(backStackEntry) {
                         navController.getBackStackEntry("profile_edit_graph")
                     }
+                    val enumName = backStackEntry.arguments?.getString("industry")
+                        ?: IndustryCategory.DEFAULT.name
+                    val industry = runCatching { IndustryCategory.valueOf(enumName) }
+                        .getOrDefault(IndustryCategory.FASHION)
                     val viewModel: ProfileEditViewModel = hiltViewModel(parentEntry)
 
                     IndustryEditScreen(
-                        industry = IndustryCategory.FASHION,
+                        industry = industry,
                         onBack = { navController.popBackStack() },
                         viewModel = viewModel
                     )
