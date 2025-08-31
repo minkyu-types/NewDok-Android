@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.component.image.BrandProfileImage
 import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.SearchResultModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
@@ -33,8 +34,8 @@ import com.and.presentation.ui.Line_Neutral
 
 @Composable
 fun SearchArticleItem(
-    article: DailyArticleModel,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    article: SearchResultModel.SearchedArticleModel,
+    onArticleClick: (SearchResultModel.SearchedArticleModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -50,7 +51,7 @@ fun SearchArticleItem(
             .padding(horizontal = 16.dp, vertical = 20.dp)
     ) {
         Text(
-            text = article.articleTitle,
+            text = article.title,
             style = Body1Normal,
             fontWeight = FontWeight.Bold,
             color = Caption_Strong
@@ -71,11 +72,11 @@ fun SearchArticleItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BrandProfileImage(
-                imageUrl = article.brandName
+                imageUrl = article.newsLetter.brandName
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = article.brandName,
+                text = article.newsLetter.brandName,
                 style = Body2Normal,
                 fontWeight = FontWeight.Medium,
                 color = Caption_Neutral
@@ -99,12 +100,17 @@ fun SearchArticleItem(
 fun ArticleItemPreview() {
     DefaultWhiteTheme {
         SearchArticleItem(
-            article = DailyArticleModel(
-                "주간 컴퍼니타임스",
-                "",
-                "신입사원 시절 '최악의 실수'는?",
-                1,
-                "",
+            article = SearchResultModel.SearchedArticleModel(
+                id = 1,
+                title = "두뇌 서바이벌",
+                matchedText = "출연하는 두뇌 서바이벌로,",
+                date = java.time.Instant.now(),
+                newsLetter = SearchResultModel.SearchedNewsLetterModel(
+                    id = 1,
+                    brandName = "뉴스레터 브랜드",
+                    imageUrl = null
+                ),
+                matchType = "title"
             ),
             onArticleClick = {
 

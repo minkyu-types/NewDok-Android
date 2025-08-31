@@ -4,11 +4,13 @@ import com.and.data.repository.ArticleRepositoryImpl
 import com.and.data.repository.AuthRepositoryImpl
 import com.and.data.repository.MemberNewsLetterRepositoryImpl
 import com.and.data.repository.NonMemberNewsLetterRepositoryImpl
+import com.and.data.repository.SearchRepositoryImpl
 import com.and.data.repository.UserRepositoryImpl
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.repository.AuthRepository
 import com.and.domain.repository.MemberNewsLetterRepository
 import com.and.domain.repository.NonMemberNewsLetterRepository
+import com.and.domain.repository.SearchRepository
 import com.and.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -49,4 +51,10 @@ interface RepositoryModule {
     fun bindsAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
+
+    @Binds
+    @Singleton
+    fun bindsSearchRepository(
+        searchRepositoryImpl: SearchRepositoryImpl
+    ): SearchRepository
 }
