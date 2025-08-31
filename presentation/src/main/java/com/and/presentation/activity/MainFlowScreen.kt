@@ -45,6 +45,8 @@ import com.and.presentation.screen.mypage.profile.ProfileEditScreen
 import com.and.presentation.screen.mypage.ServiceFeedbackScreen
 import com.and.presentation.screen.mypage.TermsScreen
 import com.and.presentation.screen.mypage.account.AccountManageScreen
+import com.and.presentation.screen.mypage.account.PasswordEditScreen
+import com.and.presentation.screen.mypage.account.PhoneNumberEditScreen
 import com.and.presentation.screen.mypage.account.WithdrawalStep1Screen
 import com.and.presentation.screen.mypage.account.WithdrawalStep2Screen
 import com.and.presentation.screen.mypage.profile.ProfileEditViewModel
@@ -63,9 +65,21 @@ fun MainFlowScreen(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val bottomBarRoutes = listOf(
+        "FeedMain", "SubscriptionMain", "HomeMain", "BookmarkMain", "MyPageMain"
+    )
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController = navController) }
+        bottomBar = {
+            if (currentRoute in bottomBarRoutes) {
+                BottomNavigationBar(
+                    navController = navController,
+                    currentRoute = currentRoute
+                )
+            }
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -80,7 +94,8 @@ fun MainFlowScreen(
                     },
                     onArticleClick = {
                         navController.navigate("ArticleDetail")
-                    }
+                    },
+                    viewModel = hiltViewModel()
                 )
             }
 
@@ -97,7 +112,8 @@ fun MainFlowScreen(
             }
             composable("NotificationSetting") {
                 NotificationSettingScreen(
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    viewModel = hiltViewModel()
                 )
             }
 
@@ -170,10 +186,33 @@ fun MainFlowScreen(
             composable("AccountManage") {
                 AccountManageScreen(
                     onBack = { navController.popBackStack() },
+                    onPhoneNumChange = {
+                        navController.navigate("PhoneNumberEdit")
+                    },
+                    onPasswordChange = {
+                        navController.navigate("PasswordEdit")
+                    },
                     onLogout = onLogout,
                     onTryWithdrawal = {
                         navController.navigate("WithdrawalStep1")
                     }
+                )
+            }
+
+            composable("PhoneNumberEdit") {
+                PhoneNumberEditScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    viewModel = hiltViewModel()
+                )
+            }
+
+            composable("PasswordEdit") {
+                PasswordEditScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
                 )
             }
 
@@ -286,6 +325,7 @@ fun MainFlowScreen(
                     onBack = { navController.popBackStack() }
                 )
             }
+
             composable(
                 route = "NewsLetterDetail/{id}",
                 arguments = listOf(
@@ -310,6 +350,7 @@ fun MainFlowScreen(
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
+    currentRoute: String?,
     modifier: Modifier = Modifier
 ) {
     val items = listOf(
@@ -330,8 +371,6 @@ fun BottomNavigationBar(
         NavigationBar(
             containerColor = Color.White
         ) {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
             items.forEach { item ->
                 NavigationBarItem(
                     icon = {
