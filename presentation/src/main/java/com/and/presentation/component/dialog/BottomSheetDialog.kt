@@ -41,10 +41,13 @@ fun BottomSheetDialog(
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val mySheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false,
+    )
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = sheetState,
+        sheetState = mySheetState,
         containerColor = Color.White,
         dragHandle = {
             BottomSheetDefaults.DragHandle()
@@ -52,7 +55,7 @@ fun BottomSheetDialog(
     ) {
         LaunchedEffect(Unit) {
             coroutineScope.launch {
-                sheetState.expand()
+                mySheetState.expand()
             }
         }
         Column {

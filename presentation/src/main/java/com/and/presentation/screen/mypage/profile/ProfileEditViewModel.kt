@@ -34,7 +34,7 @@ class ProfileEditViewModel @Inject constructor(
         getUserInfo()
     }
 
-    private fun getUserInfo() {
+    fun getUserInfo() {
         viewModelScope.launch {
             runCatching {
                 getUserInfoUseCase(Unit)
@@ -51,11 +51,17 @@ class ProfileEditViewModel @Inject constructor(
         interests: Set<InterestCategory>
     ) {
         viewModelScope.launch {
-            updateInterestsUseCase(
-                UpdateUserInterestsUseCase.UpdateUserInterestsParams(
-                    interests
+            kotlin.runCatching {
+                updateInterestsUseCase(
+                    UpdateUserInterestsUseCase.UpdateUserInterestsParams(
+                        interests
+                    )
                 )
-            )
+            }.onSuccess { result ->
+                //
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
     }
 
@@ -63,11 +69,17 @@ class ProfileEditViewModel @Inject constructor(
         industry: IndustryCategory
     ) {
         viewModelScope.launch {
-            updateIndustryUseCase(
-                UpdateUserIndustryUseCase.UpdateUserIndustryParams(
-                    industry.id
+            runCatching {
+                updateIndustryUseCase(
+                    UpdateUserIndustryUseCase.UpdateUserIndustryParams(
+                        industry.id
+                    )
                 )
-            )
+            }.onSuccess { result ->
+
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
     }
 
@@ -75,11 +87,17 @@ class ProfileEditViewModel @Inject constructor(
         nickname: String
     ) {
         viewModelScope.launch {
-            updateUserNicknameUseCase(
-                UpdateUserNicknameUseCase.UpdateUserNickNameParams(
-                    nickname = nickname
+            kotlin.runCatching {
+                updateUserNicknameUseCase(
+                    UpdateUserNicknameUseCase.UpdateUserNickNameParams(
+                        nickname = nickname
+                    )
                 )
-            )
+            }.onSuccess { result ->
+                //
+            }.onFailure { e ->
+                e.printStackTrace()
+            }
         }
     }
 }

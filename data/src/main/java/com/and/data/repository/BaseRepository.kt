@@ -36,12 +36,14 @@ abstract class BaseRepository(
             }.getOrDefault(e.message())
             throw ApiException(e.code(), msg)
         }  catch (e: IOException) {
+            e.printStackTrace()
             if (e.message?.contains("Canceled", ignoreCase = true) == true) {
                 throw CancellationException("OkHttp call canceled", e)
             }
             throw ApiException(-1, "네트워크 오류")
         } catch (e: Exception) {
-            throw ApiException(-1, "알 수 없는 오류")
+            e.printStackTrace()
+            throw ApiException(-1, e.message)
         }
     }
 
