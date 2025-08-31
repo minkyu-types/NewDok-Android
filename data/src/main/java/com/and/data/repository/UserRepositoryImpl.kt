@@ -21,7 +21,8 @@ import com.and.data.model.request.PatchUserNicknameRequestDto
 import com.and.data.model.request.PatchUserPasswordRequestDto
 import com.and.data.model.request.PatchUserPhoneNumberRequestDto
 import com.and.data.model.request.SignUpRequestDto
-import com.and.data.preference.AuthPreferenceStore
+import com.and.data.preference.SettingPreferenceStore
+import com.and.data.preference.UserAuthPreferenceStore
 import com.and.domain.model.Account
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.User
@@ -47,16 +48,17 @@ class UserRepositoryImpl @Inject constructor(
     private val withdrawalApi: DeleteUserApi,
     private val userMapper: UserMapper,
     private val newsLetterMapper: NewsLetterMapper,
-    private val authPreferenceStore: AuthPreferenceStore
+    private val userAuthPreferenceStore: UserAuthPreferenceStore,
+    private val settingPreferenceStore: SettingPreferenceStore
 ) : UserRepository, BaseRepository() {
     override fun getUserAccessToken(): Flow<String?> {
-        return authPreferenceStore.getAccessToken()
+        return userAuthPreferenceStore.getAccessToken()
     }
 
     override suspend fun deleteUserAccessToken(): Boolean {
         return handleApiCall(
             apiCall = {
-                authPreferenceStore.clearAccessToken()
+                userAuthPreferenceStore.clearAccessToken()
             },
             mapper = { result ->
                 val a = result
@@ -244,7 +246,7 @@ class UserRepositoryImpl @Inject constructor(
                         password = password
                     )
                 ).also {
-                    authPreferenceStore.saveAccessToken(it.accessToken)
+                    userAuthPreferenceStore.saveAccessToken(it.accessToken)
                 }
             },
             mapper = { response ->

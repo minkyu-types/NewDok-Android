@@ -9,9 +9,11 @@ import com.and.domain.model.NewsLetter
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
+    // DataStore 비즈니스 로직
     fun getUserAccessToken(): Flow<String?>
     suspend fun deleteUserAccessToken(): Boolean
 
+    // API 비즈니스 로직
     suspend fun getPreInvestigateNewsLetters(industry: IndustryCategory, interests: List<InterestCategory>): List<NewsLetter>
     suspend fun getUserByPhoneNumber(phoneNumber: String): List<User>
     suspend fun getUserIdDuplication(loginId: String): Account

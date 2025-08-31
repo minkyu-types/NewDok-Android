@@ -8,7 +8,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val authPreferenceStore: AuthPreferenceStore
+    private val userAuthPreferenceStore: UserAuthPreferenceStoreImpl
 ): Interceptor {
 
     companion object {
@@ -17,7 +17,7 @@ class AuthInterceptor @Inject constructor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking {
-            authPreferenceStore.getAccessToken().firstOrNull()
+            userAuthPreferenceStore.getAccessToken().firstOrNull()
         } ?: ""
 
         if (token.isNotBlank()) {
