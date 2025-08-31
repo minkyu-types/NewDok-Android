@@ -51,11 +51,12 @@ import com.and.presentation.util.removeRippleEffect
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IndustryDropDown(
+    initialValue: IndustryCategory,
     onSelect: (IndustryCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem: IndustryCategory? by rememberSaveable { mutableStateOf(null) }
+    var selectedItem: IndustryCategory? by rememberSaveable { mutableStateOf(initialValue) }
     var industryBoxSize by remember { mutableStateOf(Size.Zero) }
     val industries = IndustryCategory.entries
 
