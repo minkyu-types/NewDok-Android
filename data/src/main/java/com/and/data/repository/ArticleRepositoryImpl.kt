@@ -5,7 +5,6 @@ import com.and.data.api.article.GetArticlesApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetReceivedArticlesCountApi
-import com.and.data.api.article.GetSearchedArticlesApi
 import com.and.data.api.article.GetTodayArticlesApi
 import com.and.data.api.article.PatchBookmarkArticleApi
 import com.and.data.mapper.ArticleMapper
@@ -25,7 +24,6 @@ class ArticleRepositoryImpl @Inject constructor(
     private val getBookmarkedArticlesApi: GetBookmarkedArticlesApi,
     private val getBookmarkedInterestsApi: GetBookmarkedInterestsApi,
     private val getArticleByIdApi: GetArticleByIdApi,
-    private val getSearchedArticlesApi: GetSearchedArticlesApi,
     private val getTodayArticlesApi: GetTodayArticlesApi,
     private val patchBookmarkArticleApi: PatchBookmarkArticleApi,
     private val articleMapper: ArticleMapper,
@@ -92,20 +90,6 @@ class ArticleRepositoryImpl @Inject constructor(
                     articleId = data.articleId.toInt(),
                     status = ArticleStatus.UNREAD
                 )
-            }
-        )
-    }
-
-    override suspend fun searchArticles(keyword: String): List<Article> {
-        return handleApiCall(
-            apiCall = {
-                getSearchedArticlesApi.getSearchedArticles(keyword)
-            },
-            mapper = { response ->
-                val data = response.data
-                data.map {
-                    articleMapper.mapToDomain(it)
-                }
             }
         )
     }
