@@ -23,11 +23,13 @@ import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.textfield.HintErrorTextField
 import com.and.presentation.component.topbar.TopBar
+import com.and.presentation.model.UserModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.nicknameValidation
 
 @Composable
@@ -36,8 +38,14 @@ fun NicknameEditScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileEditViewModel
 ) {
-    var nickname by remember { mutableStateOf("김미느규") }
+    var nickname by remember { mutableStateOf("") }
     val isNicknameValid = nickname.nicknameValidation()
+    val userInfo by viewModel.userInfoUiState
+
+    val userNickName = when(userInfo) {
+        is UiState.Success<UserModel> -> (userInfo as UiState.Success<UserModel>).data.nickname
+        else -> ""
+    }
 
     Column(
         modifier = Modifier
@@ -64,8 +72,9 @@ fun NicknameEditScreen(
             HintErrorTextField(
                 maxLength = 12,
                 value = nickname,
-                valueHint = "",
-                isError = !isNicknameValid
+                valueHint = userNickName,
+                isError = !isNicknameValid,
+                onValueChange = { nickname = it }
             )
             if (nickname.isNotBlank()) {
                 Spacer(modifier = Modifier.height(8.dp))

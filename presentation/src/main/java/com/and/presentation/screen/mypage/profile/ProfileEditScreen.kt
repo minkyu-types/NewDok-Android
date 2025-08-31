@@ -17,18 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,13 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.type.Gender
+import androidx.lifecycle.repeatOnLifecycle
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.model.UserModel
-import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
@@ -63,28 +57,23 @@ import com.and.presentation.util.removeRippleEffect
 fun ProfileEditScreen(
     onBack: () -> Unit,
     onNickNameClick: () -> Unit,
-    onIndustryClick: () -> Unit,
-    onInterestClick: () -> Unit,
+    onIndustryClick: (IndustryCategory) -> Unit,
+    onInterestClick: (List<InterestCategory>) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ProfileEditViewModel = hiltViewModel()
+    viewModel: ProfileEditViewModel
 ) {
     val uiState by viewModel.userInfoUiState
-    val nickname by remember(uiState) {
-        derivedStateOf {
-            (uiState as? UiState.Success<UserModel>)?.data?.nickname
+
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
+            viewModel.getUserInfo()
         }
     }
-    val industryId by remember(uiState) {
-        derivedStateOf {
-            (uiState as? UiState.Success<UserModel>)?.data?.industryId
-        }
-    }
-    val interests by remember(uiState) {
-        derivedStateOf {
-            (uiState as? UiState.Success<UserModel>)?.data?.interests
-                ?: emptyList()
-        }
-    }
+
+    val nickname = (uiState as? UiState.Success<UserModel>)?.data?.nickname
+    val industryId = (uiState as? UiState.Success<UserModel>)?.data?.industryId
+    val interests = (uiState as? UiState.Success<UserModel>)?.data?.interests ?: emptyList()
 
     Column(
         modifier = modifier
@@ -118,19 +107,25 @@ fun ProfileEditScreen(
                 title = stringResource(R.string.industry_category),
                 value = IndustryCategory.getIndustryById(industryId ?: 0).value,
                 placeHolder = stringResource(R.string.profile_edit_industry_placeholder),
-                onClick = onIndustryClick
+                onClick = {
+                    onIndustryClick(IndustryCategory.getIndustryById(industryId ?: 0))
+                }
             )
             if (interests.isEmpty()) {
                 ProfileEditBox(
                     title = stringResource(R.string.interest_category),
                     value = null,
                     placeHolder = stringResource(R.string.profile_edit_interest_placeholder),
-                    onClick = onIndustryClick
+                    onClick = {
+                        onInterestClick(interests)
+                    }
                 )
             } else {
                 InterestTags(
                     interests = interests,
-                    onAddClick = onInterestClick
+                    onAddClick = {
+                        onInterestClick(interests)
+                    }
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -269,7 +264,8 @@ fun ProfileEditScreenPreview() {
             },
             onInterestClick = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }
