@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,13 +58,12 @@ fun RegisterStep5Screen(
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
 
     var bottomSheetUrl by remember { mutableStateOf<String?>(null) }
-    val serviceTermUrl = stringResource(R.string.register_terms_term_1)
-    val personalTermUrl = stringResource(R.string.register_terms_term_2)
 
     var isTerm1Checked by remember { mutableStateOf(false) }
     var isTerm2Checked by remember { mutableStateOf(false) }
@@ -123,7 +123,7 @@ fun RegisterStep5Screen(
                 initialChecked = isTerm2Checked,
                 onCheckChange = {
                     if (it) {
-                        bottomSheetUrl = serviceTermUrl
+                        bottomSheetUrl = context.getString(R.string.term_service_url)
                         showBottomSheet = true
                     }
                     isTerm2Checked = it
@@ -135,7 +135,7 @@ fun RegisterStep5Screen(
                 initialChecked = isTerm3Checked,
                 onCheckChange = {
                     if (it) {
-                        bottomSheetUrl = personalTermUrl
+                        bottomSheetUrl = context.getString(R.string.term_personal_url)
                         showBottomSheet = true
                     }
                     isTerm3Checked = it

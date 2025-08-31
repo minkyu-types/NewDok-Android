@@ -1,6 +1,9 @@
 package com.and.presentation.component
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -19,9 +22,24 @@ fun WebViewScreen(
     AndroidView(
         factory = { context ->
             WebView(context).apply {
-                settings.javaScriptEnabled = true
-                settings.domStorageEnabled = true
-                settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+
+                settings.apply {
+                    javaScriptEnabled = true
+                    domStorageEnabled = true
+                    javaScriptCanOpenWindowsAutomatically = true
+                    useWideViewPort = true
+                    loadWithOverviewMode = true
+                    cacheMode = WebSettings.LOAD_DEFAULT
+                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                    userAgentString = "$userAgentString Mobile Safari/537.36"
+                }
+
+                CookieManager.getInstance().setAcceptCookie(true)
+                CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
 
                 webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(
@@ -30,8 +48,11 @@ fun WebViewScreen(
                     ): Boolean {
                         return false
                     }
+
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        Log.d("WebView", "Finished loading $url")
+                    }
                 }
-                loadUrl(url)
             }
         },
         update = { webView ->

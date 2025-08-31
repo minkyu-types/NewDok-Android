@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">NewDok</string>
 
+    <string name="term_service_url">https://www.notion.so/newdok/4727644053f94ff384d87246ee55aca8?source=copy_link</string>
+    <string name="term_personal_url">https://www.notion.so/newdok/c01cfc8534224a2ca031ecce1c07a6bf?source=copy_link</string>
+
     <string name="next">다음</string>
     <string name="count">%d개</string>
     <string name="select">선택</string>
