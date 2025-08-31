@@ -22,6 +22,10 @@ val Context.userDataStore by preferencesDataStore(
     name = "user_prefs"
 )
 
+val Context.notificationSettingDataStore by preferencesDataStore(
+    name = "notification_setting_prefs"
+)
+
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {

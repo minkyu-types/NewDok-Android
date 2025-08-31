@@ -14,5 +14,5 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun providesPostSMSAuthApi(retrofit: Retrofit) = retrofit.create(PostSMSAuthApi::class.java)
+    fun providesPostSMSAuthApi(retrofit: Retrofit): PostSMSAuthApi = retrofit.create(PostSMSAuthApi::class.java)
 }
