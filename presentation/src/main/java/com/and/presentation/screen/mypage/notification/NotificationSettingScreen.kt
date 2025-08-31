@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.and.newdok.presentation.R
 import com.and.presentation.component.CustomSwitch
 import com.and.presentation.component.topbar.TopBar
@@ -43,10 +43,9 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun NotificationSettingScreen(
     onBack: () -> Unit,
+    viewModel: NotificationSettingViewModel,
 ) {
-    var articleNotificationChecked by remember { mutableStateOf(false) }
-    var updateNotificationChecked by remember { mutableStateOf(false) }
-    var newsLetterNotificationChecked by remember { mutableStateOf(false) }
+    val settingState by viewModel.notificationSettingsFlow.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -72,9 +71,9 @@ fun NotificationSettingScreen(
             NotificationSettingItem(
                 title = stringResource(R.string.notification_setting_title_1),
                 body = stringResource(R.string.notification_setting_body_1),
-                initialState = articleNotificationChecked,
-                onSwitchStateChange = { isChecked ->
-                    articleNotificationChecked = isChecked
+                initialState = settingState.newArticleEnabled,
+                onSwitchStateChange = {
+                    viewModel.onToggleNewArticle()
                 }
             )
             Spacer(modifier = Modifier.height(48.dp))
@@ -88,18 +87,18 @@ fun NotificationSettingScreen(
             NotificationSettingItem(
                 title = stringResource(R.string.notification_setting_title_2),
                 body = stringResource(R.string.notification_setting_body_2),
-                initialState = updateNotificationChecked,
-                onSwitchStateChange = { isChecked ->
-                    updateNotificationChecked = isChecked
+                initialState = settingState.newUpdateEnabled,
+                onSwitchStateChange = {
+                    viewModel.onToggleNewUpdate()
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
             NotificationSettingItem(
                 title = stringResource(R.string.notification_setting_title_3),
                 body = stringResource(R.string.notification_setting_body_3),
-                initialState = newsLetterNotificationChecked,
-                onSwitchStateChange = { isChecked ->
-                    newsLetterNotificationChecked = isChecked
+                initialState = settingState.recommendedNewsletterEnabled,
+                onSwitchStateChange = {
+                    viewModel.onToggleRecommendedNewsLetters()
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -204,7 +203,8 @@ fun NotificationSettingScreenPreview() {
         NotificationSettingScreen(
             onBack = {
 
-            }
+            },
+            viewModel = hiltViewModel()
         )
     }
 }
