@@ -5,7 +5,6 @@ import com.and.data.api.newsletter.GetMemberNewsLettersApi
 import com.and.data.api.newsletter.GetNonMemberNewsLettersApi
 import com.and.data.api.newsletter.GetNonMemberNewsLetterByIdApi
 import com.and.data.api.newsletter.GetRecommendedNewsLettersApi
-import com.and.data.api.newsletter.GetSearchedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersApi
 import com.and.data.api.newsletter.GetUnSubscribedNewsLettersApi
 import com.and.data.api.newsletter.PatchSubscriptionPauseApi
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NewsLetterModule {
+object NewsLetterApiModule {
 
     @Provides
     @Singleton
@@ -40,11 +39,6 @@ object NewsLetterModule {
     @Singleton
     fun providesGetSubscribedNewsLettersApi(retrofit: Retrofit): GetSubscribedNewsLettersApi =
         retrofit.create(GetSubscribedNewsLettersApi::class.java)
-
-    @Provides
-    @Singleton
-    fun providesGetSearchedNewsLettersApi(retrofit: Retrofit): GetSearchedNewsLettersApi =
-        retrofit.create(GetSearchedNewsLettersApi::class.java)
 
     @Provides
     @Singleton

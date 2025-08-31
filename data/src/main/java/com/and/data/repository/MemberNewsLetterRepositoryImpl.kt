@@ -3,7 +3,6 @@ package com.and.data.repository
 import com.and.data.api.newsletter.GetMemberNewsLetterByIdApi
 import com.and.data.api.newsletter.GetMemberNewsLettersApi
 import com.and.data.api.newsletter.GetRecommendedNewsLettersApi
-import com.and.data.api.newsletter.GetSearchedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersCountApi
 import com.and.data.api.newsletter.GetUnSubscribedNewsLettersApi
@@ -29,7 +28,6 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     private val getNewsLetterByIdApi: GetMemberNewsLetterByIdApi,
     private val getNewsLettersApi: GetMemberNewsLettersApi,
     private val getRecommendedNewsLettersApi: GetRecommendedNewsLettersApi,
-    private val getSearchedNewsLettersApi: GetSearchedNewsLettersApi,
     private val getSubscribedNewsLettersApi: GetSubscribedNewsLettersApi,
     private val getUnSubscribedNewsLettersApi: GetUnSubscribedNewsLettersApi,
     private val patchSubscriptionPauseApi: PatchSubscriptionPauseApi,
@@ -111,10 +109,6 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
 
             }
         )
-    }
-
-    override suspend fun getSearchedNewsLetter(brandName: String): NewsLetter {
-        TODO("Not yet implemented")
     }
 
     override suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter> {
