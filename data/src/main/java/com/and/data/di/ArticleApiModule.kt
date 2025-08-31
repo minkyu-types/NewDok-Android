@@ -4,7 +4,6 @@ import com.and.data.api.article.GetArticlesApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetArticleByIdApi
-import com.and.data.api.article.GetSearchedArticlesApi
 import com.and.data.api.article.GetTodayArticlesApi
 import com.and.data.api.article.PatchBookmarkArticleApi
 import dagger.Module
@@ -25,10 +24,6 @@ object ArticleApiModule {
     @Provides
     @Singleton
     fun providesGetTodayArticlesApi(retrofit: Retrofit): GetTodayArticlesApi = retrofit.create(GetTodayArticlesApi::class.java)
-
-    @Provides
-    @Singleton
-    fun providesGetSearchedArticlesApi(retrofit: Retrofit): GetSearchedArticlesApi = retrofit.create(GetSearchedArticlesApi::class.java)
 
     @Provides
     @Singleton
