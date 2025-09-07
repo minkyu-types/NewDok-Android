@@ -105,10 +105,10 @@ fun ProfileEditScreen(
             )
             ProfileEditBox(
                 title = stringResource(R.string.industry_category),
-                value = IndustryCategory.getIndustryById(industryId ?: 0).value,
+                value = IndustryCategory.getIndustryById(industryId ?: -1).value,
                 placeHolder = stringResource(R.string.profile_edit_industry_placeholder),
                 onClick = {
-                    onIndustryClick(IndustryCategory.getIndustryById(industryId ?: 0))
+                    onIndustryClick(IndustryCategory.getIndustryById(industryId ?: -1))
                 }
             )
             if (interests.isEmpty()) {
