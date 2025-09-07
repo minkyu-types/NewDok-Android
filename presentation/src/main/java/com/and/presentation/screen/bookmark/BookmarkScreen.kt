@@ -33,6 +33,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
@@ -58,6 +59,7 @@ import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
 import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesModel
+import com.and.presentation.screen.feed.SortFilterBottomSheet
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -75,6 +77,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BookmarkScreen(
+    onSearchClick: () -> Unit,
+    onArticleClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
 ) {
@@ -95,6 +99,30 @@ fun BookmarkScreen(
                 ?: emptyList()
         }
     }
+    var showSortBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
+
+    fun hideFilter() {
+        coroutineScope.launch {
+            showSortBottomSheet = false
+            sheetState.hide()
+        }
+    }
+
+    if (showSortBottomSheet) {
+        BookmarkSortFilterBottomSheet(
+            title = currentSort.value,
+            sheetState = sheetState,
+            prevSort = currentSort,
+            onDismiss = {
+                currentSort = it
+                hideFilter()
+            },
+            onHideRequested = {
+                hideFilter()
+            }
+        )
+    }
 
     Column(
         modifier = modifier
@@ -103,9 +131,7 @@ fun BookmarkScreen(
     ) {
         MainTopBar(
             title = stringResource(R.string.bookmark_title),
-            onSearchClick = {
-
-            },
+            onSearchClick = onSearchClick,
             onAlarmClick = {
 
             }
@@ -120,14 +146,12 @@ fun BookmarkScreen(
             currentSort = currentSort,
             articleCount = articleCount,
             onSortClick = {
-                // 바텀 시트 오픈
+                showSortBottomSheet = true
             }
         )
         BookmarkArticleList(
             monthlyBookmarkedArticles = monthlyArticles,
-            onArticleClick = { article ->
-                // 아티클 상세 화면으로 이동
-            },
+            onArticleClick = onArticleClick,
             isRefreshing = isRefreshing,
             onRefresh = {
                 isRefreshing = true
@@ -142,7 +166,7 @@ fun BookmarkScreen(
 }
 
 @Composable
-fun BookmarkFilters(
+private fun BookmarkFilters(
     selectedInterests: Set<InterestCategory>,
     onInterestClick: (InterestCategory) -> Unit,
     modifier: Modifier = Modifier
@@ -331,6 +355,12 @@ fun ArticleEmptyView(
 fun BookmarkScreenPreview() {
     DefaultWhiteTheme {
         BookmarkScreen(
+            onSearchClick = {
+
+            },
+            onArticleClick = {
+
+            }
         )
     }
 }
