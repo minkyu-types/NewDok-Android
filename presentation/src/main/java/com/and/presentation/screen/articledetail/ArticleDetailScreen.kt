@@ -30,17 +30,10 @@ import com.and.presentation.ui.Neutral2
 
 @Composable
 fun ArticleDetailScreen(
+    article: DailyArticleModel,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val article = DailyArticleModel(
-        "주간 컴퍼니타임스",
-        "",
-        "신입사원 시절 '최악의 실수'는?",
-        1,
-        "",
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()

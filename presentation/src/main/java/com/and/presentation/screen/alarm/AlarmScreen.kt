@@ -43,7 +43,7 @@ import java.time.LocalDate
 @Composable
 fun AlarmScreen(
     onBack: () -> Unit,
-    onArticleClick: () -> Unit,
+    onArticleClick: (DailyArticleModel) -> Unit,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

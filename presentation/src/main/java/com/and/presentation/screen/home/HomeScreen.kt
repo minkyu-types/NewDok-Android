@@ -44,6 +44,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.Article
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.CalendarDialog
+import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.toDailyArticleModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -61,7 +63,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    onArticleClick: () -> Unit,
+    onArticleClick: (DailyArticleModel) -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -127,12 +129,15 @@ fun HomeScreen(
                 is UiState.Success<List<Article>> -> {
                     (uiState as UiState.Success).data
                 }
+
                 else -> emptyList()
             },
             onRefreshClick = {
                 // 아티클 리스트 갱신
             },
-            onItemClick = onArticleClick,
+            onItemClick = {
+                onArticleClick(it.toDailyArticleModel())
+            },
         )
     }
 }
@@ -160,7 +165,8 @@ fun HomeTopBar(
             Icon(
                 painter = painterResource(R.drawable.ic_line_search),
                 contentDescription = null,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier
+                    .size(28.dp)
                     .clickable { onSearchClick() }
             )
         }
@@ -170,7 +176,8 @@ fun HomeTopBar(
             Icon(
                 painter = painterResource(R.drawable.ic_line_bell),
                 contentDescription = null,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier
+                    .size(28.dp)
                     .clickable { onAlarmClick() }
             )
         }
@@ -218,7 +225,7 @@ fun HomeCalendarBar(
 fun HomeArticleList(
     onRefreshClick: () -> Unit,
     articles: List<Article>,
-    onItemClick: () -> Unit,
+    onItemClick: (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -268,7 +275,11 @@ fun HomeArticleList(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(articles) { item ->
-                HomeArticleListItem(item)
+                HomeArticleListItem(
+                    item,
+                    onArticleClick = {
+                        onItemClick(item)
+                    })
             }
         }
     }
@@ -277,12 +288,16 @@ fun HomeArticleList(
 @Composable
 fun HomeArticleListItem(
     article: Article,
+    onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isArticleRead = Article.getIsRead(article.status)
 
     Row(
         modifier = Modifier
+            .clickable {
+                onArticleClick(article)
+            }
             .clip(RoundedCornerShape(12.dp))
             .background(
                 color = if (isArticleRead) Line_Neutral
@@ -309,7 +324,8 @@ fun HomeArticleListItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .padding(top = 6.dp, end = 12.dp)
         ) {
             Row(

@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.and.domain.model.type.IndustryCategory
+import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.screen.alarm.AlarmScreen
 import com.and.presentation.screen.articledetail.ArticleDetailScreen
 import com.and.presentation.screen.bookmark.BookmarkScreen
@@ -92,8 +94,8 @@ fun MainFlowScreen(
                     onNewsLetterClick = {
                         navController.navigate("NewsLetterDetail")
                     },
-                    onArticleClick = {
-                        navController.navigate("ArticleDetail")
+                    onArticleClick = { article ->
+
                     },
                     viewModel = hiltViewModel()
                 )
@@ -102,7 +104,10 @@ fun MainFlowScreen(
             composable("NotificationMain") {
                 AlarmScreen(
                     onBack = { navController.popBackStack() },
-                    onArticleClick = {
+                    onArticleClick = { article: DailyArticleModel ->
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("article", article)
                         navController.navigate("ArticleDetail")
                     },
                     onActionClick = {
@@ -141,7 +146,10 @@ fun MainFlowScreen(
 
             composable("HomeMain") {
                 HomeScreen(
-                    onArticleClick = {
+                    onArticleClick = { article ->
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("article", article)
                         navController.navigate("ArticleDetail")
                     },
                     onSearchClick = {
@@ -154,7 +162,17 @@ fun MainFlowScreen(
             }
 
             composable("BookmarkMain") {
-                BookmarkScreen()
+                BookmarkScreen(
+                    onSearchClick = {
+                        navController.navigate("SearchMain")
+                    },
+                    onArticleClick = { article ->
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("article", article)
+                        navController.navigate("ArticleDetail")
+                    }
+                )
             }
 
             composable("MyPageMain") {
@@ -296,7 +314,7 @@ fun MainFlowScreen(
                 }
 
                 composable(
-                    route = "IndustryEdit",
+                    route = "IndustryEdit/{industry}",
                     arguments = listOf(
                         navArgument("industry") { type = NavType.StringType }
                     )
@@ -330,10 +348,24 @@ fun MainFlowScreen(
                 }
             }
 
-            composable("ArticleDetail") {
-                ArticleDetailScreen(
-                    onBack = { navController.popBackStack() }
-                )
+            composable("ArticleDetail") { backStackEntry ->
+                val article = remember(backStackEntry) {
+                    navController
+                        .previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.get<DailyArticleModel>("article")
+                }
+
+                if (article != null) {
+                    ArticleDetailScreen(
+                        article = article,
+                        onBack = { navController.popBackStack() }
+                    )
+                } else {
+                    LaunchedEffect(Unit) {
+                        navController.popBackStack()
+                    }
+                }
             }
 
             composable(
