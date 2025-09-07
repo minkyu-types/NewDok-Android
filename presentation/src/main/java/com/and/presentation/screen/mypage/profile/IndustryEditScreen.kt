@@ -51,7 +51,7 @@ fun IndustryEditScreen(
         )
         Spacer(modifier = Modifier.weight(1f))
         ConditionalNextButton(
-            enabled = (industry != null),
+            enabled = (currIndustry != null && currIndustry?.id != -1),
             onClick = {
                 viewModel.updateIndustry(requireNotNull(currIndustry))
                 onBack()
