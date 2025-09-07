@@ -20,18 +20,39 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val ksPath = System.getenv("KS_PATH_NEWDOK") ?: "D:/AndroidSecrets/Newdok/newdok-upload-keystore.jks"
+            val ksPass = System.getenv("KS_PASS_NEWDOK") ?: ""
+            val keyAlias = System.getenv("KS_ALIAS_NEWDOK") ?: "upload"
+            val keyPass = System.getenv("KS_KEY_PASS_NEWDOK") ?: ""
+
+            storeFile = file(ksPath)
+            storePassword = ksPass
+            this.keyAlias = keyAlias
+            keyPassword = keyPass
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            isDebuggable = false
+            isJniDebuggable = false
+
+            manifestPlaceholders["cleartextPermitted"] = false
+
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     buildFeatures {
         buildConfig = true
-        dataBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
