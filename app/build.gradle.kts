@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.application)
@@ -22,10 +24,11 @@ android {
 
     signingConfigs {
         create("release") {
-            val ksPath = System.getenv("KS_PATH_NEWDOK") ?: "D:/AndroidSecrets/Newdok/newdok-upload-keystore.jks"
-            val ksPass = System.getenv("KS_PASS_NEWDOK") ?: ""
-            val keyAlias = System.getenv("KS_ALIAS_NEWDOK") ?: "upload"
-            val keyPass = System.getenv("KS_KEY_PASS_NEWDOK") ?: ""
+            val props = gradleLocalProperties(rootDir)
+            val ksPath = props["KS_PATH_NEWDOK"] as String
+            val ksPass = props["KS_PASS_NEWDOK"] as String
+            val keyAlias = props["KS_ALIAS_NEWDOK"] as String
+            val keyPass = props["KS_KEY_PASS_NEWDOK"] as String
 
             storeFile = file(ksPath)
             storePassword = ksPass
