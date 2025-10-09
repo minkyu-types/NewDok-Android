@@ -29,7 +29,6 @@ import com.and.presentation.ui.Heading2
 @Composable
 fun RegisterStep7Screen(
     onNext: () -> Unit,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -85,9 +84,6 @@ fun RegisterStep7ScreenPreview() {
             onNext = {
 
             },
-            onBack = {
-
-            }
         )
     }
 }

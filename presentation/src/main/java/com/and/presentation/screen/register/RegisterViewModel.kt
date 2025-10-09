@@ -13,13 +13,12 @@ import com.and.domain.usecase.user.CheckUserIdDuplicationUseCase.GetUserIdDuplic
 import com.and.domain.usecase.user.LoginParams
 import com.and.domain.usecase.user.LoginUseCase
 import com.and.domain.usecase.user.SignUpUseCase
+import com.and.presentation.mapper.UserMapper
 import com.and.presentation.model.UserModel
 import com.and.presentation.model.UserRegisterModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,10 +26,12 @@ class RegisterViewModel @Inject constructor(
     private val getSMSAuthUseCase: RequestSMSAuthUseCase,
     private val getCheckUserIdDuplicationUseCase: CheckUserIdDuplicationUseCase,
     private val signUpUseCase: SignUpUseCase,
-    private val loginUseCase: LoginUseCase
-): ViewModel() {
+    private val loginUseCase: LoginUseCase,
+    private val userMapper: UserMapper,
+) : ViewModel() {
 
-    private val _authCodeRequestedState = mutableStateOf<UiState<Pair<Boolean, String?>>>(UiState.Idle)
+    private val _authCodeRequestedState =
+        mutableStateOf<UiState<Pair<Boolean, String?>>>(UiState.Idle)
     val authCodeRequestedState: State<UiState<Pair<Boolean, String?>>> = _authCodeRequestedState
 
     private val _authVerificationState = mutableStateOf<UiState<Boolean>>(UiState.Idle)
@@ -43,6 +44,9 @@ class RegisterViewModel @Inject constructor(
     val isNextEnabled: State<Boolean> = _isNextEnabled
 
     private var userRegisterModel = UserRegisterModel()
+
+    private val _signUpState = mutableStateOf<UiState<UserModel>>(UiState.Idle)
+    val signUpState: State<UiState<UserModel>> = _signUpState
 
     private var issuedAuthCode: String? = null
 
@@ -78,8 +82,12 @@ class RegisterViewModel @Inject constructor(
         }
 
         val expected = issuedAuthCode
-        val ok = userInput.isNotBlank() && userInput.length == 6 && expected != null && userInput == expected
-        _authVerificationState.value = if (ok) UiState.Success(true)
+        val ok: Boolean =
+            userInput.isNotBlank() && userInput.length == 6 && expected != null && userInput == expected
+        _authVerificationState.value = if (ok) {
+            _isNextEnabled.value = true
+            UiState.Success(true)
+        }
         else UiState.Error("인증번호가 일치하지 않습니다. 다시 시도해주세요.")
         refreshNextEnabled()
         return ok
@@ -94,6 +102,8 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun expireAuthCodeTimer() {
+        if (isAuthVerified()) return
+
         issuedAuthCode = null
         _authCodeRequestedState.value = UiState.Idle
         _authVerificationState.value = UiState.Error("인증 시간이 만료되었습니다. 다시 요청해주세요.")
@@ -172,12 +182,14 @@ class RegisterViewModel @Inject constructor(
                     )
                 )
             }.onSuccess { result ->
-                loginUseCase(
+                val user = loginUseCase(
                     LoginParams(
                         userRegisterModel.loginId,
                         userRegisterModel.password
                     )
                 )
+                val userModel = userMapper.mapToPresentation(user)
+                _signUpState.value = UiState.Success(userModel)
             }.onFailure { error ->
                 error.printStackTrace()
             }

@@ -8,11 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.and.newdok.presentation.R
 import com.and.presentation.component.topbar.ProgressTopBar
 
@@ -32,6 +34,9 @@ fun RegisterFlowScreen(
                 title = stringResource(id = R.string.register),
                 currentProgress = currentProgress,
                 maxProgress = 6,
+                onNavigationIconClick = {
+                    navController.popBackStack()
+                }
             )
         }
     ) { innerPadding ->
@@ -67,7 +72,6 @@ fun RegisterFlowScreen(
 
                     RegisterStep2Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_3_PASSWORD.route) },
-                        onBack = { navController.popBackStack() },
                         viewModel = viewModel
                     )
                 }
@@ -79,7 +83,6 @@ fun RegisterFlowScreen(
 
                     RegisterStep3Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_4_USER_INFO.route) },
-                        onBack = { navController.popBackStack() },
                         viewModel = viewModel
                     )
                 }
@@ -91,7 +94,6 @@ fun RegisterFlowScreen(
 
                     RegisterStep4Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_5_TERMS.route) },
-                        onBack = { navController.popBackStack() },
                         viewModel = viewModel
                     )
                 }
@@ -102,21 +104,28 @@ fun RegisterFlowScreen(
                     val viewModel: RegisterViewModel = hiltViewModel(parentEntry)
 
                     RegisterStep5Screen(
-                        onNext = { navController.navigate(RegisterStep.STEP_6_COMPLETE.route) },
-                        onBack = { navController.popBackStack() },
+                        onNext = { email ->
+                            navController.navigate("register_step_6_complete/$email")
+                        },
                         viewModel = viewModel
                     )
                 }
-                composable(RegisterStep.STEP_6_COMPLETE.route) {
+                composable(
+                    route = RegisterStep.STEP_6_COMPLETE.route,
+                    arguments = listOf(
+                        navArgument("email") { type = NavType.StringType }
+                    )
+                ) { backStackEntry ->
+                    val email = backStackEntry.arguments?.getString("email") ?: ""
+
                     RegisterStep6Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_7_ADDITIONAL_INFO.route) },
-                        onBack = { navController.popBackStack() }
+                        subscriptionEmail = email
                     )
                 }
                 composable(RegisterStep.STEP_7_ADDITIONAL_INFO.route) {
                     RegisterStep7Screen(
                         onNext = { onFlowFinished() },
-                        onBack = { navController.popBackStack() }
                     )
                 }
             }

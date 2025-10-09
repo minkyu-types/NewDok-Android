@@ -60,6 +60,6 @@ fun String.nicknameValidation(): Boolean {
 }
 
 fun String.phoneNumberValidation(): Boolean {
-    val phoneRegex = Regex("^010-?\\d{3,4}-?\\d{4}$")
+    val phoneRegex = Regex("^010-?\\d{4}-?\\d{4}$")
     return phoneRegex.matches(this)
 }
