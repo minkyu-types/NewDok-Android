@@ -48,7 +48,6 @@ import com.and.presentation.util.UiState
 @Composable
 fun RegisterStep2Screen(
     onNext: () -> Unit,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
@@ -203,9 +202,6 @@ fun RegisterStep2ScreenPreview() {
     DefaultWhiteTheme {
         RegisterStep2Screen(
             onNext = {
-
-            },
-            onBack = {
 
             },
             viewModel = hiltViewModel()

@@ -68,7 +68,6 @@ import java.time.LocalDate
 @Composable
 fun RegisterStep4Screen(
     onNext: () -> Unit,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
@@ -403,9 +402,6 @@ fun RegisterStep4ScreenPreview() {
     DefaultWhiteTheme {
         RegisterStep4Screen(
             onNext = {
-
-            },
-            onBack = {
 
             },
             viewModel = hiltViewModel()
