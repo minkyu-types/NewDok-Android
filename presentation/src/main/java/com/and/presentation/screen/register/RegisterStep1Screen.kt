@@ -103,6 +103,7 @@ fun RegisterStep1Screen(
                 authCode = authCode,
                 onPhoneNumberChange = { phoneNum->
                     phoneNumber = phoneNum
+                    viewModel.setUserPhoneNumber(phoneNum)
                 },
                 onAuthCodeChange = { code ->
                     authCode = code
@@ -249,6 +250,8 @@ fun AuthTextField(
     onTimerExpire: () -> Unit = {}
 ) {
     var timeLeft by remember { mutableIntStateOf(0) }
+    val keyboardController = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+    val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
 
     LaunchedEffect(startTimer) {
         if (startTimer.first == true) {
@@ -260,6 +263,14 @@ fun AuthTextField(
             }
 
             onTimerExpire()
+        }
+    }
+
+    LaunchedEffect(verifyUi) {
+        if (verifyUi is UiState.Success && verifyUi.data) {
+            timeLeft = 0
+            keyboardController?.hide()
+            focusManager.clearFocus()
         }
     }
 
@@ -334,11 +345,13 @@ fun AuthTextField(
                 )
             }
             is UiState.Error -> {
-                Text(
-                    text = verifyUi.message,
-                    style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
+                if (timeLeft > 0) {
+                    Text(
+                        text = verifyUi.message,
+                        style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
             }
             else -> {
                 Text(
