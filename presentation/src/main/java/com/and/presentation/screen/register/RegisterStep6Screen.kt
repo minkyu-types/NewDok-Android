@@ -37,7 +37,7 @@ import com.and.presentation.ui.Primary_Normal
 @Composable
 fun RegisterStep6Screen(
     onNext: () -> Unit,
-    onBack: () -> Unit,
+    subscriptionEmail: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -90,7 +90,7 @@ fun RegisterStep6Screen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "newdok001@newdok.site",
+                    text = subscriptionEmail,
                     style = Body1Normal,
                     fontWeight = FontWeight.Bold,
                     color = Primary_Normal,
@@ -116,9 +116,7 @@ fun RegisterStep6ScreenPreview() {
             onNext = {
 
             },
-            onBack = {
-
-            }
+            subscriptionEmail = ""
         )
     }
 }

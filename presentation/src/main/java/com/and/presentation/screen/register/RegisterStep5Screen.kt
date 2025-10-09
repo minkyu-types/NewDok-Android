@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import com.and.newdok.presentation.R
 import com.and.presentation.component.WebViewScreen
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.dialog.BottomSheetDialog
+import com.and.presentation.model.UserModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -47,14 +49,14 @@ import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Alternative
 import com.and.presentation.ui.Line_Blue_100
 import com.and.presentation.ui.Primary_Normal
+import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterStep5Screen(
-    onNext: () -> Unit,
-    onBack: () -> Unit,
+    onNext: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
@@ -71,6 +73,14 @@ fun RegisterStep5Screen(
     var isTerm4Checked by remember { mutableStateOf(false) }
     val isAllTermsChecked = isTerm1Checked && isTerm2Checked
             && isTerm3Checked && isTerm4Checked
+
+    val signupState by viewModel.signUpState
+
+    LaunchedEffect(signupState) {
+        if (signupState is UiState.Success) {
+            onNext((signupState as UiState.Success<UserModel>).data.subscribeEmail)
+        }
+    }
 
     if (showBottomSheet) {
         BottomSheetDialog(
@@ -170,7 +180,6 @@ fun RegisterStep5Screen(
             enabled = isTerm1Checked && isTerm2Checked && isTerm3Checked,
             onClick = {
                 viewModel.signUp()
-                onNext()
             },
             modifier = Modifier.padding(24.dp)
         )
@@ -291,9 +300,6 @@ fun RegisterStep5ScreenPreview() {
     DefaultWhiteTheme {
         RegisterStep5Screen(
             onNext = {
-
-            },
-            onBack = {
 
             },
             viewModel = hiltViewModel()
