@@ -59,7 +59,7 @@ fun RegisterFlowScreen(
                     RegisterStep1Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_2_ID.route) },
                         onBack = {
-                            // 온보딩 화면 이동
+                            navController.popBackStack()
                         },
                         viewModel = viewModel
                     )
