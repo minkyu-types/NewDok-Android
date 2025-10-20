@@ -104,22 +104,37 @@ fun NewsLetterSmallSubscriptionItem(
                             color = Caption_Heavy
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        if (newsLetter.isSubscribed == "CONFIRMED") {
-                            OutlinedPrimaryButton(
-                                buttonText = stringResource(R.string.subscribe_ing),
-                                buttonSize = ButtonSize.SMALL,
-                                onClick = {
-                                    onSubscribeClick(newsLetter)
-                                }
-                            )
-                        } else  {
-                            OutlinedSecondaryButton(
-                                buttonText = stringResource(R.string.subscribe_paused),
-                                buttonSize = ButtonSize.SMALL,
-                                onClick = {
-                                    onSubscribeClick(newsLetter)
-                                }
-                            )
+
+                        when(newsLetter.isSubscribed) {
+                            "INITIAL" -> {
+                                OutlinedPrimaryButton(
+                                    buttonText = stringResource(R.string.subscribe_initial),
+                                    buttonSize = ButtonSize.SMALL,
+                                    onClick = {
+                                        onSubscribeClick(newsLetter)
+                                    }
+                                )
+                            }
+
+                            "CONFIRMED" -> {
+                                OutlinedPrimaryButton(
+                                    buttonText = stringResource(R.string.subscribe_ing),
+                                    buttonSize = ButtonSize.SMALL,
+                                    onClick = {
+                                        onSubscribeClick(newsLetter)
+                                    }
+                                )
+                            }
+
+                            else -> {
+                                OutlinedSecondaryButton(
+                                    buttonText = stringResource(R.string.subscribe_paused),
+                                    buttonSize = ButtonSize.SMALL,
+                                    onClick = {
+                                        onSubscribeClick(newsLetter)
+                                    }
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
