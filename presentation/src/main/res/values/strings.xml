@@ -15,6 +15,7 @@
     <string name="gender">성별</string>
     <string name="gender_male">남자</string>
     <string name="gender_female">여자</string>
+    <string name="gender_others">그외</string>
     <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
     <string name="close">닫기</string>

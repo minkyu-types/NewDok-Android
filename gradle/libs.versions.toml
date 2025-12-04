@@ -1,5 +1,5 @@
 [versions]
-agp = "8.10.0"
+agp = "8.8.0"
 com-google-devtools-ksp-gradle-plugin = "2.2.20-2.0.2"
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.2"

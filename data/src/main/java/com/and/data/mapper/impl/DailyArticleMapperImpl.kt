@@ -1,35 +1,28 @@
 package com.and.data.mapper.impl
 
-import com.and.data.mapper.ArticleMapper
 import com.and.data.mapper.DailyArticleMapper
-import com.and.data.model.response.GetArticlesResponseDto.DailyArticlesDto
-import com.and.domain.model.DailyArticles
+import com.and.data.mapper.NewsLetterMapper
+import com.and.data.model.response.GetArticlesResponseDto.DailyArticleDto
+import com.and.domain.model.DailyArticle
 import javax.inject.Inject
 
 class DailyArticleMapperImpl @Inject constructor(
-    private val articleMapper: ArticleMapper
 ): DailyArticleMapper {
-    override fun mapToData(input: DailyArticles): DailyArticlesDto {
-        val articles = input.receivedArticleList.map {
-            articleMapper.mapToData(it)
-        }
-        return DailyArticlesDto(
-            id = input.id,
+    override fun mapToData(input: DailyArticle): DailyArticleDto {
+        return DailyArticleDto(
             publishDate = input.publishDate,
-            receivedUnread = input.receivedUnread,
-            receivedArticleList = articles,
+            hasArticles = input.hasArticles,
+            totalCount = input.totalCount,
+            unreadCount = input.unreadCount
         )
     }
 
-    override fun mapToDomain(input: DailyArticlesDto): DailyArticles {
-        val articles = input.receivedArticleList.map {
-            articleMapper.mapToDomain(it)
-        }
-        return DailyArticles(
-            id = input.id ?: -1,
+    override fun mapToDomain(input: DailyArticleDto): DailyArticle {
+        return DailyArticle(
             publishDate = input.publishDate,
-            receivedUnread = input.receivedUnread,
-            receivedArticleList = articles,
+            hasArticles = input.hasArticles,
+            totalCount = input.totalCount,
+            unreadCount = input.unreadCount
         )
     }
 }

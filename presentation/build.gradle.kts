@@ -9,9 +9,13 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 android {
     namespace = "com.and.newdok.presentation"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28
@@ -34,11 +38,11 @@ android {
         buildConfig = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 

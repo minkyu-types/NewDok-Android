@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getArticlesUseCase: GetArticlesUseCase
+    private val getArticlesUseCase: GetArticlesUseCase,
 ): ViewModel() {
 
     private val _articlesUiState = mutableStateOf<UiState<List<Article>>>(UiState.Idle)
@@ -37,9 +37,9 @@ class HomeViewModel @Inject constructor(
                             year = year,
                             month = month
                         )
-                    ).find { article ->
+                    ).filter { article ->
                         article.publishDate == date
-                    }?.receivedArticleList ?: emptyList()
+                    }
                 }
             }.onSuccess { articles ->
                 _articlesUiState.value = UiState.Success(articles)

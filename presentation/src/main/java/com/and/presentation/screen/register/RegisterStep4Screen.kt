@@ -381,6 +381,29 @@ fun RegisterGenderRadioGroup(
                     else Color.Black
                 )
             }
+            Button(
+                onClick = { onClick(Gender.OTHERS) },
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .height(48.dp)
+                    .weight(1f)
+                    .border(
+                        width = 1.dp,
+                        color = if (userGender == Gender.OTHERS) Primary_Normal
+                        else Line_Alternative,
+                        shape = RoundedCornerShape(4.dp)
+                    ),
+                shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+            ) {
+                Text(
+                    text = stringResource(R.string.gender_others),
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Bold,
+                    color = if (userGender == Gender.OTHERS) Primary_Normal
+                    else Color.Black
+                )
+            }
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text(

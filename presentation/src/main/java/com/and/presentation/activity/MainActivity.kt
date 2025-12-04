@@ -1,7 +1,6 @@
 package com.and.presentation.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.and.newdok.presentation.R
 import com.and.presentation.util.observer.AirplaneModeObserver
 import com.and.presentation.util.observer.NetworkStatusObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,12 +71,12 @@ class MainActivity: ComponentActivity() {
                 }
 
                 MainNavGraph(
-//                    ScreenFlow.MAIN.route
-                    if (isAutoLogin != null) {
-                        ScreenFlow.MAIN.route
-                    } else {
-                        ScreenFlow.ON_BOARDING.route
-                    }
+                    ScreenFlow.MAIN.route
+//                    if (isAutoLogin != null) {
+//                        ScreenFlow.MAIN.route
+//                    } else {
+//                        ScreenFlow.ON_BOARDING.route
+//                    }
                 )
             }
         }

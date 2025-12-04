@@ -6,9 +6,13 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 android {
     namespace = "com.and.newdok.data"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28
@@ -16,7 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "BASE_URL_DEV", "\"https://newdok.shop\"")
+        buildConfigField("String", "BASE_URL_DEV", "\"http://3.38.79.19\"")
         buildConfigField("String", "BASE_URL_PRODUCT", "\"https://newdok.shop\"")
     }
 
@@ -33,11 +37,11 @@ android {
         buildConfig = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 

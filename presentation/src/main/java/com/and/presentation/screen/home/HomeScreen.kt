@@ -134,6 +134,7 @@ fun HomeScreen(
             },
             onRefreshClick = {
                 // 아티클 리스트 갱신
+                // 갱신 시 오늘 날짜로 다시 조회하도록 수정
             },
             onItemClick = {
                 onArticleClick(it.toDailyArticleModel())

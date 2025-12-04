@@ -1,6 +1,7 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
+import java.io.FileInputStream
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
@@ -28,11 +29,16 @@ android {
 
     signingConfigs {
         create("release") {
-            val props = gradleLocalProperties(rootDir)
-            val ksPath = props["KS_PATH_NEWDOK"] as String
-            val ksPass = props["KS_PASS_NEWDOK"] as String
-            val keyAlias = props["KS_ALIAS_NEWDOK"] as String
-            val keyPass = props["KS_KEY_PASS_NEWDOK"] as String
+            val props = Properties()
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                props.load(FileInputStream(localPropertiesFile))
+            }
+
+            val ksPath = props.getProperty("KS_PATH_NEWDOK") ?: ""
+            val ksPass = props.getProperty("KS_PASS_NEWDOK") ?: ""
+            val keyAlias = props.getProperty("KS_ALIAS_NEWDOK") ?: ""
+            val keyPass = props.getProperty("KS_KEY_PASS_NEWDOK") ?: ""
 
             storeFile = file(ksPath)
             storePassword = ksPass
@@ -58,15 +64,16 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
     buildFeatures {
         buildConfig = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
@@ -75,7 +82,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":presentation"))
 
-    // Hilt
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 

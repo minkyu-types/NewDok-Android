@@ -8,7 +8,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val userAuthPreferenceStore: UserAuthPreferenceStoreImpl
+    private val userAuthPreferenceStore: UserAuthPreferenceStore
 ): Interceptor {
 
     companion object {

@@ -13,7 +13,7 @@ import com.and.data.mapper.DailyArticleMapper
 import com.and.data.model.request.PatchBookmarkArticleRequestDto
 import com.and.domain.model.Article
 import com.and.domain.model.BookmarkedArticles
-import com.and.domain.model.DailyArticles
+import com.and.domain.model.DailyArticle
 import com.and.domain.model.type.ArticleStatus
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.ArticleRepository
@@ -31,7 +31,7 @@ class ArticleRepositoryImpl @Inject constructor(
     private val bookmarkedArticlesMapper: BookmarkedArticlesMapper,
     private val getReceivedArticlesCountApi: GetReceivedArticlesCountApi
 ): ArticleRepository, BaseRepository() {
-    override suspend fun getArticles(year: Int, month: Int): List<DailyArticles> {
+    override suspend fun getArticles(year: Int, month: Int): List<DailyArticle> {
         return handleApiCall(
             apiCall = {
                 getArticlesApi.getArticles(
