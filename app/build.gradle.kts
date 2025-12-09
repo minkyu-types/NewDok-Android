@@ -28,22 +28,29 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            val props = Properties()
-            val localPropertiesFile = rootProject.file("local.properties")
-            if (localPropertiesFile.exists()) {
-                props.load(FileInputStream(localPropertiesFile))
+        // release 빌드 태스크일 때만 signing config 생성
+        val isReleaseBuild = gradle.startParameter.taskNames.any {
+            it.contains("release", ignoreCase = true)
+        }
+
+        if (isReleaseBuild) {
+            create("release") {
+                val props = Properties()
+                val localPropertiesFile = rootProject.file("local.properties")
+                if (localPropertiesFile.exists()) {
+                    props.load(FileInputStream(localPropertiesFile))
+                }
+
+                val ksPath = props.getProperty("KS_PATH_NEWDOK") ?: ""
+                val ksPass = props.getProperty("KS_PASS_NEWDOK") ?: ""
+                val keyAlias = props.getProperty("KS_ALIAS_NEWDOK") ?: ""
+                val keyPass = props.getProperty("KS_KEY_PASS_NEWDOK") ?: ""
+
+                storeFile = file(ksPath)
+                storePassword = ksPass
+                this.keyAlias = keyAlias
+                keyPassword = keyPass
             }
-
-            val ksPath = props.getProperty("KS_PATH_NEWDOK") ?: ""
-            val ksPass = props.getProperty("KS_PASS_NEWDOK") ?: ""
-            val keyAlias = props.getProperty("KS_ALIAS_NEWDOK") ?: ""
-            val keyPass = props.getProperty("KS_KEY_PASS_NEWDOK") ?: ""
-
-            storeFile = file(ksPath)
-            storePassword = ksPass
-            this.keyAlias = keyAlias
-            keyPassword = keyPass
         }
     }
 
@@ -61,7 +68,10 @@ android {
 
             manifestPlaceholders["cleartextPermitted"] = false
 
-            signingConfig = signingConfigs.getByName("release")
+            // signing config가 생성된 경우에만 설정
+            signingConfigs.findByName("release")?.let {
+                signingConfig = it
+            }
         }
     }
 
