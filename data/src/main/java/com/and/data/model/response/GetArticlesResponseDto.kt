@@ -3,9 +3,9 @@ package com.and.data.model.response
 import com.squareup.moshi.Json
 
 data class GetArticlesResponseDto(
-     @Json(name = "data") val data: List<DailyArticleDto>
+     @Json(name = "data") val data: List<DailyArticleStatusDto>
 ) {
-    data class DailyArticleDto(
+    data class DailyArticleStatusDto(
         val publishDate: Int,
         val hasArticles: Boolean,
         val totalCount: Int,

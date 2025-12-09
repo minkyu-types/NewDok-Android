@@ -3,11 +3,13 @@ package com.and.presentation.mapper
 import com.and.domain.model.BookmarkedArticle
 import com.and.domain.model.BookmarkedArticles
 import com.and.domain.model.BriefNewsLetter
+import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.MonthlyBookmarkedArticles
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.RecommendedNewsLetter
 import com.and.domain.model.User
 import com.and.presentation.model.BriefNewsLetterModel
+import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.model.NewsLetterSubscriptionModel
@@ -28,3 +30,5 @@ interface MonthlyBookmarkedArticlesMapper: BaseMapper<MonthlyBookmarkedArticles,
 interface BookmarkedArticlesMapper: BaseMapper<BookmarkedArticles, BookmarkedArticlesModel>
 
 interface UserMapper: BaseMapper<User, UserModel>
+
+interface DailyArticleMapper: BaseMapper<DailyArticleStatus, DailyArticleModel>

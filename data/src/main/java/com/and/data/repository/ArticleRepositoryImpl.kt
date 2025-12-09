@@ -2,6 +2,7 @@ package com.and.data.repository
 
 import com.and.data.api.article.GetArticleByIdApi
 import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetArticlesByDateApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetReceivedArticlesCountApi
@@ -9,11 +10,11 @@ import com.and.data.api.article.GetTodayArticlesApi
 import com.and.data.api.article.PatchBookmarkArticleApi
 import com.and.data.mapper.ArticleMapper
 import com.and.data.mapper.BookmarkedArticlesMapper
-import com.and.data.mapper.DailyArticleMapper
+import com.and.data.mapper.DailyArticleStatusMapper
 import com.and.data.model.request.PatchBookmarkArticleRequestDto
 import com.and.domain.model.Article
 import com.and.domain.model.BookmarkedArticles
-import com.and.domain.model.DailyArticle
+import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.type.ArticleStatus
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.ArticleRepository
@@ -21,17 +22,18 @@ import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
     private val getArticlesApi: GetArticlesApi,
+    private val getArticlesByDateApi: GetArticlesByDateApi,
     private val getBookmarkedArticlesApi: GetBookmarkedArticlesApi,
     private val getBookmarkedInterestsApi: GetBookmarkedInterestsApi,
     private val getArticleByIdApi: GetArticleByIdApi,
     private val getTodayArticlesApi: GetTodayArticlesApi,
     private val patchBookmarkArticleApi: PatchBookmarkArticleApi,
     private val articleMapper: ArticleMapper,
-    private val dailyArticleMapper: DailyArticleMapper,
+    private val dailyArticleStatusMapper: DailyArticleStatusMapper,
     private val bookmarkedArticlesMapper: BookmarkedArticlesMapper,
     private val getReceivedArticlesCountApi: GetReceivedArticlesCountApi
 ): ArticleRepository, BaseRepository() {
-    override suspend fun getArticles(year: Int, month: Int): List<DailyArticle> {
+    override suspend fun getArticles(year: Int, month: Int): List<DailyArticleStatus> {
         return handleApiCall(
             apiCall = {
                 getArticlesApi.getArticles(
@@ -41,7 +43,28 @@ class ArticleRepositoryImpl @Inject constructor(
             },
             mapper = {
                 it.data.map { article ->
-                    dailyArticleMapper.mapToDomain(article)
+                    dailyArticleStatusMapper.mapToDomain(article)
+                }
+            }
+        )
+    }
+
+    override suspend fun getArticlesByDate(
+        year: Int,
+        month: Int,
+        day: Int
+    ): List<Article> {
+        return handleApiCall(
+            apiCall = {
+                getArticlesByDateApi.getArticles(
+                    year = year.toString(),
+                    month = month.toString(),
+                    day = day.toString()
+                )
+            },
+            mapper = {
+                it.data.map { article ->
+                    dailyArticleStatusMapper.mapToDomain(article)
                 }
             }
         )

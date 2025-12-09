@@ -4,7 +4,7 @@ import com.and.data.mapper.ArticleMapper
 import com.and.data.mapper.BookmarkedArticleMapper
 import com.and.data.mapper.BookmarkedArticlesMapper
 import com.and.data.mapper.BriefNewsLetterMapper
-import com.and.data.mapper.DailyArticleMapper
+import com.and.data.mapper.DailyArticleStatusMapper
 import com.and.data.mapper.MonthlyBookmarkedArticlesMapper
 import com.and.data.mapper.NewsLetterDetailMapper
 import com.and.data.mapper.NewsLetterMapper
@@ -13,7 +13,7 @@ import com.and.data.mapper.UserMapper
 import com.and.data.mapper.impl.ArticleMapperImpl
 import com.and.data.mapper.impl.BookmarkedArticleMapperImpl
 import com.and.data.mapper.impl.BookmarkedArticlesMapperImpl
-import com.and.data.mapper.impl.DailyArticleMapperImpl
+import com.and.data.mapper.impl.DailyArticleStatusMapperImpl
 import com.and.data.mapper.impl.MonthlyBookmarkedArticlesMapperImpl
 import com.and.data.mapper.impl.NewsLetterDetailMapperImpl
 import com.and.data.mapper.impl.BriefNewsLetterMapperImpl
@@ -33,8 +33,8 @@ interface MapperModule {
     @Binds
     @Singleton
     fun bindsDailyArticleMapper(
-        dailyArticleMapperImpl: DailyArticleMapperImpl
-    ): DailyArticleMapper
+        dailyArticleMapperImpl: DailyArticleStatusMapperImpl
+    ): DailyArticleStatusMapper
 
     @Binds
     @Singleton

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.and.domain.model.Article
 import com.and.domain.usecase.article.GetArticlesUseCase
 import com.and.domain.util.ApiException
+import com.and.presentation.mapper.BookmarkedArticleMapper
+import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getArticlesUseCase: GetArticlesUseCase,
+    private val dailyArticleMapper: BookmarkedArticleMapper
 ): ViewModel() {
 
-    private val _articlesUiState = mutableStateOf<UiState<List<Article>>>(UiState.Idle)
-    val articlesUiState: State<UiState<List<Article>>> = _articlesUiState
+    private val _articlesUiState = mutableStateOf<UiState<List<DailyArticleModel>>>(UiState.Idle)
+    val articlesUiState: State<UiState<List<DailyArticleModel>>> = _articlesUiState
 
     fun getArticlesByYearMonth(
         year: Int,
