@@ -1,7 +1,7 @@
 package com.and.data.repository
 
 import com.and.data.api.article.GetArticleByIdApi
-import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetArticleStatusApi
 import com.and.data.api.article.GetArticlesByDateApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
@@ -14,6 +14,7 @@ import com.and.data.mapper.DailyArticleStatusMapper
 import com.and.data.model.request.PatchBookmarkArticleRequestDto
 import com.and.domain.model.Article
 import com.and.domain.model.BookmarkedArticles
+import com.and.domain.model.DailyArticle
 import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.type.ArticleStatus
 import com.and.domain.model.type.InterestCategory
@@ -21,7 +22,7 @@ import com.and.domain.repository.ArticleRepository
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
-    private val getArticlesApi: GetArticlesApi,
+    private val getArticleStatusApi: GetArticleStatusApi,
     private val getArticlesByDateApi: GetArticlesByDateApi,
     private val getBookmarkedArticlesApi: GetBookmarkedArticlesApi,
     private val getBookmarkedInterestsApi: GetBookmarkedInterestsApi,
@@ -33,10 +34,10 @@ class ArticleRepositoryImpl @Inject constructor(
     private val bookmarkedArticlesMapper: BookmarkedArticlesMapper,
     private val getReceivedArticlesCountApi: GetReceivedArticlesCountApi
 ): ArticleRepository, BaseRepository() {
-    override suspend fun getArticles(year: Int, month: Int): List<DailyArticleStatus> {
+    override suspend fun getMonthlyArticleStatus(year: Int, month: Int): List<DailyArticleStatus> {
         return handleApiCall(
             apiCall = {
-                getArticlesApi.getArticles(
+                getArticleStatusApi.getArticles(
                     year = year.toString(),
                     month = month.toString()
                 )
@@ -64,7 +65,13 @@ class ArticleRepositoryImpl @Inject constructor(
             },
             mapper = {
                 it.data.map { article ->
-                    dailyArticleStatusMapper.mapToDomain(article)
+                    Article(
+                        brandName = article.newsletter.brandName,
+                        imageUrl = article.newsletter.imageUrl,
+                        title = article.title,
+                        articleId = article.id,
+                        status = ArticleStatus.UNREAD
+                    )
                 }
             }
         )

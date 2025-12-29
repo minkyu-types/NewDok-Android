@@ -26,8 +26,6 @@ import com.and.domain.model.User
 interface DailyArticleStatusMapper: BaseMapper<DailyArticleStatus, DailyArticleStatusDto>
 interface ArticleMapper: BaseMapper<Article, ArticleDto>
 
-interface DailyArticleMapper: BaseMapper<DailyArticleDto, DailyArticle>
-
 interface BookmarkedArticlesMapper: BaseMapper<BookmarkedArticles, BookmarkedArticleData>
 interface MonthlyBookmarkedArticlesMapper: BaseMapper<MonthlyBookmarkedArticles, MonthlyBookmarkedArticlesDto>
 interface BookmarkedArticleMapper: BaseMapper<BookmarkedArticle, BookmarkedArticleDto>

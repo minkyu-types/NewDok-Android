@@ -1,6 +1,6 @@
 package com.and.data.di
 
-import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetArticleStatusApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetArticleByIdApi
@@ -40,7 +40,7 @@ object ArticleApiModule {
 
     @Provides
     @Singleton
-    fun providesGetArticlesApi(retrofit: Retrofit): GetArticlesApi = retrofit.create(GetArticlesApi::class.java)
+    fun providesGetArticlesApi(retrofit: Retrofit): GetArticleStatusApi = retrofit.create(GetArticleStatusApi::class.java)
 
     @Provides
     @Singleton

@@ -6,7 +6,7 @@ import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.type.InterestCategory
 
 interface ArticleRepository {
-    suspend fun getArticles(year: Int, month: Int): List<DailyArticleStatus>
+    suspend fun getMonthlyArticleStatus(year: Int, month: Int): List<DailyArticleStatus>
 
     suspend fun getArticlesByDate(year: Int, month: Int, day: Int): List<Article>
 

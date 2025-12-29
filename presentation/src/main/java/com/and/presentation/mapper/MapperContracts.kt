@@ -31,4 +31,3 @@ interface BookmarkedArticlesMapper: BaseMapper<BookmarkedArticles, BookmarkedArt
 
 interface UserMapper: BaseMapper<User, UserModel>
 
-interface DailyArticleMapper: BaseMapper<DailyArticleStatus, DailyArticleModel>

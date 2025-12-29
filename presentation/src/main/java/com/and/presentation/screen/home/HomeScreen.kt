@@ -42,10 +42,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.Article
+import com.and.domain.model.type.ArticleStatus
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.CalendarDialog
 import com.and.presentation.model.DailyArticleModel
-import com.and.presentation.model.toDailyArticleModel
+import com.and.presentation.model.DailyArticleStatusModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -69,15 +70,16 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.articlesUiState
+    val dailyArticleState by viewModel.monthlyArticleStateUiState
+    val articlesByDateState by viewModel.articlesUiState
 
     var showDialog by remember { mutableStateOf(false) }
     var currSelectedDate: LocalDate by remember { mutableStateOf(LocalDate.now()) }
-    val refreshing by remember { derivedStateOf { uiState is UiState.Loading } }
+    val refreshing by remember { derivedStateOf { dailyArticleState is UiState.Loading } }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            viewModel.getArticlesByYearMonth(
+            viewModel.getArticleStatusByYearMonth(
                 currSelectedDate.year,
                 currSelectedDate.monthValue,
                 currSelectedDate.dayOfMonth
@@ -86,7 +88,7 @@ fun HomeScreen(
     )
 
     LaunchedEffect(currSelectedDate) {
-        viewModel.getArticlesByYearMonth(
+        viewModel.getArticleStatusByYearMonth(
             currSelectedDate.year,
             currSelectedDate.monthValue,
             currSelectedDate.dayOfMonth
@@ -125,9 +127,9 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
         HomeArticleList(
-            articles = when (uiState) {
-                is UiState.Success<List<Article>> -> {
-                    (uiState as UiState.Success).data
+            articles = when (articlesByDateState) {
+                is UiState.Success<List<DailyArticleModel>> -> {
+                    (articlesByDateState as UiState.Success).data
                 }
 
                 else -> emptyList()
@@ -137,7 +139,7 @@ fun HomeScreen(
                 // 갱신 시 오늘 날짜로 다시 조회하도록 수정
             },
             onItemClick = {
-                onArticleClick(it.toDailyArticleModel())
+                onArticleClick(it)
             },
         )
     }
@@ -225,8 +227,8 @@ fun HomeCalendarBar(
 @Composable
 fun HomeArticleList(
     onRefreshClick: () -> Unit,
-    articles: List<Article>,
-    onItemClick: (Article) -> Unit,
+    articles: List<DailyArticleModel>,
+    onItemClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -277,7 +279,7 @@ fun HomeArticleList(
         ) {
             items(articles) { item ->
                 HomeArticleListItem(
-                    item,
+                    article = item,
                     onArticleClick = {
                         onItemClick(item)
                     })
@@ -288,11 +290,11 @@ fun HomeArticleList(
 
 @Composable
 fun HomeArticleListItem(
-    article: Article,
-    onArticleClick: (Article) -> Unit,
+    article: DailyArticleModel,
+    onArticleClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isArticleRead = Article.getIsRead(article.status)
+    val isArticleRead = Article.getIsRead(ArticleStatus.UNREAD)
 
     Row(
         modifier = Modifier
@@ -350,7 +352,7 @@ fun HomeArticleListItem(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = article.title,
+                text = article.articleTitle,
                 style = Body2Normal,
                 fontWeight = FontWeight.Medium,
                 color = Caption_Strong

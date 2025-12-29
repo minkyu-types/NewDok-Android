@@ -4,7 +4,7 @@ import com.and.data.model.response.GetArticlesResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface GetArticlesApi {
+interface GetArticleStatusApi {
 
     @GET("/articles")
     suspend fun getArticles(

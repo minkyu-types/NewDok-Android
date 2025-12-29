@@ -3,15 +3,15 @@ package com.and.domain.usecase.article
 import com.and.domain.model.DailyArticleStatus
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.article.GetArticlesUseCase.GetArticlesParams
+import com.and.domain.usecase.article.GetMonthlyArticleStatusUseCase.GetArticlesParams
 import javax.inject.Inject
 
-class GetArticlesUseCase @Inject constructor(
+class GetMonthlyArticleStatusUseCase @Inject constructor(
     private val repository: ArticleRepository
 ): BaseSuspendUseCase<GetArticlesParams, List<DailyArticleStatus>> {
 
     override suspend fun invoke(parameter: GetArticlesParams): List<DailyArticleStatus> {
-        return repository.getArticles(
+        return repository.getMonthlyArticleStatus(
             parameter.year,
             parameter.month
         )
