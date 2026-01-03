@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,6 +41,7 @@ class MainActivity: ComponentActivity() {
         splashScreen.setKeepOnScreenCondition { isLoading }
 
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         lifecycleScope.launch {
             val isAutoLogin: String? = viewModel.getAccessToken()
