@@ -55,6 +55,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+
+            isDebuggable = true
+            isJniDebuggable = true
+
+            manifestPlaceholders["cleartextPermitted"] = true
+        }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true

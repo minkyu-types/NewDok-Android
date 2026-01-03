@@ -21,6 +21,7 @@ import com.and.presentation.component.topbar.ProgressTopBar
 @Composable
 fun RegisterFlowScreen(
     onFlowFinished: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -35,7 +36,10 @@ fun RegisterFlowScreen(
                 currentProgress = currentProgress,
                 maxProgress = 6,
                 onNavigationIconClick = {
-                    navController.popBackStack()
+                    val canPop = navController.popBackStack()
+                    if (!canPop) {
+                        onBack()
+                    }
                 }
             )
         }
@@ -58,9 +62,6 @@ fun RegisterFlowScreen(
 
                     RegisterStep1Screen(
                         onNext = { navController.navigate(RegisterStep.STEP_2_ID.route) },
-                        onBack = {
-                            navController.popBackStack()
-                        },
                         viewModel = viewModel
                     )
                 }

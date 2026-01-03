@@ -189,6 +189,8 @@
     <!-- 뉴스레터 홈-->
     <string name="newsletter_home_title">뉴스레터 홈</string>
     <string name="newsletter_history_title">지난 아티클 보기</string>
+    <string name="newsletter_history_empty_1">아티클을 준비하는 중이에요</string>
+    <string name="newsletter_history_empty_2">조금만 기다려 주세요</string>
 
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>
