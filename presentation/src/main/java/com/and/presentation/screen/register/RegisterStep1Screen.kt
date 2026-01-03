@@ -61,7 +61,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun RegisterStep1Screen(
     onNext: () -> Unit,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel
 ) {
@@ -374,9 +373,6 @@ fun RegisterStep1ScreenPreview() {
         RegisterStep1Screen(
             onNext = {
                 
-            },
-            onBack = {
-
             },
             viewModel = hiltViewModel()
         )

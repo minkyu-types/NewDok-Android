@@ -1,6 +1,8 @@
 package com.and.presentation.component.topbar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,7 +58,12 @@ fun TopBar(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = stringResource(id = R.string.back),
                 modifier = Modifier
-                    .removeRippleEffect { onNavigationIconClick() }
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        onNavigationIconClick()
+                    }
                     .height(56.dp)
                     .padding(horizontal = 12.dp)
             )
