@@ -57,9 +57,9 @@ import com.and.newdok.presentation.R
 import com.and.presentation.component.item.SelectableInterestTag
 import com.and.presentation.component.topbar.MainTopBar
 import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.bookmarkedarticle.BookmarkedArticleModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
 import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesModel
-import com.and.presentation.screen.feed.SortFilterBottomSheet
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -82,11 +82,7 @@ fun BookmarkScreen(
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    var isRefreshing by remember { mutableStateOf(false) }
-    val refreshState = rememberPullToRefreshState()
     val selectedInterests = viewModel.selectedInterests
-    var currentSort by remember { mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED) }
     val uiState by viewModel.interestedArticlesUiState
     val articleCount by remember(uiState) {
         derivedStateOf {
@@ -99,6 +95,32 @@ fun BookmarkScreen(
                 ?: emptyList()
         }
     }
+
+    BookmarkContent(
+        selectedInterests = selectedInterests,
+        articleCount = articleCount,
+        monthlyArticles = monthlyArticles,
+        onSearchClick = onSearchClick,
+        onArticleClick = onArticleClick,
+        onInterestClick = { viewModel.toggleInterest(it) },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun BookmarkContent(
+    selectedInterests: Set<InterestCategory>,
+    articleCount: Int,
+    monthlyArticles: List<MonthlyBookmarkedArticlesModel>,
+    onSearchClick: () -> Unit,
+    onArticleClick: (DailyArticleModel) -> Unit,
+    onInterestClick: (InterestCategory) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val coroutineScope = rememberCoroutineScope()
+    var isRefreshing by remember { mutableStateOf(false) }
+    val refreshState = rememberPullToRefreshState()
+    var currentSort by remember { mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED) }
     var showSortBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
 
@@ -132,15 +154,11 @@ fun BookmarkScreen(
         MainTopBar(
             title = stringResource(R.string.bookmark_title),
             onSearchClick = onSearchClick,
-            onAlarmClick = {
-
-            }
+            onAlarmClick = { }
         )
         BookmarkFilters(
             selectedInterests = selectedInterests,
-            onInterestClick = { interest ->
-                viewModel.toggleInterest(interest)
-            }
+            onInterestClick = onInterestClick
         )
         BookmarkResultBar(
             currentSort = currentSort,
@@ -348,19 +366,56 @@ fun ArticleEmptyView(
 }
 
 @Preview(
-    name = "BookmarkScreen Preview",
+    name = "BookmarkScreen Preview - Empty",
     showBackground = true
 )
 @Composable
-fun BookmarkScreenPreview() {
+fun BookmarkScreenEmptyPreview() {
     DefaultWhiteTheme {
-        BookmarkScreen(
-            onSearchClick = {
+        BookmarkContent(
+            selectedInterests = setOf(
+                InterestCategory.INTEREST_ECONOMY_AFFAIRS,
+                InterestCategory.INTEREST_BUSINESS
+            ),
+            articleCount = 0,
+            monthlyArticles = emptyList(),
+            onSearchClick = { },
+            onArticleClick = { },
+            onInterestClick = { }
+        )
+    }
+}
 
-            },
-            onArticleClick = {
-
-            }
+@Preview(
+    name = "BookmarkScreen Preview - With Articles",
+    showBackground = true
+)
+@Composable
+fun BookmarkScreenWithArticlesPreview() {
+    DefaultWhiteTheme {
+        BookmarkContent(
+            selectedInterests = setOf(InterestCategory.INTEREST_ECONOMY_AFFAIRS),
+            articleCount = 5,
+            monthlyArticles = listOf(
+                MonthlyBookmarkedArticlesModel(
+                    id = 1,
+                    month = "2024년 1월",
+                    articles = listOf(
+                        BookmarkedArticleModel(
+                            brandName = "뉴스 출판사",
+                            brandId = 1,
+                            articleTitle = "샘플 기사 제목입니다",
+                            articleId = 1,
+                            sampleText = "샘플 기사 설명입니다",
+                            date = "2024.01.15",
+                            thumbnailImageUrl = null
+                        )
+                    )
+                )
+            ),
+            onSearchClick = { },
+            onArticleClick = { },
+            onInterestClick = { }
         )
     }
 }

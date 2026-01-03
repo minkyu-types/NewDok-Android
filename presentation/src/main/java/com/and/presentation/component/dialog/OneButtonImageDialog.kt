@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,12 +55,16 @@ fun OneButtonImageDialog(
                     .fillMaxWidth()
                     .padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 28.dp)
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Image(
                         painter = image,
                         contentDescription = null,
                         alignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .size(80.dp)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
@@ -107,7 +112,7 @@ fun OneButtonImageDialogPreview() {
             onClick = {
 
             },
-            image = painterResource(R.drawable.img_update),
+            image = painterResource(R.drawable.img_onboarding_3),
             title = "최신 버전 업데이트가 있습니다.",
             body = "안정적인 서비스 사용을 위해\n" +
                     "최신 버전으로 업데이트를 진행해 주세요.",

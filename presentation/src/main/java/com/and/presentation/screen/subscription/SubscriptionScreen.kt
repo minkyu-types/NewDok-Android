@@ -239,7 +239,7 @@ fun SubscribedNewsLettersEmptyView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(R.drawable.img_bookmark_empty),
+            painter = painterResource(R.drawable.img_empty_newsletter),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(12.dp))
