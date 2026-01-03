@@ -54,6 +54,7 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.image.CommonImage
@@ -312,7 +313,7 @@ fun NewsLetterHistory(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(20.dp)
     ) {
         Text(
@@ -322,8 +323,27 @@ fun NewsLetterHistory(
             color = Caption_Neutral,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
-        articles.forEach { article ->
-            ArticleHistoryItem(article)
+        if (articles.isEmpty()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.newsletter_history_empty_1),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    letterSpacing = (-0.3).sp
+                )
+                Text(
+                    text = stringResource(R.string.newsletter_history_empty_2)
+                )
+            }
+        } else {
+            articles.forEach { article ->
+                ArticleHistoryItem(article)
+            }
         }
     }
 }
