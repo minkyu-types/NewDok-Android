@@ -53,7 +53,6 @@ fun OnboardingScreen(
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
     val loginSuccess: Boolean? by viewModel.loginSuccess
-    val pagerState = rememberPagerState() { 3 }
 
     LaunchedEffect(loginSuccess) {
         if (loginSuccess == true) {
@@ -61,9 +60,25 @@ fun OnboardingScreen(
         }
     }
 
+    OnboardingContent(
+        onRegisterClick = onRegisterClick,
+        onLoginClick = onLoginClick,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun OnboardingContent(
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val pagerState = rememberPagerState() { 3 }
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(top = 100.dp),
     ) {
         Column(
@@ -233,16 +248,9 @@ fun OnBoardingLoginText(
 @Composable
 fun OnboardingScreenPreview() {
     DefaultWhiteTheme {
-        OnboardingScreen(
-            onRegisterClick = {
-
-            },
-            onLoginClick = {
-
-            },
-            onAutoLogin = {
-
-            }
+        OnboardingContent(
+            onRegisterClick = { },
+            onLoginClick = { }
         )
     }
 }
