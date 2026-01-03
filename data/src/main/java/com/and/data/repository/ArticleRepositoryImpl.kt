@@ -44,7 +44,12 @@ class ArticleRepositoryImpl @Inject constructor(
             },
             mapper = {
                 it.data.map { article ->
-                    dailyArticleStatusMapper.mapToDomain(article)
+                    DailyArticleStatus(
+                        publishDate = article.publishDate,
+                        hasArticles = article.hasArticles,
+                        totalCount = article.totalCount,
+                        unreadCount = article.unreadCount
+                    )
                 }
             }
         )

@@ -1,7 +1,7 @@
 package com.and.data.mapper.impl
 
 import com.and.data.mapper.DailyArticleStatusMapper
-import com.and.data.model.response.GetArticlesResponseDto.DailyArticleStatusDto
+import com.and.data.model.response.GetMonthlyArticleStatusResponseDto.DailyArticleStatusDto
 import com.and.domain.model.DailyArticleStatus
 import javax.inject.Inject
 

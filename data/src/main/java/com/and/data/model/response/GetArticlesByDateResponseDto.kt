@@ -4,9 +4,9 @@ import com.and.data.model.data.NewsLetterDto
 import com.squareup.moshi.Json
 
 data class GetArticlesByDateResponseDto(
-     @Json(name = "data") val data: List<DailyArticleDto>
+     @Json(name = "data") val data: List<GetArticlesByDateDto>
 ) {
-    data class DailyArticleDto(
+    data class GetArticlesByDateDto(
         val id: Int,
         val title: String,
         val publishDate: Int,

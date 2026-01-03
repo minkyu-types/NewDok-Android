@@ -1,7 +1,6 @@
 package com.and.data.api.article
 
 import com.and.data.model.response.GetArticlesByDateResponseDto
-import com.and.data.model.response.GetArticlesResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

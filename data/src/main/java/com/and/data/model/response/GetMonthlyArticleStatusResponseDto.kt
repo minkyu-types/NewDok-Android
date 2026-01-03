@@ -2,7 +2,7 @@ package com.and.data.model.response
 
 import com.squareup.moshi.Json
 
-data class GetArticlesResponseDto(
+data class GetMonthlyArticleStatusResponseDto(
      @Json(name = "data") val data: List<DailyArticleStatusDto>
 ) {
     data class DailyArticleStatusDto(

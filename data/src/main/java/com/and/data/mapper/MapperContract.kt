@@ -3,9 +3,7 @@ package com.and.data.mapper
 import com.and.data.model.data.ArticleDto
 import com.and.data.model.data.NewsLetterDto
 import com.and.data.model.data.UserDto
-import com.and.data.model.response.GetArticlesByDateResponseDto
-import com.and.data.model.response.GetArticlesByDateResponseDto.DailyArticleDto
-import com.and.data.model.response.GetArticlesResponseDto.DailyArticleStatusDto
+import com.and.data.model.response.GetMonthlyArticleStatusResponseDto.DailyArticleStatusDto
 import com.and.data.model.response.GetBookmarkedArticlesResponseDto.BookmarkedArticleData
 import com.and.data.model.response.GetBookmarkedArticlesResponseDto.BookmarkedArticleDto
 import com.and.data.model.response.GetBookmarkedArticlesResponseDto.MonthlyBookmarkedArticlesDto
@@ -16,7 +14,6 @@ import com.and.domain.model.Article
 import com.and.domain.model.BookmarkedArticle
 import com.and.domain.model.BookmarkedArticles
 import com.and.domain.model.BriefNewsLetter
-import com.and.domain.model.DailyArticle
 import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.MonthlyBookmarkedArticles
 import com.and.domain.model.NewsLetter
