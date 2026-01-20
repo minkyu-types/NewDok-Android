@@ -25,9 +25,9 @@ fun ArticleSearchResultDto.toDomain() = SearchResult.SearchedArticle(
     matchedText = matchedText,
     date = date,
     newsLetter = SearchResult.SearchedNewsLetter(
-        id = newsLetters.firstOrNull()?.brandId ?: -1,
+        id = newsLetters.firstOrNull()?.id ?: -1,
         brandName = newsLetters.firstOrNull()?.brandName.orEmpty(),
-        firstDescription = newsLetters.firstOrNull()?.briefDescription,
+        firstDescription = newsLetters.firstOrNull()?.firstDescription,
         imageUrl = newsLetters.firstOrNull()?.imageUrl,
     ),
     matchType = matchType,

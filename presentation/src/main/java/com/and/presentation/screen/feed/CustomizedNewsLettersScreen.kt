@@ -36,8 +36,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.item.NewsLetterBigItem
 import com.and.presentation.component.item.NewsLetterSmallItem
@@ -240,4 +242,44 @@ fun RecommendOtherNewsLettersArea(
         }
         Spacer(modifier = Modifier.height(24.dp))
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview(showBackground = true)
+@Composable
+private fun CustomizedNewsLettersDotsIndicatorPreview() {
+    val pagerState = rememberPagerState(pageCount = { 5 })
+    CustomizedNewsLettersDotsIndicator(
+        pagerState = pagerState,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RecommendOtherNewsLettersAreaPreview() {
+    val sampleNewsLetters = List(3) { index ->
+        RecommendedNewsLetterModel(
+            id = index,
+            brandName = "샘플 뉴스레터 ${index + 1}",
+            firstDescription = "이것은 샘플 뉴스레터의 첫 번째 설명입니다",
+            secondDescription = "두 번째 설명",
+            publicationCycle = "매주 월요일",
+            subscribeUrl = "https://example.com",
+            imageUrl = "https://example.com/image.png",
+            createdAt = java.time.Instant.now(),
+            updatedAt = java.time.Instant.now(),
+            industries = emptyList(),
+            interests = listOf(
+                InterestCategory.INTEREST_BUSINESS,
+                InterestCategory.INTEREST_LIFESTYLE
+            )
+        )
+    }
+    
+    RecommendOtherNewsLettersArea(
+        recommendedNewsLetters = sampleNewsLetters,
+        onClick = {},
+        onRefreshClick = {}
+    )
 }
