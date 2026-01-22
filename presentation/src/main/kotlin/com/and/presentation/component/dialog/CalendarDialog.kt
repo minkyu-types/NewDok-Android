@@ -75,7 +75,6 @@ fun CalendarDialog(
     modifier: Modifier = Modifier,
     initialDate: LocalDate = LocalDate.now()
 ) {
-    val today = LocalDate.now()
     val todayYearMonth = YearMonth.of(initialDate.year, initialDate.monthValue)
     var currYearMonth: YearMonth by remember {
         mutableStateOf(todayYearMonth)
@@ -133,8 +132,8 @@ fun CalendarDialog(
 
             Button(
                 onClick = {
-                    selectedDay = today
-                    onDateSelected(today)
+                    selectedDay = initialDate
+                    onDateSelected(initialDate)
                     currYearMonth = todayYearMonth
                 },
                 shape = RoundedCornerShape(4.dp),

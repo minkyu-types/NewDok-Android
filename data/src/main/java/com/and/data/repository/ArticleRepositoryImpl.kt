@@ -69,7 +69,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 )
             },
             mapper = {
-                it.data.map { article ->
+                it.map { article ->
                     Article(
                         brandName = article.newsletter.brandName,
                         imageUrl = article.newsletter.imageUrl,

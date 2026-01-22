@@ -46,7 +46,6 @@ import com.and.domain.model.type.ArticleStatus
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.CalendarDialog
 import com.and.presentation.model.DailyArticleModel
-import com.and.presentation.model.DailyArticleStatusModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -88,7 +87,7 @@ fun HomeScreen(
     )
 
     LaunchedEffect(currSelectedDate) {
-        viewModel.getArticleStatusByYearMonth(
+        viewModel.getArticlesByDate(
             currSelectedDate.year,
             currSelectedDate.monthValue,
             currSelectedDate.dayOfMonth
@@ -108,7 +107,7 @@ fun HomeScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .pullRefresh(pullRefreshState)
             .fillMaxSize()
             .background(color = Background_System)

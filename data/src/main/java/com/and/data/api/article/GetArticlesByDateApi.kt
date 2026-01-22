@@ -11,5 +11,5 @@ interface GetArticlesByDateApi  {
         @Query("year") year: String,
         @Query("publicationMonth") month: String,
         @Query("publicationDate") day: String
-    ): GetArticlesByDateResponseDto
+    ): List<GetArticlesByDateResponseDto>
 }

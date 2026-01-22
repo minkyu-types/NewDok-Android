@@ -140,7 +140,7 @@ fun BrandBigItemPreview() {
                 Instant.now(),
                 Instant.now(),
                 listOf(
-                    IndustryCategory.FnB
+                    IndustryCategory.FNB
                 ),
                 listOf(
                     InterestCategory.INTEREST_GAME,

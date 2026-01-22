@@ -73,7 +73,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .baseUrl(
                 if (BuildConfig.DEBUG) {
-                    BuildConfig.BASE_URL_DEV
+                    BuildConfig.BASE_URL_PRODUCT
                 } else {
                     BuildConfig.BASE_URL_PRODUCT
                 }
