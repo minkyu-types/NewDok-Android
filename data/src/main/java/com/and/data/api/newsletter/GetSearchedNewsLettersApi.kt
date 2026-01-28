@@ -1,14 +1,13 @@
 package com.and.data.api.newsletter
 
-import retrofit2.Response
+import com.and.data.model.response.GetNewsLettersResponseDto.NewsLetterDetailDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface GetSearchedNewsLettersApi {
 
-    // TODO 응답 객체 작성
     @GET("/newsletters/search")
     suspend fun getSearchedNewsLetters(
         @Query("brandName") brandName: String
-    ): Response<Unit>
+    ): NewsLetterDetailDto
 }
