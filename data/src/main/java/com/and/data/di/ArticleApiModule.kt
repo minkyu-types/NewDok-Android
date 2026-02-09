@@ -1,10 +1,10 @@
 package com.and.data.di
 
-import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetArticleStatusApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetArticleByIdApi
-import com.and.data.api.article.GetSearchedArticlesApi
+import com.and.data.api.article.GetArticlesByDateApi
 import com.and.data.api.article.GetTodayArticlesApi
 import com.and.data.api.article.PatchBookmarkArticleApi
 import dagger.Module
@@ -28,10 +28,6 @@ object ArticleApiModule {
 
     @Provides
     @Singleton
-    fun providesGetSearchedArticlesApi(retrofit: Retrofit): GetSearchedArticlesApi = retrofit.create(GetSearchedArticlesApi::class.java)
-
-    @Provides
-    @Singleton
     fun providesGetReadArticleApi(retrofit: Retrofit): GetArticleByIdApi = retrofit.create(GetArticleByIdApi::class.java)
 
     @Provides
@@ -44,5 +40,9 @@ object ArticleApiModule {
 
     @Provides
     @Singleton
-    fun providesGetArticlesApi(retrofit: Retrofit): GetArticlesApi = retrofit.create(GetArticlesApi::class.java)
+    fun providesGetArticlesApi(retrofit: Retrofit): GetArticleStatusApi = retrofit.create(GetArticleStatusApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetArticlesByDateApi(retrofit: Retrofit): GetArticlesByDateApi = retrofit.create(GetArticlesByDateApi::class.java)
 }

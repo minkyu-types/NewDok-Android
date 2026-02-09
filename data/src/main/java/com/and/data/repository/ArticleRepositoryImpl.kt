@@ -1,49 +1,82 @@
 package com.and.data.repository
 
 import com.and.data.api.article.GetArticleByIdApi
-import com.and.data.api.article.GetArticlesApi
+import com.and.data.api.article.GetArticleStatusApi
+import com.and.data.api.article.GetArticlesByDateApi
 import com.and.data.api.article.GetBookmarkedArticlesApi
 import com.and.data.api.article.GetBookmarkedInterestsApi
 import com.and.data.api.article.GetReceivedArticlesCountApi
-import com.and.data.api.article.GetSearchedArticlesApi
 import com.and.data.api.article.GetTodayArticlesApi
 import com.and.data.api.article.PatchBookmarkArticleApi
 import com.and.data.mapper.ArticleMapper
 import com.and.data.mapper.BookmarkedArticlesMapper
-import com.and.data.mapper.DailyArticleMapper
+import com.and.data.mapper.DailyArticleStatusMapper
 import com.and.data.model.request.PatchBookmarkArticleRequestDto
 import com.and.domain.model.Article
 import com.and.domain.model.BookmarkedArticles
-import com.and.domain.model.DailyArticles
+import com.and.domain.model.DailyArticle
+import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.type.ArticleStatus
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.ArticleRepository
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
-    private val getArticlesApi: GetArticlesApi,
+    private val getArticleStatusApi: GetArticleStatusApi,
+    private val getArticlesByDateApi: GetArticlesByDateApi,
     private val getBookmarkedArticlesApi: GetBookmarkedArticlesApi,
     private val getBookmarkedInterestsApi: GetBookmarkedInterestsApi,
     private val getArticleByIdApi: GetArticleByIdApi,
-    private val getSearchedArticlesApi: GetSearchedArticlesApi,
     private val getTodayArticlesApi: GetTodayArticlesApi,
     private val patchBookmarkArticleApi: PatchBookmarkArticleApi,
     private val articleMapper: ArticleMapper,
-    private val dailyArticleMapper: DailyArticleMapper,
+    private val dailyArticleStatusMapper: DailyArticleStatusMapper,
     private val bookmarkedArticlesMapper: BookmarkedArticlesMapper,
     private val getReceivedArticlesCountApi: GetReceivedArticlesCountApi
 ): ArticleRepository, BaseRepository() {
-    override suspend fun getArticles(year: Int, month: Int): List<DailyArticles> {
+    override suspend fun getMonthlyArticleStatus(year: Int, month: Int): List<DailyArticleStatus> {
         return handleApiCall(
             apiCall = {
-                getArticlesApi.getArticles(
+                getArticleStatusApi.getArticles(
                     year = year.toString(),
                     month = month.toString()
                 )
             },
             mapper = {
                 it.data.map { article ->
-                    dailyArticleMapper.mapToDomain(article)
+                    DailyArticleStatus(
+                        publishDate = article.publishDate,
+                        hasArticles = article.hasArticles,
+                        totalCount = article.totalCount,
+                        unreadCount = article.unreadCount
+                    )
+                }
+            }
+        )
+    }
+
+    override suspend fun getArticlesByDate(
+        year: Int,
+        month: Int,
+        day: Int
+    ): List<Article> {
+        return handleApiCall(
+            apiCall = {
+                getArticlesByDateApi.getArticles(
+                    year = year.toString(),
+                    month = month.toString(),
+                    day = day.toString()
+                )
+            },
+            mapper = {
+                it.map { article ->
+                    Article(
+                        brandName = article.newsletter.brandName,
+                        imageUrl = article.newsletter.imageUrl,
+                        title = article.title,
+                        articleId = article.id,
+                        status = ArticleStatus.UNREAD
+                    )
                 }
             }
         )
@@ -92,20 +125,6 @@ class ArticleRepositoryImpl @Inject constructor(
                     articleId = data.articleId.toInt(),
                     status = ArticleStatus.UNREAD
                 )
-            }
-        )
-    }
-
-    override suspend fun searchArticles(keyword: String): List<Article> {
-        return handleApiCall(
-            apiCall = {
-                getSearchedArticlesApi.getSearchedArticles(keyword)
-            },
-            mapper = { response ->
-                val data = response.data
-                data.map {
-                    articleMapper.mapToDomain(it)
-                }
             }
         )
     }

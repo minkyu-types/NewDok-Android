@@ -1,10 +1,7 @@
 buildscript {
-    extra.apply {
-        set("kotlin_version", "2.1.10")
-    }
     dependencies {
         classpath(libs.safe.args)
-        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.1.0-1.0.29")
+        classpath(libs.com.google.devtools.ksp.gradle.plugin)
     }
 }
 
@@ -16,5 +13,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.hilt) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block

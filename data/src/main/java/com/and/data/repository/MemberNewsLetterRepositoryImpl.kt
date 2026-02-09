@@ -3,7 +3,6 @@ package com.and.data.repository
 import com.and.data.api.newsletter.GetMemberNewsLetterByIdApi
 import com.and.data.api.newsletter.GetMemberNewsLettersApi
 import com.and.data.api.newsletter.GetRecommendedNewsLettersApi
-import com.and.data.api.newsletter.GetSearchedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersApi
 import com.and.data.api.newsletter.GetSubscribedNewsLettersCountApi
 import com.and.data.api.newsletter.GetUnSubscribedNewsLettersApi
@@ -16,10 +15,11 @@ import com.and.data.model.request.PatchSubscriptionPauseRequestDto
 import com.and.data.model.request.PatchSubscriptionResumeRequestDto
 import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
-import com.and.domain.model.RecommendedNewsLetters
+import com.and.domain.model.RecommendedNewsLetter
 import com.and.domain.model.SimpleArticle
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
+import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
 import java.time.ZonedDateTime
@@ -29,7 +29,6 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     private val getNewsLetterByIdApi: GetMemberNewsLetterByIdApi,
     private val getNewsLettersApi: GetMemberNewsLettersApi,
     private val getRecommendedNewsLettersApi: GetRecommendedNewsLettersApi,
-    private val getSearchedNewsLettersApi: GetSearchedNewsLettersApi,
     private val getSubscribedNewsLettersApi: GetSubscribedNewsLettersApi,
     private val getUnSubscribedNewsLettersApi: GetUnSubscribedNewsLettersApi,
     private val patchSubscriptionPauseApi: PatchSubscriptionPauseApi,
@@ -94,32 +93,18 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getRecommendedNewsLetters(): RecommendedNewsLetters {
+    override suspend fun getRecommendedNewsLetters(type: RecommendedNewsLetterType): List<RecommendedNewsLetter> {
         return handleApiCall(
             apiCall = {
-                getRecommendedNewsLettersApi.getRecommendedNewsLetters()
+                when (type) {
+                    RecommendedNewsLetterType.INTERSECTION -> getRecommendedNewsLettersApi.getIntersectionNewsLetters()
+                    RecommendedNewsLetterType.UNION -> getRecommendedNewsLettersApi.getUnionNewsLetters()
+                }
             },
             mapper = { response ->
-                RecommendedNewsLetters(
-                    intersectionNewsLetters = (response.intersectionNewsLetters).map { letter ->
-                        recommendedNewsLetterMapper.mapToDomain(letter)
-                    },
-                    unionNewsLetters = response.unionNewsLetters.map { letter ->
-                        recommendedNewsLetterMapper.mapToDomain(letter)
-                    }
-                )
-
-            }
-        )
-    }
-
-    override suspend fun getSearchedNewsLetter(brandName: String): NewsLetter {
-        return handleApiCall(
-            apiCall = {
-                getSearchedNewsLettersApi.getSearchedNewsLetters(brandName)
-            },
-            mapper = { response ->
-                newsLetterDetailMapper.mapToDomain(response)
+                response.map { newsLetter ->
+                    recommendedNewsLetterMapper.mapToDomain(newsLetter)
+                }
             }
         )
     }

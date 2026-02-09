@@ -1,16 +1,16 @@
 package com.and.domain.usecase.newsletter.member
 
-import com.and.domain.model.RecommendedNewsLetters
+import com.and.domain.model.RecommendedNewsLetter
+import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.repository.MemberNewsLetterRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.BaseUseCase
 import javax.inject.Inject
 
 class GetRecommendedNewsLettersUseCase @Inject constructor(
     private val repository: MemberNewsLetterRepository
-): BaseSuspendUseCase<Unit, RecommendedNewsLetters> {
+): BaseSuspendUseCase<RecommendedNewsLetterType, List<RecommendedNewsLetter>> {
 
-    override suspend fun invoke(parameter: Unit): RecommendedNewsLetters {
-        return repository.getRecommendedNewsLetters()
+    override suspend fun invoke(type: RecommendedNewsLetterType): List<RecommendedNewsLetter> {
+        return repository.getRecommendedNewsLetters(type)
     }
 }

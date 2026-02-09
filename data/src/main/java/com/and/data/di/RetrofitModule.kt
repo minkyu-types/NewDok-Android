@@ -22,6 +22,10 @@ val Context.userDataStore by preferencesDataStore(
     name = "user_prefs"
 )
 
+val Context.notificationSettingDataStore by preferencesDataStore(
+    name = "notification_setting_prefs"
+)
+
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
@@ -69,7 +73,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .baseUrl(
                 if (BuildConfig.DEBUG) {
-                    BuildConfig.BASE_URL_DEV
+                    BuildConfig.BASE_URL_PRODUCT
                 } else {
                     BuildConfig.BASE_URL_PRODUCT
                 }

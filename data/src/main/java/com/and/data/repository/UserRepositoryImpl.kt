@@ -21,7 +21,8 @@ import com.and.data.model.request.PatchUserNicknameRequestDto
 import com.and.data.model.request.PatchUserPasswordRequestDto
 import com.and.data.model.request.PatchUserPhoneNumberRequestDto
 import com.and.data.model.request.SignUpRequestDto
-import com.and.data.preference.AuthPreferenceStore
+import com.and.data.preference.UserAuthPreferenceStore
+import com.and.data.util.IoDispatcher
 import com.and.domain.model.Account
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.User
@@ -29,10 +30,13 @@ import com.and.domain.model.type.Gender
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.UserRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val preInvestigateNewsLettersApi: GetPreInvestigateNewsLettersApi,
     private val getUserByPhoneNumberApi: GetUserByPhoneNumberApi,
     private val getUserIdDuplicationApi: GetUserIdDuplicationApi,
@@ -47,16 +51,16 @@ class UserRepositoryImpl @Inject constructor(
     private val withdrawalApi: DeleteUserApi,
     private val userMapper: UserMapper,
     private val newsLetterMapper: NewsLetterMapper,
-    private val authPreferenceStore: AuthPreferenceStore
+    private val userAuthPreferenceStore: UserAuthPreferenceStore,
 ) : UserRepository, BaseRepository() {
     override fun getUserAccessToken(): Flow<String?> {
-        return authPreferenceStore.getAccessToken()
+        return userAuthPreferenceStore.getAccessToken()
     }
 
     override suspend fun deleteUserAccessToken(): Boolean {
         return handleApiCall(
             apiCall = {
-                authPreferenceStore.clearAccessToken()
+                userAuthPreferenceStore.clearAccessToken()
             },
             mapper = { result ->
                 val a = result
@@ -183,14 +187,16 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUserNickname(nickname: String): Boolean {
         return handleApiCall(
             apiCall = {
-                patchUserNicknameApi.patchUserNickname(
-                    PatchUserNicknameRequestDto(
-                        nickname = nickname
+                withContext(ioDispatcher) {
+                    patchUserNicknameApi.patchUserNickname(
+                        PatchUserNicknameRequestDto(
+                            nickname = nickname
+                        )
                     )
-                )
+                }
             },
             mapper = { response ->
-                response.isNicknameChanged
+                response.isNicknameChanged == "true"
             }
         )
     }
@@ -244,7 +250,7 @@ class UserRepositoryImpl @Inject constructor(
                         password = password
                     )
                 ).also {
-                    authPreferenceStore.saveAccessToken(it.accessToken)
+                    userAuthPreferenceStore.saveAccessToken(it.accessToken)
                 }
             },
             mapper = { response ->

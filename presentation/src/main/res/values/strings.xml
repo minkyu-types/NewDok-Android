@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">NewDok</string>
 
+    <string name="term_service_url">https://www.notion.so/newdok/4727644053f94ff384d87246ee55aca8?source=copy_link</string>
+    <string name="term_personal_url">https://www.notion.so/newdok/c01cfc8534224a2ca031ecce1c07a6bf?source=copy_link</string>
+
     <string name="next">다음</string>
     <string name="count">%d개</string>
     <string name="select">선택</string>
@@ -12,6 +15,7 @@
     <string name="gender">성별</string>
     <string name="gender_male">남자</string>
     <string name="gender_female">여자</string>
+    <string name="gender_others">그외</string>
     <string name="password_confirm">비밀번호 확인</string>
     <string name="logo_image">로고 이미지</string>
     <string name="close">닫기</string>
@@ -86,6 +90,7 @@
 
     <string name="register_phone_auth_number_placeholder">6자리 숫자 입력</string>
     <string name="register_phone_auth_number_hint">문자가 오지 않는다면 재전송 버튼을 눌러주세요</string>
+    <string name="register_phone_auth_number_success">인증에 성공하였습니다</string>
     <string name="register_phone_auth_number_error_1">인증번호를 다시 확인해주세요</string>
     <string name="register_phone_auth_number_error_2">인증번호를 재전송해주세요</string>
 
@@ -160,6 +165,7 @@
 
     <!-- 구독 관리 -->
     <string name="subscription_title">내 구독</string>
+    <string name="subscribe_initial">구독</string>
     <string name="subscribe_ing">구독중</string>
     <string name="subscribe_paused">구독 중지</string>
     <string name="subscribe_resume">구독 재개</string>
@@ -183,6 +189,8 @@
     <!-- 뉴스레터 홈-->
     <string name="newsletter_home_title">뉴스레터 홈</string>
     <string name="newsletter_history_title">지난 아티클 보기</string>
+    <string name="newsletter_history_empty_1">아티클을 준비하는 중이에요</string>
+    <string name="newsletter_history_empty_2">조금만 기다려 주세요</string>
 
     <!-- 마이페이지 -->
     <string name="my_page_profile_email">구독이메일</string>
@@ -240,7 +248,7 @@
     <!-- 서비스 피드백 -->
     <string name="service_feedback">서비스 피드백</string>
     <string name="service_feedback_title">뉴독에 대한 회원님의\n목소리를 들려주세요</string>
-    <string name="service_feedback_body">서비스 사용 시 좋았떤 점이나 불편했던 점,\n뉴스레터 등록 신청 혹은 문의사항을 편하게 남겨주세요!</string>
+    <string name="service_feedback_body">서비스 사용 시 좋았던 점이나 불편했던 점,\n뉴스레터 등록 신청 혹은 문의사항을 편하게 남겨주세요!</string>
 
     <!-- 약관 및 정책-->
     <string name="terms">약관 및 정책</string>
