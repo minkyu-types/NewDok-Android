@@ -114,7 +114,14 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getSearchedNewsLetter(brandName: String): NewsLetter {
-        TODO("Not yet implemented")
+        return handleApiCall(
+            apiCall = {
+                getSearchedNewsLettersApi.getSearchedNewsLetters(brandName)
+            },
+            mapper = { response ->
+                newsLetterDetailMapper.mapToDomain(response)
+            }
+        )
     }
 
     override suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter> {
