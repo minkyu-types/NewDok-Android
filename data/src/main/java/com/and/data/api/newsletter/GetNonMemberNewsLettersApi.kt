@@ -1,5 +1,6 @@
 package com.and.data.api.newsletter
 
+import com.and.data.model.response.GetNewsLettersResponseDto.NewsLetterDetailDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -8,11 +9,10 @@ import retrofit2.http.Query
  */
 interface GetNonMemberNewsLettersApi {
 
-    // TODO 응답 객체 작성
     @GET("/newsletters/non-member")
     suspend fun getNewsLetters(
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: List<String>,
         @Query("day") day: List<String>,
-    )
+    ): List<NewsLetterDetailDto>
 }

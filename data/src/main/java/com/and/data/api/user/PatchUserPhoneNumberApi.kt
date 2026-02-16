@@ -8,7 +8,7 @@ import retrofit2.http.PATCH
 interface PatchUserPhoneNumberApi {
 
     @PATCH("/users/mypage/phoneNumber")
-    fun patchUserPhoneNumber(
+    suspend fun patchUserPhoneNumber(
         @Body request: PatchUserPhoneNumberRequestDto
     ): PatchUserPhoneNumberResponseDto
 }

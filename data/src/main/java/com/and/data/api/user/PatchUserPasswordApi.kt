@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 interface PatchUserPasswordApi {
 
     @PATCH("/users/mypage/password")
-    fun patchUserPassword(
+    suspend fun patchUserPassword(
         @Body request: PatchUserPasswordRequestDto
     ): Response<PatchUserPasswordResponseDto>
 }

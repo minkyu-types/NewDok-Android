@@ -1,5 +1,6 @@
 package com.and.data.api.newsletter
 
+import com.and.data.model.response.GetNewsLetterByIdResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -10,9 +11,8 @@ import retrofit2.http.Path
  */
 interface GetNonMemberNewsLetterByIdApi {
 
-    // TODO 응답 객체 작성
     @GET("/newsletters/{id}/non-member")
     suspend fun getNewsLettersById(
         @Path("id") id: String
-    )
+    ): GetNewsLetterByIdResponseDto
 }
