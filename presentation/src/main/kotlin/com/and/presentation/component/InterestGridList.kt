@@ -11,18 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
+import com.and.domain.model.Interest
 import com.and.presentation.screen.preinvestigation.InvestigationInterestItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InvestigationInterestList(
-    selectedInterests: Set<InterestCategory>,
-    onInterestClick: (InterestCategory) -> Unit,
+    interests: List<Interest>,
+    selectedInterests: Set<Interest>,
+    onInterestClick: (Interest) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val categories = InterestCategory.entries
-
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -33,7 +32,7 @@ fun InvestigationInterestList(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
-                items = categories,
+                items = interests,
             ) { interest ->
                 InvestigationInterestItem(
                     interest = interest,

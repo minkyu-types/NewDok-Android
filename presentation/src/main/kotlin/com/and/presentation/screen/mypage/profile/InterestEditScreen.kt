@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -16,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.type.InterestCategory
+import com.and.domain.model.Interest
 import com.and.newdok.presentation.R
 import com.and.presentation.component.InvestigationInterestList
 import com.and.presentation.component.button.ConditionalNextButton
@@ -31,8 +34,12 @@ fun InterestEditScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileEditViewModel
 ) {
-    val prevInterests = rememberSaveable { mutableStateOf(listOf(InterestCategory.INTEREST_CONTENTS, InterestCategory.INTEREST_TREND)) }
-    val selectedInterests = rememberSaveable { mutableStateOf(emptySet<InterestCategory>()) }
+    val interestOptions by viewModel.interestOptions.collectAsState()
+    val selectedInterests = rememberSaveable { mutableStateOf(emptySet<Interest>()) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getInterests()
+    }
 
     Column(
         modifier = Modifier
@@ -59,6 +66,7 @@ fun InterestEditScreen(
             )
         }
         InvestigationInterestList(
+            interests = interestOptions,
             selectedInterests = selectedInterests.value,
             onInterestClick = { interest ->
                 val updated = selectedInterests.value.toMutableSet()
@@ -74,7 +82,7 @@ fun InterestEditScreen(
                 .padding(horizontal = 24.dp)
         )
         ConditionalNextButton(
-            enabled = (prevInterests != selectedInterests),
+            enabled = selectedInterests.value.isNotEmpty(),
             onClick = {
                 viewModel.updateInterests(interests = selectedInterests.value)
                 onBack()

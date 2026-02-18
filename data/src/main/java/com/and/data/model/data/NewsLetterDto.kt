@@ -15,8 +15,3 @@ data class NewsLetterDto(
     val industries: List<IndustryDto>,
     val interests: List<InterestDto>
 )
-
-data class IndustryDto(
-    val id: Int,
-    val name: String
-)

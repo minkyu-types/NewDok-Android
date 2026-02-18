@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.and.domain.model.Industry
 import com.and.domain.model.type.IndustryCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.IndustryDropDown
@@ -30,10 +32,11 @@ fun IndustryEditScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileEditViewModel
 ) {
-    var currIndustry: IndustryCategory? by remember { mutableStateOf(industry) }
+    val industries by viewModel.industries.collectAsStateWithLifecycle()
+    var currIndustry: Industry? by remember { mutableStateOf(industries.first()) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
@@ -42,7 +45,7 @@ fun IndustryEditScreen(
             onNavigationIconClick = onBack,
         )
         IndustryDropDown(
-            initialValue = industry ?: IndustryCategory.DEFAULT,
+            industries = industries,
             onSelect = { industry ->
                 currIndustry = industry
             },

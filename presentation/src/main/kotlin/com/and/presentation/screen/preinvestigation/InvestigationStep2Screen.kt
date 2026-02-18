@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.type.InterestCategory
+import com.and.domain.model.Interest
 import com.and.newdok.presentation.R
 import com.and.presentation.component.InvestigationInterestList
 import com.and.presentation.component.button.ConditionalNextButton
@@ -44,7 +45,12 @@ fun InvestigationStep2Screen(
     modifier: Modifier = Modifier,
     viewModel: InvestigationViewModel
 ) {
+    val interestOptions by viewModel.interestOptions.collectAsState()
     val selectedInterests by viewModel.selectedInterests.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getInterests()
+    }
 
     Column(
         modifier = Modifier
@@ -74,6 +80,7 @@ fun InvestigationStep2Screen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             InvestigationInterestList(
+                interests = interestOptions,
                 selectedInterests = selectedInterests,
                 onInterestClick = { interest ->
                     viewModel.toggleInterest(interest)
@@ -93,9 +100,9 @@ fun InvestigationStep2Screen(
 
 @Composable
 fun InvestigationInterestItem(
-    interest: InterestCategory,
+    interest: Interest,
     isSelected: Boolean,
-    onClick: (InterestCategory) -> Unit
+    onClick: (Interest) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -109,7 +116,7 @@ fun InvestigationInterestItem(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = interest.value,
+            text = interest.name,
             style = Body2Normal,
             fontWeight = FontWeight.Medium,
             color = if (isSelected) Primary_Normal else Caption_Neutral,

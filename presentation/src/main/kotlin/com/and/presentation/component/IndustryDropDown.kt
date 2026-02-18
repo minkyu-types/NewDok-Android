@@ -38,7 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.and.domain.model.type.IndustryCategory
+import com.and.domain.model.Industry
 import com.and.newdok.presentation.R
 import com.and.presentation.screen.preinvestigation.IndustryDropDownItem
 import com.and.presentation.ui.Body2Normal
@@ -51,14 +51,13 @@ import com.and.presentation.util.removeRippleEffect
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IndustryDropDown(
-    initialValue: IndustryCategory,
-    onSelect: (IndustryCategory) -> Unit,
+    industries: List<Industry>,
+    onSelect: (Industry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem: IndustryCategory? by rememberSaveable { mutableStateOf(initialValue) }
+    var selectedItem: Industry? by rememberSaveable { mutableStateOf(null) }
     var industryBoxSize by remember { mutableStateOf(Size.Zero) }
-    val industries = IndustryCategory.entries
 
     Column(
         modifier = modifier
@@ -94,7 +93,7 @@ fun IndustryDropDown(
                 Text(
                     text = if (selectedItem == null)
                         stringResource(R.string.pre_investigation_industry_dropdown_placeholder)
-                    else selectedItem!!.value,
+                    else selectedItem!!.name,
                     style = Body2Normal,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start,

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,7 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.type.IndustryCategory
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.and.domain.model.Industry
 import com.and.newdok.presentation.R
 import com.and.presentation.component.IndustryDropDown
 import com.and.presentation.component.button.ConditionalNextButton
@@ -42,7 +44,12 @@ fun InvestigationStep1Screen(
     modifier: Modifier = Modifier,
     viewModel: InvestigationViewModel
 ) {
-    var selectedIndustry: IndustryCategory by rememberSaveable { mutableStateOf(IndustryCategory.DEFAULT) }
+    var selectedIndustry: Industry? by rememberSaveable { mutableStateOf(null) }
+    val industries by viewModel.industries.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getIndustries()
+    }
 
     Column(
         modifier = Modifier
@@ -72,7 +79,7 @@ fun InvestigationStep1Screen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             IndustryDropDown(
-                initialValue = IndustryCategory.DEFAULT,
+                industries = industries,
                 onSelect = {
                     selectedIndustry = it
                 },
@@ -80,10 +87,12 @@ fun InvestigationStep1Screen(
             )
         }
         ConditionalNextButton(
-            enabled = (selectedIndustry != IndustryCategory.DEFAULT),
+            enabled = (selectedIndustry != null),
             onClick = {
-                viewModel.updateIndustry(selectedIndustry)
-                onNext()
+                selectedIndustry?.let { industry ->
+                    viewModel.updateIndustry(industry)
+                    onNext()
+                }
             },
             modifier = Modifier.padding(24.dp),
         )
@@ -92,15 +101,15 @@ fun InvestigationStep1Screen(
 
 @Composable
 fun IndustryDropDownItem(
-    selectedItem: IndustryCategory?,
-    industry: IndustryCategory,
-    onSelect: (IndustryCategory) -> Unit,
+    selectedItem: Industry?,
+    industry: Industry,
+    onSelect: (Industry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     DropdownMenuItem(
         text = {
             Text(
-                text = industry.value,
+                text = industry.name,
                 style = Body2Normal,
                 fontWeight = FontWeight.Medium,
                 color = if (selectedItem == industry)

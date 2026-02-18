@@ -22,7 +22,6 @@ import com.and.domain.model.type.InterestCategory
 import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class MemberNewsLetterRepositoryImpl @Inject constructor(

@@ -4,12 +4,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.and.domain.model.Industry
+import com.and.domain.model.Interest
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.usecase.user.GetPreInvestigateNewsLettersUseCase
 import com.and.domain.usecase.user.GetUserInfoUseCase
 import com.and.domain.usecase.user.UpdateUserIndustryUseCase
 import com.and.domain.usecase.user.UpdateUserInterestsUseCase
+import com.and.domain.usecase.util.GetIndustriesUseCase
+import com.and.domain.usecase.util.GetInterestsUseCase
 import com.and.presentation.mapper.NewsLetterMapper
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.util.UiState
@@ -26,13 +30,21 @@ class InvestigationViewModel @Inject constructor(
     private val updateIndustryUseCase: UpdateUserIndustryUseCase,
     private val getPreInvestigateNewsLettersUseCase: GetPreInvestigateNewsLettersUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getIndustriesUseCase: GetIndustriesUseCase,
+    private val getInterestsUseCase: GetInterestsUseCase,
     private val newsLetterMapper: NewsLetterMapper
 ) : ViewModel() {
 
     private var selectedIndustry = IndustryCategory.DEFAULT
 
-    private val _selectedInterests = MutableStateFlow<Set<InterestCategory>>(emptySet())
-    val selectedInterests: StateFlow<Set<InterestCategory>> = _selectedInterests
+    private val _industries = MutableStateFlow<List<Industry>>(emptyList())
+    val industries: StateFlow<List<Industry>> = _industries
+
+    private val _interestOptions = MutableStateFlow<List<Interest>>(emptyList())
+    val interestOptions: StateFlow<List<Interest>> = _interestOptions
+
+    private val _selectedInterests = MutableStateFlow<Set<Interest>>(emptySet())
+    val selectedInterests: StateFlow<Set<Interest>> = _selectedInterests
 
     private val _preInvestigateNewsLettersUiState =
         mutableStateOf<UiState<List<NewsLetterModel>>>(UiState.Idle)
@@ -42,30 +54,33 @@ class InvestigationViewModel @Inject constructor(
     private val _nickname = MutableStateFlow<String?>(null)
     val nickname: StateFlow<String?> = _nickname
 
-    fun toggleInterest(category: InterestCategory) {
+    fun toggleInterest(interest: Interest) {
         _selectedInterests.value = _selectedInterests.value
             .toMutableSet()
             .also { set ->
-                if (category in set) set.remove(category) else set.add(category)
+                if (interest in set) set.remove(interest) else set.add(interest)
             }
     }
 
     fun updateInterests(
-        interests: Set<InterestCategory>
+        interests: Set<Interest>
     ) {
+        val categories = interests.mapNotNull { interest ->
+            runCatching { InterestCategory.getInterestById(interest.id) }.getOrNull()
+        }.toSet()
         viewModelScope.launch {
             updateInterestsUseCase(
                 UpdateUserInterestsUseCase.UpdateUserInterestsParams(
-                    interests
+                    categories
                 )
             )
         }
     }
 
     fun updateIndustry(
-        industry: IndustryCategory
+        industry: Industry
     ) {
-        selectedIndustry = industry
+        selectedIndustry = IndustryCategory.getIndustryById(industry.id)
         viewModelScope.launch {
             updateIndustryUseCase(
                 UpdateUserIndustryUseCase.UpdateUserIndustryParams(
@@ -88,6 +103,32 @@ class InvestigationViewModel @Inject constructor(
         }
     }
 
+    fun getIndustries() {
+        viewModelScope.launch {
+            runCatching {
+                getIndustriesUseCase(Unit)
+            }.onSuccess { result ->
+                _industries.value = result
+            }.onFailure { error ->
+                error.printStackTrace()
+                _industries.value = emptyList()
+            }
+        }
+    }
+
+    fun getInterests() {
+        viewModelScope.launch {
+            runCatching {
+                getInterestsUseCase(Unit)
+            }.onSuccess { result ->
+                _interestOptions.value = result
+            }.onFailure { error ->
+                error.printStackTrace()
+                _interestOptions.value = emptyList()
+            }
+        }
+    }
+
     fun getPreInvestigationNewsLetters() {
         viewModelScope.launch {
             _preInvestigateNewsLettersUiState.value = UiState.Loading
@@ -96,7 +137,9 @@ class InvestigationViewModel @Inject constructor(
                 getPreInvestigateNewsLettersUseCase(
                     GetPreInvestigateNewsLettersUseCase.GetPreInvestigateNewsLettersParams(
                         industry = selectedIndustry,
-                        interests = _selectedInterests.value.toList()
+                        interests = _selectedInterests.value.mapNotNull { interest ->
+                            runCatching { InterestCategory.getInterestById(interest.id) }.getOrNull()
+                        }
                     )
                 )
             }.onSuccess { result ->
