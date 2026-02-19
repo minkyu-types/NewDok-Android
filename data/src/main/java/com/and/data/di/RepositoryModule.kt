@@ -3,6 +3,7 @@ package com.and.data.di
 import com.and.data.repository.ArticleRepositoryImpl
 import com.and.data.repository.AuthRepositoryImpl
 import com.and.data.repository.MemberNewsLetterRepositoryImpl
+import com.and.data.repository.NewsLetterRepositoryDelegate
 import com.and.data.repository.NonMemberNewsLetterRepositoryImpl
 import com.and.data.repository.UserRepositoryImpl
 import com.and.domain.repository.ArticleRepository
@@ -44,6 +45,12 @@ interface RepositoryModule {
     @Named("nonMember")
     fun bindsNonMemberNewsLetterRepository(
         nonMemberNewsLetterRepositoryImpl: NonMemberNewsLetterRepositoryImpl
+    ): MemberNewsLetterRepository
+
+    @Binds
+    @Singleton
+    fun bindsNewsLetterRepository(
+        delegate: NewsLetterRepositoryDelegate
     ): MemberNewsLetterRepository
 
     @Binds
