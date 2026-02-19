@@ -8,12 +8,12 @@ import com.and.data.repository.UserRepositoryImpl
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.repository.AuthRepository
 import com.and.domain.repository.MemberNewsLetterRepository
-import com.and.domain.repository.NonMemberNewsLetterRepository
 import com.and.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -34,15 +34,17 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
+    @Named("member")
     fun bindsMemberNewsLetterRepository(
         memberNewsLetterRepositoryImpl: MemberNewsLetterRepositoryImpl
     ): MemberNewsLetterRepository
 
     @Binds
     @Singleton
+    @Named("nonMember")
     fun bindsNonMemberNewsLetterRepository(
         nonMemberNewsLetterRepositoryImpl: NonMemberNewsLetterRepositoryImpl
-    ): NonMemberNewsLetterRepository
+    ): MemberNewsLetterRepository
 
     @Binds
     @Singleton

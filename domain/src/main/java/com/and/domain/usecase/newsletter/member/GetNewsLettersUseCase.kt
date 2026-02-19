@@ -10,9 +10,10 @@ import com.and.domain.usecase.newsletter.member.GetNewsLettersUseCase.GetNewsLet
 import java.time.Instant
 import java.time.ZonedDateTime
 import javax.inject.Inject
+import javax.inject.Named
 
 class GetNewsLettersUseCase @Inject constructor(
-    private val repository: MemberNewsLetterRepository
+    @Named("member") private val repository: MemberNewsLetterRepository
 ): BaseSuspendUseCase<GetNewsLettersParams, List<NewsLetter>> {
 
     override suspend fun invoke(parameter: GetNewsLettersParams): List<NewsLetter> {
