@@ -3,23 +3,18 @@ package com.and.data.di
 import com.and.data.repository.ArticleRepositoryImpl
 import com.and.data.repository.AuthRepositoryImpl
 import com.and.data.repository.MemberNewsLetterRepositoryImpl
+import com.and.data.repository.NewsLetterRepositoryDelegate
 import com.and.data.repository.NonMemberNewsLetterRepositoryImpl
-import com.and.data.repository.OptionsRepositoryImpl
-import com.and.data.repository.SearchRepositoryImpl
-import com.and.data.repository.SettingRepositoryImpl
 import com.and.data.repository.UserRepositoryImpl
 import com.and.domain.repository.ArticleRepository
 import com.and.domain.repository.AuthRepository
 import com.and.domain.repository.MemberNewsLetterRepository
-import com.and.domain.repository.NonMemberNewsLetterRepository
-import com.and.domain.repository.OptionsRepository
-import com.and.domain.repository.SearchRepository
-import com.and.domain.repository.SettingRepository
 import com.and.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -40,37 +35,27 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
+    @Named("member")
     fun bindsMemberNewsLetterRepository(
         memberNewsLetterRepositoryImpl: MemberNewsLetterRepositoryImpl
     ): MemberNewsLetterRepository
 
     @Binds
     @Singleton
+    @Named("nonMember")
     fun bindsNonMemberNewsLetterRepository(
         nonMemberNewsLetterRepositoryImpl: NonMemberNewsLetterRepositoryImpl
-    ): NonMemberNewsLetterRepository
+    ): MemberNewsLetterRepository
+
+    @Binds
+    @Singleton
+    fun bindsNewsLetterRepository(
+        delegate: NewsLetterRepositoryDelegate
+    ): MemberNewsLetterRepository
 
     @Binds
     @Singleton
     fun bindsAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
-
-    @Binds
-    @Singleton
-    fun bindsSearchRepository(
-        searchRepositoryImpl: SearchRepositoryImpl
-    ): SearchRepository
-
-    @Binds
-    @Singleton
-    fun bindsSettingRepository(
-        settingRepositoryImpl: SettingRepositoryImpl
-    ): SettingRepository
-
-    @Binds
-    @Singleton
-    fun bindsOptionsRepository(
-        optionsRepositoryImpl: OptionsRepositoryImpl
-    ): OptionsRepository
 }

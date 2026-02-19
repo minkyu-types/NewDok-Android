@@ -1,15 +1,8 @@
 package com.and.presentation.activity
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,25 +10,20 @@ import com.and.presentation.screen.login.LoginScreen
 import com.and.presentation.screen.onboarding.OnboardingScreen
 import com.and.presentation.screen.preinvestigation.InvestigationFlowScreen
 import com.and.presentation.screen.register.RegisterFlowScreen
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainNavGraph(
-    startDestination: String
+    startDestination: String,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
+    val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        contentWindowInsets = WindowInsets.systemBars,
-        modifier = Modifier.fillMaxSize()
-            .systemBarsPadding(),
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
         composable(ScreenFlow.ON_BOARDING.route) {
             OnboardingScreen(
                 onRegisterClick = {
@@ -56,7 +44,12 @@ fun MainNavGraph(
                     navController.navigate(ScreenFlow.MAIN.route)
                 },
                 onLoginWithoutSignUp = {
-                    // 비회원으로 이용
+                    coroutineScope.launch {
+                        viewModel.setGuestMode(true)
+                        navController.navigate(ScreenFlow.MAIN.route) {
+                            popUpTo(ScreenFlow.ON_BOARDING.route) { inclusive = true }
+                        }
+                    }
                 },
                 onRegister = {
                     navController.navigate(ScreenFlow.REGISTER.route)
@@ -74,9 +67,6 @@ fun MainNavGraph(
             RegisterFlowScreen(
                 onFlowFinished = {
                     navController.navigate(ScreenFlow.PRE_INVESTIGATION.route)
-                },
-                onBack = {
-                    navController.popBackStack()
                 }
             )
         }
@@ -93,10 +83,14 @@ fun MainNavGraph(
             MainFlowScreen(
                 rootNavController = navController,
                 onLogout = {
-                    navController.navigate(ScreenFlow.ON_BOARDING.route)
+                    coroutineScope.launch {
+                        viewModel.setGuestMode(false)
+                        navController.navigate(ScreenFlow.ON_BOARDING.route) {
+                            popUpTo(ScreenFlow.MAIN.route) { inclusive = true }
+                        }
+                    }
                 }
             )
-        }
         }
     }
 }
