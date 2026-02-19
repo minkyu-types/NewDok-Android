@@ -33,9 +33,8 @@ enum class IndustryCategory(val id: Int, val value: String) {
             return entries.map { it.value }
         }
 
-        fun getIndustryById(id: Int): IndustryCategory {
+        fun getIndustryById(id: Int): IndustryCategory? {
             return entries.find { it.id == id }
-                ?: throw IllegalArgumentException("Wrong industry id $id")
         }
     }
 }
