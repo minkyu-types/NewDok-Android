@@ -12,6 +12,9 @@ interface UserRepository {
     fun getUserAccessToken(): Flow<String?>
     suspend fun deleteUserAccessToken(): Boolean
 
+    suspend fun setGuestMode(isGuest: Boolean)
+    fun isGuestMode(): Flow<Boolean>
+
     suspend fun getPreInvestigateNewsLetters(industry: IndustryCategory, interests: List<InterestCategory>): List<NewsLetter>
     suspend fun getUserByPhoneNumber(phoneNumber: String): List<User>
     suspend fun getUserIdDuplication(loginId: String): Account

@@ -46,6 +46,8 @@ class MainActivity: ComponentActivity() {
         lifecycleScope.launch {
             val isAutoLogin: String? = viewModel.getAccessToken()
                 .firstOrNull()
+            val isGuest: Boolean = viewModel.isGuestMode()
+                .firstOrNull() ?: false
 
             isLoading = false
 
@@ -73,11 +75,10 @@ class MainActivity: ComponentActivity() {
                 }
 
                 MainNavGraph(
-//                    ScreenFlow.MAIN.route
-                    if (isAutoLogin != null) {
-                        ScreenFlow.MAIN.route
-                    } else {
-                        ScreenFlow.ON_BOARDING.route
+                    startDestination = when {
+                        isAutoLogin != null -> ScreenFlow.MAIN.route
+                        isGuest -> ScreenFlow.MAIN.route
+                        else -> ScreenFlow.ON_BOARDING.route
                     }
                 )
             }

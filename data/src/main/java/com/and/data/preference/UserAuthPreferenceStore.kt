@@ -1,6 +1,7 @@
 package com.and.data.preference
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -17,6 +18,7 @@ class UserAuthPreferenceStore @Inject constructor(
 
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
+        private val GUEST_MODE_KEY = booleanPreferencesKey("guest_mode")
     }
 
     private val preferences = context.userDataStore
@@ -47,5 +49,21 @@ class UserAuthPreferenceStore @Inject constructor(
             e.printStackTrace()
             false
         }
+    }
+
+    override suspend fun saveGuestMode(isGuest: Boolean) {
+        preferences.edit { settings ->
+            settings[GUEST_MODE_KEY] = isGuest
+        }
+    }
+
+    override fun isGuestMode(): Flow<Boolean> {
+        return preferences.data
+            .catch { e ->
+                e.printStackTrace()
+                emit(emptyPreferences())
+            }.map { settings ->
+                settings[GUEST_MODE_KEY] ?: false
+            }
     }
 }

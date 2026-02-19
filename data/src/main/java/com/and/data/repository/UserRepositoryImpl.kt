@@ -65,6 +65,14 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun setGuestMode(isGuest: Boolean) {
+        authPreferenceStore.saveGuestMode(isGuest)
+    }
+
+    override fun isGuestMode(): Flow<Boolean> {
+        return authPreferenceStore.isGuestMode()
+    }
+
     override suspend fun getPreInvestigateNewsLetters(
         industry: IndustryCategory,
         interests: List<InterestCategory>
@@ -245,6 +253,7 @@ class UserRepositoryImpl @Inject constructor(
                     )
                 ).also {
                     authPreferenceStore.saveAccessToken(it.accessToken)
+                    authPreferenceStore.saveGuestMode(false)
                 }
             },
             mapper = { response ->
