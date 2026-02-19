@@ -46,10 +46,10 @@ class RecommendedNewsLetterMapperImpl @Inject constructor(): RecommendedNewsLett
             imageUrl = input.imageUrl,
             createdAt = input.createdAt,
             updatedAt = input.updatedAt,
-            industries = input.industries.map { industry ->
+            industries = input.industries.mapNotNull { industry ->
                 IndustryCategory.getIndustryById(industry.id)
             },
-            interests = input.interests.map { interest ->
+            interests = input.interests.mapNotNull { interest ->
                 InterestCategory.getInterestById(interest.id)
             }
         )

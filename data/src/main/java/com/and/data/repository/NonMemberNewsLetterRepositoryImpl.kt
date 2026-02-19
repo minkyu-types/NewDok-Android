@@ -5,10 +5,11 @@ import com.and.data.api.newsletter.GetNonMemberNewsLettersApi
 import com.and.data.mapper.NewsLetterDetailMapper
 import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
-import com.and.domain.model.RecommendedNewsLetters
+import com.and.domain.model.RecommendedNewsLetter
 import com.and.domain.model.SimpleArticle
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
+import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
 import javax.inject.Inject
@@ -50,7 +51,7 @@ class NonMemberNewsLetterRepositoryImpl @Inject constructor(
                     brandId = response.brandId,
                     brandName = response.brandName,
                     imageUrl = response.imageUrl,
-                    interests = response.interests.map {
+                    interests = response.interests.mapNotNull {
                         InterestCategory.getInterestByValue(it.name)
                     },
                     articles = response.brandArticleList.map {
@@ -69,12 +70,8 @@ class NonMemberNewsLetterRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getRecommendedNewsLetters(): RecommendedNewsLetters {
+    override suspend fun getRecommendedNewsLetters(type: RecommendedNewsLetterType): List<RecommendedNewsLetter> {
         throw UnsupportedOperationException("비회원은 추천 뉴스레터를 이용할 수 없습니다.")
-    }
-
-    override suspend fun getSearchedNewsLetter(brandName: String): NewsLetter {
-        throw UnsupportedOperationException("비회원은 뉴스레터 검색을 이용할 수 없습니다.")
     }
 
     override suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter> {

@@ -31,7 +31,7 @@ class AllNewsLettersViewModel @Inject constructor(
     private val newsLetterSubscriptionMapper: NewsLetterSubscriptionMapper
 ) : ViewModel() {
     private val _sortFlow = MutableStateFlow(SortCategory.POPULARITY)
-    private val _industriesFlow = MutableStateFlow(listOf(IndustryCategory.DEFAULT))
+    private val _industriesFlow = MutableStateFlow(listOf(IndustryCategory.ALL_INDUSTRIES))
     private val _daysFlow = MutableStateFlow(listOf(PublicationDay.MONDAY))
 
     fun setSort(sort: SortCategory) {

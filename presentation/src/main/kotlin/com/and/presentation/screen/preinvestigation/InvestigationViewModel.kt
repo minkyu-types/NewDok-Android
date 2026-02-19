@@ -66,7 +66,7 @@ class InvestigationViewModel @Inject constructor(
         interests: Set<Interest>
     ) {
         val categories = interests.mapNotNull { interest ->
-            runCatching { InterestCategory.getInterestById(interest.id) }.getOrNull()
+            InterestCategory.getInterestById(interest.id)
         }.toSet()
         viewModelScope.launch {
             updateInterestsUseCase(
@@ -80,7 +80,7 @@ class InvestigationViewModel @Inject constructor(
     fun updateIndustry(
         industry: Industry
     ) {
-        selectedIndustry = IndustryCategory.getIndustryById(industry.id)
+        selectedIndustry = IndustryCategory.getIndustryById(industry.id) ?: IndustryCategory.DEFAULT
         viewModelScope.launch {
             updateIndustryUseCase(
                 UpdateUserIndustryUseCase.UpdateUserIndustryParams(
@@ -138,7 +138,7 @@ class InvestigationViewModel @Inject constructor(
                     GetPreInvestigateNewsLettersUseCase.GetPreInvestigateNewsLettersParams(
                         industry = selectedIndustry,
                         interests = _selectedInterests.value.mapNotNull { interest ->
-                            runCatching { InterestCategory.getInterestById(interest.id) }.getOrNull()
+                            InterestCategory.getInterestById(interest.id)
                         }
                     )
                 )

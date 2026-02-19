@@ -9,6 +9,6 @@ import java.time.ZonedDateTime
 
 data class SelectedFilters(
     val sort: SortCategory = SortCategory.POPULARITY,
-    val industries: List<IndustryCategory> = listOf(IndustryCategory.DEFAULT),
+    val industries: List<IndustryCategory> = listOf(IndustryCategory.ALL_INDUSTRIES),
     val days: List<PublicationDay> = emptyList(),
 )

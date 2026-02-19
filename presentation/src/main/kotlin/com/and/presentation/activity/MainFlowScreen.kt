@@ -325,7 +325,7 @@ fun MainFlowScreen(
                     val enumName = backStackEntry.arguments?.getString("industry")
                         ?: IndustryCategory.DEFAULT.name
                     val industry = runCatching { IndustryCategory.valueOf(enumName) }
-                        .getOrDefault(IndustryCategory.FASHION)
+                        .getOrDefault(IndustryCategory.DEFAULT)
                     val viewModel: ProfileEditViewModel = hiltViewModel(parentEntry)
 
                     IndustryEditScreen(

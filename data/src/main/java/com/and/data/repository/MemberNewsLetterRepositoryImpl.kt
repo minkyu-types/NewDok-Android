@@ -73,7 +73,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
                     brandId = response.brandId,
                     brandName = response.brandName,
                     imageUrl = response.imageUrl,
-                    interests = response.interests.map {
+                    interests = response.interests.mapNotNull {
                         InterestCategory.getInterestByValue(it.name)
                     },
                     articles = response.brandArticleList.map {

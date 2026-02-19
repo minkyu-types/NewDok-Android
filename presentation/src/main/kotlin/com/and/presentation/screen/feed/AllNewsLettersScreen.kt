@@ -75,7 +75,7 @@ fun AllNewsLettersScreen(
     var selectedFilter by remember { mutableStateOf<NewsLetterFilterCategory?>(null) }
 
     var currentSort by remember { mutableStateOf(SortCategory.POPULARITY) }
-    var currentIndustries by remember { mutableStateOf(listOf(IndustryCategory.DEFAULT)) }
+    var currentIndustries by remember { mutableStateOf(listOf(IndustryCategory.ALL_INDUSTRIES)) }
     var currentPublicationDays by remember { mutableStateOf(listOf(PublicationDay.MONDAY)) }
 
     val sheetState = rememberModalBottomSheetState()
@@ -181,7 +181,7 @@ fun AllNewsLettersScreen(
                                 onNewsLetterClick(newsLetter.brandId)
                             },
                             onSubscribeClick = {
-                                it
+
                             },
                             modifier = Modifier
                                 .padding(horizontal = 24.dp)

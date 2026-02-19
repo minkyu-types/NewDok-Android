@@ -3,8 +3,9 @@ package com.and.data.repository
 import com.and.data.preference.AuthPreferenceStore
 import com.and.domain.model.BriefNewsLetter
 import com.and.domain.model.NewsLetter
-import com.and.domain.model.RecommendedNewsLetters
+import com.and.domain.model.RecommendedNewsLetter
 import com.and.domain.model.type.IndustryCategory
+import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
 import kotlinx.coroutines.flow.firstOrNull
@@ -34,12 +35,8 @@ class NewsLetterRepositoryDelegate @Inject constructor(
         return getRepository().getNewsLetterById(newsLetterId)
     }
 
-    override suspend fun getRecommendedNewsLetters(): RecommendedNewsLetters {
-        return getRepository().getRecommendedNewsLetters()
-    }
-
-    override suspend fun getSearchedNewsLetter(brandName: String): NewsLetter {
-        return getRepository().getSearchedNewsLetter(brandName)
+    override suspend fun getRecommendedNewsLetters(type: RecommendedNewsLetterType): List<RecommendedNewsLetter> {
+        return getRepository().getRecommendedNewsLetters(type)
     }
 
     override suspend fun getSubscribedNewsLetters(): List<BriefNewsLetter> {

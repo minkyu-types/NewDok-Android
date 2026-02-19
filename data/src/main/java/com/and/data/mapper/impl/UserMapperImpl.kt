@@ -44,7 +44,7 @@ class UserMapperImpl @Inject constructor(): UserMapper {
             "",
             createdAt = input.createdAt,
             input.industryId,
-            input.interests.map {
+            input.interests.mapNotNull {
                 InterestCategory.getInterestById(it.interestId)
             },
         )

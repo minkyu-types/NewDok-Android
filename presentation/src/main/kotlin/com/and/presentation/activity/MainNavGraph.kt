@@ -67,6 +67,9 @@ fun MainNavGraph(
             RegisterFlowScreen(
                 onFlowFinished = {
                     navController.navigate(ScreenFlow.PRE_INVESTIGATION.route)
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }

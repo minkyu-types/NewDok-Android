@@ -1,6 +1,6 @@
 package com.and.data.di
 
-import com.and.data.preference.UserAuthPreferenceStoreImpl
+import com.and.data.preference.AuthPreferenceStore
 import com.and.data.preference.SettingPreferenceStore
 import com.and.data.preference.SettingPreferenceStoreImpl
 import com.and.data.preference.UserAuthPreferenceStore
@@ -16,9 +16,9 @@ abstract class DataStoreModule {
 
     @Binds
     @Singleton
-    abstract fun bindsUserAuthDataStore(
-        impl: UserAuthPreferenceStoreImpl
-    ): UserAuthPreferenceStore
+    abstract fun bindsAuthPreferenceStore(
+        impl: UserAuthPreferenceStore
+    ): AuthPreferenceStore
 
     @Binds
     @Singleton

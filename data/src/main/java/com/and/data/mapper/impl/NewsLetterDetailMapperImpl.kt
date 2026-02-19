@@ -36,7 +36,7 @@ class NewsLetterDetailMapperImpl @Inject constructor(
             brandId = input.brandId,
             brandName = input.brandName,
             imageUrl = input.imageUrl,
-            interests = input.interests.map { interest ->
+            interests = input.interests.mapNotNull { interest ->
                 InterestCategory.getInterestById(interest.id)
             },
             articles = emptyList(),
@@ -44,7 +44,7 @@ class NewsLetterDetailMapperImpl @Inject constructor(
             detailDescription = "",
             publicationCycle = "",
             subscribeUrl = "",
-            isSubscribed = input.isSubscribed,
+            isSubscribed = input.isSubscribed ?: "INITIAL",
             subscriptionCount = input.subscriptionCount
         )
     }

@@ -165,7 +165,7 @@
 
     <!-- 구독 관리 -->
     <string name="subscription_title">내 구독</string>
-    <string name="subscribe_initial">구독</string>
+    <string name="subscribe_initial">구독하기</string>
     <string name="subscribe_ing">구독중</string>
     <string name="subscribe_paused">구독 중지</string>
     <string name="subscribe_resume">구독 재개</string>

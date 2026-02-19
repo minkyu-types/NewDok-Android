@@ -12,8 +12,8 @@ class NewsLetterSubscriptionMapperImpl @Inject constructor(): NewsLetterSubscrip
             profileImageUrl = input.imageUrl,
             interests = input.interests,
             shortDescription = input.shortDescription ?: "",
-            isSubscribed = "",
-            subscriptionCount = 0
+            isSubscribed = input.isSubscribed,
+            subscriptionCount = input.subscriptionCount ?: 0
         )
     }
 

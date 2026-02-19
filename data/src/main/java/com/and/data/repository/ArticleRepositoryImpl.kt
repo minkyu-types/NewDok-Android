@@ -99,7 +99,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 getBookmarkedInterestsApi.getBookmarkedInterests()
             },
             mapper = { response ->
-                response.data.map { interest ->
+                response.data.mapNotNull { interest ->
                     InterestCategory.getInterestByValue(interest.name)
                 }
             }

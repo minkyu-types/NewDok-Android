@@ -142,7 +142,7 @@ class UserRepositoryImpl @Inject constructor(
                     subscribePassword = response.subscribePassword,
                     createdAt = response.createdAt,
                     industryId = response.industryId,
-                    interests = response.interests.map {
+                    interests = response.interests.mapNotNull {
                         InterestCategory.getInterestById(it.interestId)
                     },
                 )
@@ -198,7 +198,7 @@ class UserRepositoryImpl @Inject constructor(
                 )
             },
             mapper = { response ->
-                response.isNicknameChanged
+                response.isNicknameChanged == "Y"
             }
         )
     }
