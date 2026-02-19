@@ -91,7 +91,7 @@ class ProfileEditViewModel @Inject constructor(
         interests: Set<Interest>
     ) {
         val categories = interests.mapNotNull { interest ->
-            runCatching { InterestCategory.getInterestById(interest.id) }.getOrNull()
+            InterestCategory.getInterestById(interest.id)
         }.toSet()
         viewModelScope.launch {
             kotlin.runCatching {
