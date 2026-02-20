@@ -64,6 +64,8 @@ import com.and.presentation.ui.Primary_Normal
 fun MainFlowScreen(
     rootNavController: NavController,
     onLogout: () -> Unit,
+    onNavigateToLogin: () -> Unit,
+    isGuestMode: Boolean,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -78,7 +80,9 @@ fun MainFlowScreen(
             if (currentRoute in bottomBarRoutes) {
                 BottomNavigationBar(
                     navController = navController,
-                    currentRoute = currentRoute
+                    currentRoute = currentRoute,
+                    isGuestMode = isGuestMode,
+                    onNavigateToLogin = onNavigateToLogin
                 )
             }
         }
@@ -393,6 +397,8 @@ fun MainFlowScreen(
 fun BottomNavigationBar(
     navController: NavController,
     currentRoute: String?,
+    isGuestMode: Boolean = false,
+    onNavigateToLogin: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val items = listOf(
@@ -435,6 +441,10 @@ fun BottomNavigationBar(
                         indicatorColor = Color.Transparent
                     ),
                     onClick = {
+                        if (isGuestMode && item is BottomNavigationItem.MyPage) {
+                            onNavigateToLogin()
+                            return@NavigationBarItem
+                        }
                         if (currentRoute != item.route) {
                             navController.navigate(item.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {

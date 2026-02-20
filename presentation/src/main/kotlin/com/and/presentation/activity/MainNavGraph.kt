@@ -1,6 +1,8 @@
 package com.and.presentation.activity
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -19,6 +21,7 @@ fun MainNavGraph(
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
+    val isGuest by viewModel.isGuestMode().collectAsState(initial = false)
 
     NavHost(
         navController = navController,
@@ -85,6 +88,13 @@ fun MainNavGraph(
         composable(ScreenFlow.MAIN.route) {
             MainFlowScreen(
                 rootNavController = navController,
+                isGuestMode = isGuest,
+                onNavigateToLogin = {
+                    coroutineScope.launch {
+                        viewModel.setGuestMode(false)
+                        navController.navigate(ScreenFlow.LOGIN.route)
+                    }
+                },
                 onLogout = {
                     coroutineScope.launch {
                         viewModel.setGuestMode(false)
