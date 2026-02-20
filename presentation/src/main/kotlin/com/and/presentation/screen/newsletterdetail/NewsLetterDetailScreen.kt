@@ -276,16 +276,32 @@ fun NewsLetterNameCard(
                     )
                 }
             }
-            SolidPrimaryButton(
-                buttonText = stringResource(R.string.subscribe),
-                buttonSize = ButtonSize.MEDIUM,
-                onClick = {
-                    onSubscribeClick(
-                        newsLetter.brandId,
-                        NewsLetterDetailModel.getIsSubscribed(newsLetter)
+            when (newsLetter.isSubscribed) {
+                "CONFIRMED" -> {
+                    SolidPrimaryButton(
+                        buttonText = stringResource(R.string.subscribe_ing),
+                        buttonSize = ButtonSize.MEDIUM,
+                        onClick = {
+                            onSubscribeClick(
+                                newsLetter.brandId,
+                                true
+                            )
+                        }
                     )
                 }
-            )
+                "PAUSED" -> {
+                    SolidPrimaryButton(
+                        buttonText = stringResource(R.string.subscribe_paused),
+                        buttonSize = ButtonSize.MEDIUM,
+                        onClick = {
+                            onSubscribeClick(
+                                newsLetter.brandId,
+                                false
+                            )
+                        }
+                    )
+                }
+            }
         }
     }
 }

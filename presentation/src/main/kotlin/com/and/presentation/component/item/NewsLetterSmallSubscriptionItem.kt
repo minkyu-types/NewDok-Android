@@ -106,16 +106,6 @@ fun NewsLetterSmallSubscriptionItem(
                         Spacer(modifier = Modifier.weight(1f))
 
                         when(newsLetter.isSubscribed) {
-                            "INITIAL" -> {
-                                OutlinedPrimaryButton(
-                                    buttonText = stringResource(R.string.subscribe_initial),
-                                    buttonSize = ButtonSize.SMALL,
-                                    onClick = {
-                                        onSubscribeClick(newsLetter)
-                                    }
-                                )
-                            }
-
                             "CONFIRMED" -> {
                                 OutlinedPrimaryButton(
                                     buttonText = stringResource(R.string.subscribe_ing),
@@ -126,7 +116,7 @@ fun NewsLetterSmallSubscriptionItem(
                                 )
                             }
 
-                            else -> {
+                            "PAUSED" -> {
                                 OutlinedSecondaryButton(
                                     buttonText = stringResource(R.string.subscribe_paused),
                                     buttonSize = ButtonSize.SMALL,

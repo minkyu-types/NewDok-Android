@@ -112,16 +112,16 @@ fun NewsLetterSubscriptionItem(
             }
             if (subscribeButtonVisible) {
                 if (isSubscribeResumed) {
-                    OutlinedSecondaryButton(
-                        buttonText = stringResource(R.string.subscribe_paused),
+                    OutlinedPrimaryButton(
+                        buttonText = stringResource(R.string.subscribe_ing),
                         buttonSize = ButtonSize.SMALL,
                         onClick = {
                             onSubscribeClick(newsLetter)
                         }
                     )
-                } else  {
-                    OutlinedPrimaryButton(
-                        buttonText = stringResource(R.string.subscribe_resume),
+                } else {
+                    OutlinedSecondaryButton(
+                        buttonText = stringResource(R.string.subscribe_paused),
                         buttonSize = ButtonSize.SMALL,
                         onClick = {
                             onSubscribeClick(newsLetter)
