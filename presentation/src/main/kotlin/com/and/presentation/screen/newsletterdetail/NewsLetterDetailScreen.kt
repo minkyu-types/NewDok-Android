@@ -228,22 +228,20 @@ fun NewsLetterNameCard(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .fillMaxWidth()
-            .wrapContentHeight()
-            .blur(16.dp)
-            .background(
-                color = Color.White.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(12.dp)
-            )
-            .background(Color.White.copy(alpha = 0.6f)),
+            .wrapContentHeight(),
         contentAlignment = Alignment.Center
     ) {
+        // 블러 처리된 배경 레이어
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .blur(16.dp)
+                .background(Color.White.copy(alpha = 0.7f))
+        )
+        // 선명한 콘텐츠 레이어
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(
-                    color = Color.White.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(12.dp)
-                )
                 .padding(horizontal = 24.dp, vertical = 20.dp)
         ) {
             Column(
