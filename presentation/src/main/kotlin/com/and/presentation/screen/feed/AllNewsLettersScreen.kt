@@ -73,7 +73,7 @@ fun AllNewsLettersScreen(
     var currentIndustries by remember { mutableStateOf(listOf(IndustryCategory.ALL_INDUSTRIES)) }
     var currentPublicationDays by remember { mutableStateOf<List<PublicationDay>>(emptyList()) }
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(currentSort) { viewModel.setSort(currentSort) }
