@@ -22,15 +22,15 @@ class NonMemberNewsLetterRepositoryImpl @Inject constructor(
 
     override suspend fun getNewsLetters(
         orderOption: SortCategory,
-        industry: IndustryCategory,
-        dayId: Int
+        industries: List<IndustryCategory>,
+        dayIds: List<Int>
     ): List<NewsLetter> {
         return handleApiCall(
             apiCall = {
                 getNewsLettersApi.getNewsLetters(
                     orderOpt = orderOption.value,
-                    industry = listOf(industry.id.toString()),
-                    day = listOf(dayId.toString())
+                    industry = industries.map { it.id.toString() },
+                    day = dayIds.map { it.toString() }
                 )
             },
             mapper = { response ->

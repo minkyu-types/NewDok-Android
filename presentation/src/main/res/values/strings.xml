@@ -51,6 +51,7 @@
     <string name="industry_category_2">산업 카테고리</string>
     <string name="publication_day">발행요일</string>
     <string name="filter">필터</string>
+    <string name="apply_filter">적용</string>
 
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>

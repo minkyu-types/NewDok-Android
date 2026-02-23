@@ -38,9 +38,9 @@ class SearchViewModel @Inject constructor(
     private val searchResultFlow: Flow<SearchResultModel.MemberSearchResultModel> =
         queryFlow
             .filter { it.isNotEmpty() }
-            .debounce(100L)
+            .debounce(300L)
             .flatMapLatest { query ->
-                val newsLetterFlow =searchRepository.getNewsLetterSearchResult(query).map { result ->
+                val newsLetterFlow = searchRepository.getNewsLetterSearchResult(query).map { result ->
                     result.toPresentation()
                 }
                 val articlesFlow = searchRepository.getArticleSearchResult(query).map { result ->
@@ -56,6 +56,9 @@ class SearchViewModel @Inject constructor(
                         articles = articles
                     )
                 }
+            }
+            .catch { error ->
+                error.printStackTrace()
             }
 
     init {

@@ -6,9 +6,7 @@ import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.PublicationDay
 import com.and.domain.model.type.SortCategory
 import com.and.domain.usecase.newsletter.member.GetNewsLettersUseCase
-import com.and.presentation.mapper.NewsLetterMapper
 import com.and.presentation.mapper.NewsLetterSubscriptionMapper
-import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.model.NewsLetterSubscriptionModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +30,7 @@ class AllNewsLettersViewModel @Inject constructor(
 ) : ViewModel() {
     private val _sortFlow = MutableStateFlow(SortCategory.POPULARITY)
     private val _industriesFlow = MutableStateFlow(listOf(IndustryCategory.ALL_INDUSTRIES))
-    private val _daysFlow = MutableStateFlow(listOf(PublicationDay.MONDAY))
+    private val _daysFlow = MutableStateFlow<List<PublicationDay>>(emptyList())
 
     fun setSort(sort: SortCategory) {
         _sortFlow.value = sort
@@ -56,14 +54,17 @@ class AllNewsLettersViewModel @Inject constructor(
     }.flatMapLatest { (sort, industries, days) ->
         flow {
             emit(UiState.Loading)
-            val aggregated = industries.flatMap { industry ->
-                days.flatMap { day ->
-                    getAllNewsLettersUseCase(
-                        GetNewsLettersUseCase.GetNewsLettersParams(sort, industry, day.dayId)
-                    ).map { newsLetterSubscriptionMapper.mapToPresentation(it) }
-                }
-            }
-            emit(UiState.Success(aggregated))
+            val result = getAllNewsLettersUseCase(
+                GetNewsLettersUseCase.GetNewsLettersParams(
+                    orderOption = sort,
+                    industries = industries,
+                    dayIds = days.map { it.dayId }
+                )
+            )
+            val deduplicated = result
+                .distinctBy { it.brandId }
+                .map { newsLetterSubscriptionMapper.mapToPresentation(it) }
+            emit(UiState.Success(deduplicated))
         }.flowOn(Dispatchers.IO)
             .catch { error ->
                 error.printStackTrace()

@@ -23,9 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -39,7 +37,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -49,12 +46,10 @@ import com.and.domain.model.type.NewsLetterFilterCategory
 import com.and.domain.model.type.PublicationDay
 import com.and.domain.model.type.SortCategory
 import com.and.newdok.presentation.R
-import com.and.presentation.component.dialog.BottomSheetDialog
 import com.and.presentation.component.item.FilterChip
 import com.and.presentation.component.item.NewsLetterSmallSubscriptionItem
 import com.and.presentation.model.NewsLetterSubscriptionModel
 import com.and.presentation.ui.Background_System
-import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.UiState
 import kotlinx.coroutines.launch
@@ -76,7 +71,7 @@ fun AllNewsLettersScreen(
 
     var currentSort by remember { mutableStateOf(SortCategory.POPULARITY) }
     var currentIndustries by remember { mutableStateOf(listOf(IndustryCategory.ALL_INDUSTRIES)) }
-    var currentPublicationDays by remember { mutableStateOf(listOf(PublicationDay.MONDAY)) }
+    var currentPublicationDays by remember { mutableStateOf<List<PublicationDay>>(emptyList()) }
 
     val sheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -122,20 +117,18 @@ fun AllNewsLettersScreen(
                     sheetState = sheetState,
                     prevIndustryCategory = currentIndustries,
                     prevDayId = currentPublicationDays,
-                    onDismiss = { industryCategory, publicationDay ->
-                        currentIndustries = industryCategory
-                        currentPublicationDays = publicationDay
+                    onApply = { industries, days ->
+                        currentIndustries = industries
+                        currentPublicationDays = days
                         hideFilter()
                     },
-                    onHideRequested = {
+                    onDismiss = {
                         hideFilter()
                     }
                 )
             }
 
-            else -> {
-
-            }
+            else -> {}
         }
     }
 
@@ -155,7 +148,9 @@ fun AllNewsLettersScreen(
                         days = currentPublicationDays
                     ),
                     onResetClick = {
-                        // 필터 초기화
+                        currentSort = SortCategory.POPULARITY
+                        currentIndustries = listOf(IndustryCategory.ALL_INDUSTRIES)
+                        currentPublicationDays = emptyList()
                     },
                     onFilterClick = { filter ->
                         showFilter(filter)
@@ -189,9 +184,7 @@ fun AllNewsLettersScreen(
                     }
                 }
 
-                else -> {
-
-                }
+                else -> {}
             }
             item {
                 Spacer(modifier = Modifier.height(20.dp))
@@ -240,27 +233,34 @@ fun AllNewsLetterFilters(
                                 text = when (filter) {
                                     NewsLetterFilterCategory.SORT -> selectedFilters.sort.value
                                     NewsLetterFilterCategory.INDUSTRY -> {
-                                        val size = selectedFilters.industries.size
-                                        if (size > 3) {
-                                            "산업 $size"
-                                        } else {
-                                            selectedFilters.industries
+                                        val industries = selectedFilters.industries
+                                        when {
+                                            industries.size > 3 -> "산업 ${industries.size}"
+                                            industries == listOf(IndustryCategory.ALL_INDUSTRIES) ->
+                                                IndustryCategory.ALL_INDUSTRIES.value
+                                            else -> industries
                                                 .map { it.value }
                                                 .take(2)
                                                 .joinToString("·")
                                         }
                                     }
                                     NewsLetterFilterCategory.WHEN -> {
-                                        val size = selectedFilters.days.size
-                                        if (size > 1) {
-                                            "발행요일 $size"
-                                        } else {
-                                            selectedFilters.days.first().value
+                                        val days = selectedFilters.days
+                                        when {
+                                            days.isEmpty() -> "발행요일"
+                                            days.size == 1 -> days.first().value
+                                            else -> "발행요일 ${days.size}"
                                         }
                                     }
                                 },
                                 icon = icon,
-                                leastOneItemSelected = false,
+                                leastOneItemSelected = when (filter) {
+                                    NewsLetterFilterCategory.SORT -> false
+                                    NewsLetterFilterCategory.INDUSTRY ->
+                                        selectedFilters.industries != listOf(IndustryCategory.ALL_INDUSTRIES)
+                                    NewsLetterFilterCategory.WHEN ->
+                                        selectedFilters.days.isNotEmpty()
+                                },
                                 onClick = {
                                     onFilterClick(filter)
                                 }
@@ -281,43 +281,4 @@ fun AllNewsLetterFilters(
             )
         }
     }
-}
-
-@Composable
-private inline fun FilterBottomSheet(
-    sheetState: SheetState,
-    crossinline onDismiss: () -> Unit,
-    crossinline onHideRequest: () -> Unit,
-    modifier: Modifier
-) {
-    BottomSheetDialog(
-        title = "정렬",
-        sheetState = sheetState,
-        onDismiss = {
-            onDismiss()
-        },
-        onHideRequested = {
-            onHideRequest()
-        },
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-            ) {
-                Text(
-                    text = "인기순",
-                    modifier = Modifier
-                        .height(56.dp)
-                )
-                HorizontalDivider(
-                    modifier = Modifier.height(1.dp),
-                    color = Line_Neutral
-                )
-                Text(
-                    text = "최신등록순"
-                )
-            }
-        }
-    )
 }

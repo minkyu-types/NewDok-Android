@@ -25,10 +25,10 @@ class NewsLetterRepositoryDelegate @Inject constructor(
 
     override suspend fun getNewsLetters(
         orderOption: SortCategory,
-        industry: IndustryCategory,
-        dayId: Int
+        industries: List<IndustryCategory>,
+        dayIds: List<Int>
     ): List<NewsLetter> {
-        return getRepository().getNewsLetters(orderOption, industry, dayId)
+        return getRepository().getNewsLetters(orderOption, industries, dayIds)
     }
 
     override suspend fun getNewsLetterById(newsLetterId: Int): NewsLetter {

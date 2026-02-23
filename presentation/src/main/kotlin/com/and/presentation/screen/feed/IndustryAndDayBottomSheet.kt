@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,7 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.PublicationDay
 import com.and.newdok.presentation.R
-import com.and.presentation.component.item.CategoryChip
+import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.item.IndustryChip
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -51,24 +54,24 @@ fun IndustryAndDayBottomSheet(
     sheetState: SheetState,
     prevIndustryCategory: List<IndustryCategory> = emptyList(),
     prevDayId: List<PublicationDay> = emptyList(),
-    onDismiss: (List<IndustryCategory>, List<PublicationDay>) -> Unit,
-    onHideRequested: () -> Unit,
+    onApply: (List<IndustryCategory>, List<PublicationDay>) -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedIndustries by remember {
-        mutableStateOf(
-            prevIndustryCategory
-        )
+        mutableStateOf(prevIndustryCategory)
     }
     var selectedPublicationDays by remember {
-        mutableStateOf(
-            prevDayId
-        )
+        mutableStateOf(prevDayId)
+    }
+
+    val selectableIndustries = remember {
+        IndustryCategory.entries.filter { it != IndustryCategory.DEFAULT }
     }
 
     ModalBottomSheet(
         onDismissRequest = {
-            onDismiss(selectedIndustries, selectedPublicationDays)
+            onDismiss()
         },
         sheetState = sheetState,
         containerColor = Color.White,
@@ -77,8 +80,7 @@ fun IndustryAndDayBottomSheet(
         }
     ) {
         Column(
-            modifier =
-            Modifier.fillMaxHeight(0.5f)
+            modifier = Modifier.fillMaxHeight(0.6f)
         ) {
             Box(
                 modifier = Modifier
@@ -98,80 +100,106 @@ fun IndustryAndDayBottomSheet(
                     contentDescription = stringResource(id = R.string.close),
                     modifier = Modifier
                         .clickable {
-                            onHideRequested()
+                            onDismiss()
                         }
                         .height(48.dp)
                         .align(Alignment.CenterEnd)
                 )
             }
 
-            Text(
-                text = stringResource(R.string.industry_category_2),
-                style = Body2Normal,
-                fontWeight = FontWeight.Medium,
-                color = Caption_Neutral,
+            Column(
                 modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(start = 16.dp),
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            FlowRow (
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
-                IndustryCategory.entries.forEach { industry ->
-                    IndustryChip(
-                        text = industry.value,
-                        onSelectionChanged = { isChecked ->
-                            val newIndustries = selectedIndustries.toMutableList()
-                            if (isChecked) {
-                                newIndustries.add(industry)
-                            } else {
-                                newIndustries.remove(industry)
+                Text(
+                    text = stringResource(R.string.industry_category_2),
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Neutral,
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 16.dp),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                FlowRow(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    selectableIndustries.forEach { industry ->
+                        IndustryChip(
+                            text = industry.value,
+                            initialSelected = industry in selectedIndustries,
+                            onSelectionChanged = { isChecked ->
+                                selectedIndustries = if (industry == IndustryCategory.ALL_INDUSTRIES) {
+                                    if (isChecked) listOf(IndustryCategory.ALL_INDUSTRIES) else emptyList()
+                                } else {
+                                    val withoutAll = selectedIndustries - IndustryCategory.ALL_INDUSTRIES
+                                    if (isChecked) {
+                                        withoutAll + industry
+                                    } else {
+                                        withoutAll - industry
+                                    }
+                                }
                             }
-                            selectedIndustries = newIndustries
-                        }
-                    )
+                        )
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(28.dp))
+
+                Text(
+                    text = stringResource(R.string.publication_day),
+                    style = Body2Normal,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Neutral,
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 16.dp),
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                FlowRow(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    PublicationDay.entries.forEach { day ->
+                        IndustryChip(
+                            text = day.value,
+                            initialSelected = day in selectedPublicationDays,
+                            onSelectionChanged = { isChecked ->
+                                val newDays = selectedPublicationDays.toMutableList()
+                                if (isChecked) {
+                                    newDays.add(day)
+                                } else {
+                                    newDays.remove(day)
+                                }
+                                selectedPublicationDays = newDays
+                            }
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
-
-            Text(
-                text = stringResource(R.string.publication_day),
-                style = Body2Normal,
-                fontWeight = FontWeight.Medium,
-                color = Caption_Neutral,
+            SolidPrimaryButton(
+                buttonText = stringResource(R.string.apply_filter),
+                buttonSize = ButtonSize.LARGE,
+                onClick = {
+                    val finalIndustries = selectedIndustries.ifEmpty {
+                        listOf(IndustryCategory.ALL_INDUSTRIES)
+                    }
+                    onApply(finalIndustries, selectedPublicationDays)
+                },
                 modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(start = 16.dp),
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            FlowRow (
-                modifier = modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                PublicationDay.entries.forEach { day ->
-                    IndustryChip(
-                        text = day.value,
-                        onSelectionChanged = { isChecked ->
-                            val newDays = selectedPublicationDays.toMutableList()
-                            if (isChecked) {
-                                newDays.add(day)
-                            } else {
-                                newDays.remove(day)
-                            }
-                            selectedPublicationDays = newDays
-                        }
-                    )
-                }
-            }
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            )
         }
     }
 }

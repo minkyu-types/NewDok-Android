@@ -5,10 +5,7 @@ import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.SortCategory
 import com.and.domain.repository.MemberNewsLetterRepository
 import com.and.domain.usecase.BaseSuspendUseCase
-import com.and.domain.usecase.BaseUseCase
 import com.and.domain.usecase.newsletter.member.GetNewsLettersUseCase.GetNewsLettersParams
-import java.time.Instant
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class GetNewsLettersUseCase @Inject constructor(
@@ -18,14 +15,14 @@ class GetNewsLettersUseCase @Inject constructor(
     override suspend fun invoke(parameter: GetNewsLettersParams): List<NewsLetter> {
         return repository.getNewsLetters(
             parameter.orderOption,
-            parameter.industry,
-            parameter.dayId
+            parameter.industries,
+            parameter.dayIds
         )
     }
 
     data class GetNewsLettersParams(
         val orderOption: SortCategory,
-        val industry: IndustryCategory,
-        val dayId: Int
+        val industries: List<IndustryCategory>,
+        val dayIds: List<Int>
     )
 }

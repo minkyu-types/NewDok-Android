@@ -6,13 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.and.domain.model.type.ArticleSortCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.usecase.article.GetBookmarkedArticlesUseCase
 import com.and.presentation.mapper.BookmarkedArticlesMapper
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
+import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -25,6 +26,9 @@ class BookmarkViewModel @Inject constructor(
     private val bookmarkedArticlesMapper: BookmarkedArticlesMapper
 ) : ViewModel() {
     var selectedInterests by mutableStateOf(setOf(InterestCategory.INTEREST_ALL))
+        private set
+
+    var currentSort by mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED)
         private set
 
     private val _interestedArticlesUiState =
@@ -64,9 +68,27 @@ class BookmarkViewModel @Inject constructor(
                         .map {
                             bookmarkedArticlesMapper.mapToPresentation(it)
                         }
+
+                    val allMonthly = mergedResults.flatMap { it.bookmarkForMonth }
+                    val deduplicatedMonthly = allMonthly
+                        .groupBy { it.month }
+                        .map { (month, groups) ->
+                            val uniqueArticles = groups
+                                .flatMap { it.articles }
+                                .distinctBy { it.articleId }
+                            MonthlyBookmarkedArticlesModel(
+                                id = groups.first().id,
+                                month = month,
+                                articles = uniqueArticles
+                            )
+                        }
+
+                    val sorted = applySorting(deduplicatedMonthly)
+                    val totalAmount = sorted.sumOf { it.articles.size }
+
                     BookmarkedArticlesModel(
-                        totalAmount = mergedResults.sumOf { it.totalAmount },
-                        bookmarkForMonth = mergedResults.flatMap { it.bookmarkForMonth }
+                        totalAmount = totalAmount,
+                        bookmarkForMonth = sorted
                     )
                 }
             }.onSuccess { result ->
@@ -74,6 +96,24 @@ class BookmarkViewModel @Inject constructor(
             }.onFailure { error ->
                 error.printStackTrace()
                 _interestedArticlesUiState.value = UiState.Error(error.message ?: "")
+            }
+        }
+    }
+
+    private fun applySorting(
+        monthly: List<MonthlyBookmarkedArticlesModel>
+    ): List<MonthlyBookmarkedArticlesModel> {
+        return when (currentSort) {
+            ArticleSortCategory.SORT_RECENT_ADDED -> monthly
+            ArticleSortCategory.SORT_PUBLISH_DESCENDING -> {
+                monthly.map { m ->
+                    m.copy(articles = m.articles.sortedByDescending { it.date })
+                }.sortedByDescending { it.month }
+            }
+            ArticleSortCategory.SORT_PUBLISH_ASCENDING -> {
+                monthly.map { m ->
+                    m.copy(articles = m.articles.sortedBy { it.date })
+                }.sortedBy { it.month }
             }
         }
     }
@@ -93,6 +133,11 @@ class BookmarkViewModel @Inject constructor(
                 }
             }
         }
+        fetchAndMergeBookmarkedArticles()
+    }
+
+    fun setSort(sort: ArticleSortCategory) {
+        currentSort = sort
         fetchAndMergeBookmarkedArticles()
     }
 }

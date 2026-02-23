@@ -83,6 +83,7 @@ fun BookmarkScreen(
     viewModel: BookmarkViewModel = hiltViewModel()
 ) {
     val selectedInterests = viewModel.selectedInterests
+    val currentSort = viewModel.currentSort
     val uiState by viewModel.interestedArticlesUiState
     val articleCount by remember(uiState) {
         derivedStateOf {
@@ -98,11 +99,13 @@ fun BookmarkScreen(
 
     BookmarkContent(
         selectedInterests = selectedInterests,
+        currentSort = currentSort,
         articleCount = articleCount,
         monthlyArticles = monthlyArticles,
         onSearchClick = onSearchClick,
         onArticleClick = onArticleClick,
         onInterestClick = { viewModel.toggleInterest(it) },
+        onSortChanged = { viewModel.setSort(it) },
         modifier = modifier
     )
 }
@@ -110,17 +113,18 @@ fun BookmarkScreen(
 @Composable
 fun BookmarkContent(
     selectedInterests: Set<InterestCategory>,
+    currentSort: ArticleSortCategory,
     articleCount: Int,
     monthlyArticles: List<MonthlyBookmarkedArticlesModel>,
     onSearchClick: () -> Unit,
     onArticleClick: (DailyArticleModel) -> Unit,
     onInterestClick: (InterestCategory) -> Unit,
+    onSortChanged: (ArticleSortCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
     val refreshState = rememberPullToRefreshState()
-    var currentSort by remember { mutableStateOf(ArticleSortCategory.SORT_RECENT_ADDED) }
     var showSortBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
 
@@ -137,7 +141,7 @@ fun BookmarkContent(
             sheetState = sheetState,
             prevSort = currentSort,
             onDismiss = {
-                currentSort = it
+                onSortChanged(it)
                 hideFilter()
             },
             onHideRequested = {
@@ -377,11 +381,13 @@ fun BookmarkScreenEmptyPreview() {
                 InterestCategory.INTEREST_ECONOMY_AFFAIRS,
                 InterestCategory.INTEREST_BUSINESS
             ),
+            currentSort = ArticleSortCategory.SORT_RECENT_ADDED,
             articleCount = 0,
             monthlyArticles = emptyList(),
             onSearchClick = { },
             onArticleClick = { },
-            onInterestClick = { }
+            onInterestClick = { },
+            onSortChanged = { }
         )
     }
 }
@@ -395,6 +401,7 @@ fun BookmarkScreenWithArticlesPreview() {
     DefaultWhiteTheme {
         BookmarkContent(
             selectedInterests = setOf(InterestCategory.INTEREST_ECONOMY_AFFAIRS),
+            currentSort = ArticleSortCategory.SORT_RECENT_ADDED,
             articleCount = 5,
             monthlyArticles = listOf(
                 MonthlyBookmarkedArticlesModel(
@@ -415,7 +422,8 @@ fun BookmarkScreenWithArticlesPreview() {
             ),
             onSearchClick = { },
             onArticleClick = { },
-            onInterestClick = { }
+            onInterestClick = { },
+            onSortChanged = { }
         )
     }
 }

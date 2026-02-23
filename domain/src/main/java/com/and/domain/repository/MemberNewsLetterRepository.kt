@@ -10,8 +10,8 @@ import com.and.domain.model.type.SortCategory
 interface MemberNewsLetterRepository {
     suspend fun getNewsLetters(
         orderOption: SortCategory,
-        industry: IndustryCategory,
-        dayId: Int
+        industries: List<IndustryCategory>,
+        dayIds: List<Int>
     ): List<NewsLetter>
     suspend fun getNewsLetterById(
         newsLetterId: Int,

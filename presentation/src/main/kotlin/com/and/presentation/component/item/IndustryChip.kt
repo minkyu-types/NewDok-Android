@@ -25,6 +25,7 @@ import com.and.presentation.ui.Primary_Normal
 fun IndustryChip(
     text: String,
     modifier: Modifier = Modifier,
+    initialSelected: Boolean = false,
     textStyle: TextStyle = Caption,
     fontWeight: FontWeight = FontWeight.Medium,
     defaultTextColor: Color = Caption_Strong,
@@ -33,7 +34,7 @@ fun IndustryChip(
     selectedBorderColor: Color = Primary_Normal,
     onSelectionChanged: ((Boolean) -> Unit)? = null,
 ) {
-    var selected by remember { mutableStateOf(false) }
+    var selected by remember(initialSelected) { mutableStateOf(initialSelected) }
 
     Text(
         text = text,
