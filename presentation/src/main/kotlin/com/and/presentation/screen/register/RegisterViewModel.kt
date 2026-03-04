@@ -189,8 +189,8 @@ class RegisterViewModel @Inject constructor(
                 )
                 val userModel = userMapper.mapToPresentation(user)
                 _signUpState.value = UiState.Success(userModel)
-            }.onFailure { error ->
-                error.printStackTrace()
+            }.onFailure {
+                _signUpState.value = UiState.Error("회원가입 중 오류가 발생했습니다")
             }
         }
     }

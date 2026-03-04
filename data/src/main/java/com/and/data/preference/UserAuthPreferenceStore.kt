@@ -31,8 +31,7 @@ class UserAuthPreferenceStore @Inject constructor(
 
     override fun getAccessToken(): Flow<String?> {
         return preferences.data
-            .catch { e ->
-                e.printStackTrace()
+            .catch {
                 emit(emptyPreferences())
             }.map { settings ->
                 settings[ACCESS_TOKEN_KEY]
@@ -45,8 +44,7 @@ class UserAuthPreferenceStore @Inject constructor(
                 settings.remove(ACCESS_TOKEN_KEY)
             }
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (_: Exception) {
             false
         }
     }
@@ -59,8 +57,7 @@ class UserAuthPreferenceStore @Inject constructor(
 
     override fun isGuestMode(): Flow<Boolean> {
         return preferences.data
-            .catch { e ->
-                e.printStackTrace()
+            .catch {
                 emit(emptyPreferences())
             }.map { settings ->
                 settings[GUEST_MODE_KEY] ?: false

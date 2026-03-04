@@ -12,7 +12,6 @@ import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.model.RecommendedNewsLettersModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -39,7 +38,7 @@ class CustomizedNewsLettersViewModel @Inject constructor(
     }
 
     private fun getCustomizedNewsLetters() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 awaitAll(
                     async { getRecommendedNewsLettersUseCase(RecommendedNewsLetterType.UNION) },
@@ -52,8 +51,7 @@ class CustomizedNewsLettersViewModel @Inject constructor(
                         intersection = intersection.map { recommendedNewsLetterMapper.mapToPresentation(it) }
                     )
                 )
-            }.onFailure { error ->
-                error.printStackTrace()
+            }.onFailure {
                 _customizedNewsLettersUiState.value =
                     UiState.Error(ERROR_MESSAGE_CUSTOMIZED_NEWSLETTERS)
             }

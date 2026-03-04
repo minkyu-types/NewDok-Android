@@ -29,20 +29,17 @@ abstract class BaseRepository(
             val dto: T = apiCall()
             mapper(dto)
         } catch (e: HttpException) {
-            e.printStackTrace()
             val rawErrorBody = e.response()?.errorBody()?.string().orEmpty()
             val msg = runCatching {
                 JSONObject(rawErrorBody).optString("message", e.message())
             }.getOrDefault(e.message())
             throw ApiException(e.code(), msg)
         }  catch (e: IOException) {
-            e.printStackTrace()
             if (e.message?.contains("Canceled", ignoreCase = true) == true) {
                 throw CancellationException("OkHttp call canceled", e)
             }
             throw ApiException(-1, "네트워크 오류")
         } catch (e: Exception) {
-            e.printStackTrace()
             throw ApiException(-1, e.message)
         }
     }
@@ -59,18 +56,14 @@ abstract class BaseRepository(
             val msg = runCatching {
                 JSONObject(rawErrorBody).optString("message", e.message())
             }.getOrDefault(e.message())
-//            throw ApiException(e.code(), msg)
-            e.printStackTrace()
+            throw ApiException(e.code(), msg)
         } catch (e: IOException) {
-            e.printStackTrace()
             if (e.message?.contains("Canceled", ignoreCase = true) == true) {
                 return@flow
-            } else {
-//                throw ApiException(-1, "네트워크 오류")
             }
+            throw ApiException(-1, "네트워크 오류")
         } catch (e: Exception) {
-            e.printStackTrace()
-//            throw ApiException(-1, "알 수 없는 오류")
+            throw ApiException(-1, e.message)
         }
     }
 }

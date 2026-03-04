@@ -94,7 +94,6 @@ class BookmarkViewModel @Inject constructor(
             }.onSuccess { result ->
                 _interestedArticlesUiState.value = UiState.Success(result)
             }.onFailure { error ->
-                error.printStackTrace()
                 _interestedArticlesUiState.value = UiState.Error(error.message ?: "")
             }
         }

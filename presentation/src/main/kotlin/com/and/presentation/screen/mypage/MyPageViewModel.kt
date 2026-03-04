@@ -9,7 +9,6 @@ import com.and.presentation.mapper.UserMapper
 import com.and.presentation.model.UserModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,14 +26,14 @@ class MyPageViewModel @Inject constructor(
     }
 
     private fun getUserInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 getUserInfoUseCase(Unit)
             }.onSuccess { result ->
                 val userModel = userMapper.mapToPresentation(result)
                 _userInfoUiState.value = UiState.Success(userModel)
             }.onFailure { error ->
-                error.printStackTrace()
+                _userInfoUiState.value = UiState.Error(error.message ?: "")
             }
         }
     }

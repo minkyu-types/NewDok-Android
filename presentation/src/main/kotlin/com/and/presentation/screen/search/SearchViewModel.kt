@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.repository.SearchRepository
-import com.and.domain.util.ApiException
 import com.and.presentation.model.SearchResultModel
 import com.and.presentation.model.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,9 +56,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
             }
-            .catch { error ->
-                error.printStackTrace()
-            }
+            .catch { /* error silently consumed — search will show no results */ }
 
     init {
         viewModelScope.launch {

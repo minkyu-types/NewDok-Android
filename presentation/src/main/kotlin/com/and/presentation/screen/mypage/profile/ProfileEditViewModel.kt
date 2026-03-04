@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.model.Industry
 import com.and.domain.model.Interest
-import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.usecase.user.GetUserInfoUseCase
 import com.and.domain.usecase.user.UpdateUserIndustryUseCase
@@ -18,7 +17,6 @@ import com.and.presentation.mapper.UserMapper
 import com.and.presentation.model.UserModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -56,7 +54,7 @@ class ProfileEditViewModel @Inject constructor(
                 val userModel = userMapper.mapToPresentation(result)
                 _userInfoUiState.value = UiState.Success(userModel)
             }.onFailure { error ->
-                error.printStackTrace()
+                _userInfoUiState.value = UiState.Error(error.message ?: "")
             }
         }
     }
@@ -67,8 +65,7 @@ class ProfileEditViewModel @Inject constructor(
                 getIndustriesUseCase(Unit)
             }.onSuccess { result ->
                 _industries.value = result
-            }.onFailure { error ->
-                error.printStackTrace()
+            }.onFailure {
                 _industries.value = emptyList()
             }
         }
@@ -80,8 +77,7 @@ class ProfileEditViewModel @Inject constructor(
                 getInterestsUseCase(Unit)
             }.onSuccess { result ->
                 _interestOptions.value = result
-            }.onFailure { error ->
-                error.printStackTrace()
+            }.onFailure {
                 _interestOptions.value = emptyList()
             }
         }
@@ -94,16 +90,12 @@ class ProfileEditViewModel @Inject constructor(
             InterestCategory.getInterestById(interest.id)
         }.toSet()
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 updateInterestsUseCase(
                     UpdateUserInterestsUseCase.UpdateUserInterestsParams(
                         categories
                     )
                 )
-            }.onSuccess { result ->
-                //
-            }.onFailure { e ->
-                e.printStackTrace()
             }
         }
     }
@@ -118,10 +110,6 @@ class ProfileEditViewModel @Inject constructor(
                         industry.id
                     )
                 )
-            }.onSuccess { result ->
-
-            }.onFailure { e ->
-                e.printStackTrace()
             }
         }
     }
@@ -130,16 +118,12 @@ class ProfileEditViewModel @Inject constructor(
         nickname: String
     ) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 updateUserNicknameUseCase(
                     UpdateUserNicknameUseCase.UpdateUserNickNameParams(
                         nickname = nickname
                     )
                 )
-            }.onSuccess { result ->
-                //
-            }.onFailure { e ->
-                e.printStackTrace()
             }
         }
     }
