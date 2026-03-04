@@ -45,10 +45,6 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    // Social login
-//    implementation(libs.kakao.login)
-//    implementation(libs.naver.login)
-
     // Compose
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
