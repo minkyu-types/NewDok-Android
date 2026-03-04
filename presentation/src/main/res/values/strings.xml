@@ -53,6 +53,9 @@
     <string name="filter">필터</string>
     <string name="apply_filter">적용</string>
 
+    <string name="airplane_mode_activated">비행기 모드가 활성화되었습니다. 네트워크 연결이 중단됩니다.</string>
+    <string name="network_disconnected">인터넷 연결이 끊어졌습니다.</string>
+
     <!-- Snackbar -->
     <string name="snackbar_subscription_email_copied">내 구독용 이메일 주소가 복사되었어요</string>
     <string name="snackbar_password_edit_success">비밀번호가 재설정되었습니다.</string>

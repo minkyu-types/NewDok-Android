@@ -1,7 +1,6 @@
 package com.and.presentation.component
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
@@ -34,7 +33,7 @@ fun WebViewScreen(
                     useWideViewPort = true
                     loadWithOverviewMode = true
                     cacheMode = WebSettings.LOAD_DEFAULT
-                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                    mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
                     userAgentString = "$userAgentString Mobile Safari/537.36"
                 }
 
@@ -50,7 +49,6 @@ fun WebViewScreen(
                     }
 
                     override fun onPageFinished(view: WebView?, url: String?) {
-                        Log.d("WebView", "Finished loading $url")
                     }
                 }
             }

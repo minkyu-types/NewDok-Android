@@ -1,7 +1,6 @@
 package com.and.presentation.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,10 +30,7 @@ class MainActivity: ComponentActivity() {
     @Inject
     lateinit var networkStatusObserver: NetworkStatusObserver
 
-    companion object {
-        private const val AIRPLANE_MODE_ACTIVATED = "비행기 모드가 활성화되었습니다. 네트워크 연결이 중단됩니다."
-        private const val NETWORK_DISCONNECTED = "인터넷 연결이 끊어졌습니다."
-    }
+    companion object
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -63,13 +59,13 @@ class MainActivity: ComponentActivity() {
                 LaunchedEffect(isAirplaneModeOn, isNetworkConnected) {
                     if (isAirplaneModeOn) {
                         Toast
-                            .makeText(context, AIRPLANE_MODE_ACTIVATED, Toast.LENGTH_SHORT)
+                            .makeText(context, context.getString(R.string.airplane_mode_activated), Toast.LENGTH_SHORT)
                             .show()
                     }
 
                     if (!isNetworkConnected) {
                         Toast
-                            .makeText(context, NETWORK_DISCONNECTED, Toast.LENGTH_SHORT)
+                            .makeText(context, context.getString(R.string.network_disconnected), Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
