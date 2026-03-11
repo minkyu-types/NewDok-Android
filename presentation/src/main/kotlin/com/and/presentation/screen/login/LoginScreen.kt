@@ -86,6 +86,7 @@ fun LoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(bottom = 16.dp)
     ) {
         TopBar(
             title = stringResource(id = R.string.login),

@@ -80,7 +80,8 @@ fun RegisterStep1Screen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
+            .padding(bottom = 16.dp),
     ) {
         Column(
             modifier = Modifier

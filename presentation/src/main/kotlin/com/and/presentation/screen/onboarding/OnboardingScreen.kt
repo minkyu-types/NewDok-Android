@@ -79,7 +79,7 @@ fun OnboardingContent(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 100.dp),
+            .padding(top = 100.dp, bottom = 16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
