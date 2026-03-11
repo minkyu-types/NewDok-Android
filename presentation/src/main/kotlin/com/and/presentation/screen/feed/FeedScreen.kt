@@ -65,7 +65,8 @@ fun FeedScreen(
                         nickname = nickname,
                         onNewsLetterClick = { id ->
                             onNewsLetterClick(id)
-                        }
+                        },
+                        modifier = Modifier.weight(1f)
                     )
                 } else {
                     RecommendNewsLetterForNoUserProfile()
@@ -79,7 +80,8 @@ fun FeedScreen(
                     },
                     onResetClick = {
 
-                    }
+                    },
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
