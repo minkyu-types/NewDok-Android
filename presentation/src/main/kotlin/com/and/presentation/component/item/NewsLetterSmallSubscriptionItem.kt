@@ -152,7 +152,7 @@ private fun InterestLazyRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
     ) {
-        items(newsLetter.interests) { category ->
+        items(newsLetter.interests.take(3)) { category ->
             CategoryChip(text = category.value)
         }
     }

@@ -112,7 +112,7 @@ fun NewsLetterBigItem(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    items(newsLetter.interests) { category ->
+                    items(newsLetter.interests.take(3)) { category ->
                         CategoryChip(text = category.value)
                     }
                 }
