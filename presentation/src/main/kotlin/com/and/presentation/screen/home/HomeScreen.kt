@@ -172,17 +172,18 @@ fun HomeTopBar(
                     .clickable { onSearchClick() }
             )
         }
-        IconButton(
-            onClick = onAlarmClick
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_line_bell),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable { onAlarmClick() }
-            )
-        }
+        // TODO: 다음 버전에 알림 기능 추가
+//        IconButton(
+//            onClick = onAlarmClick
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.ic_line_bell),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(28.dp)
+//                    .clickable { onAlarmClick() }
+//            )
+//        }
     }
 }
 

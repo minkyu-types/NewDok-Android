@@ -18,8 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
 import com.and.presentation.component.topbar.MainTopBar
+import com.and.presentation.screen.mypage.MyPageViewModel
+import com.and.presentation.util.UiState
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Alternative
 import com.and.presentation.ui.Caption_Strong
@@ -31,10 +34,13 @@ fun FeedScreen(
     onNewsLetterClick: (Int) -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
+    myPageViewModel: MyPageViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(FeedTab.RECOMMEND) }
     val isProfileRegistered by remember { mutableStateOf(true) }
+    val userState = myPageViewModel.userInfoUiState.value
+    val nickname = (userState as? UiState.Success)?.data?.nickname ?: ""
 
     Column(
         modifier = Modifier
@@ -56,7 +62,7 @@ fun FeedScreen(
             FeedTab.RECOMMEND -> {
                 if (isProfileRegistered) {
                     CustomizedNewsLettersScreen(
-                        nickname = "기무민규",
+                        nickname = nickname,
                         onNewsLetterClick = { id ->
                             onNewsLetterClick(id)
                         }
