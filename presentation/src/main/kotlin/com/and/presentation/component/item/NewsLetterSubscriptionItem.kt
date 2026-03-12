@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
-import com.and.presentation.component.button.OutlinedPrimaryButton
+import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.ui.Body2Normal
@@ -112,7 +112,7 @@ fun NewsLetterSubscriptionItem(
             }
             if (subscribeButtonVisible) {
                 if (isSubscribeResumed) {
-                    OutlinedPrimaryButton(
+                    SolidPrimaryButton(
                         buttonText = stringResource(R.string.subscribe_ing),
                         buttonSize = ButtonSize.SMALL,
                         onClick = {

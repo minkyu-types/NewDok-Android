@@ -36,12 +36,12 @@ fun SubscribeButton(
             .height(26.dp)
             .clip(RoundedCornerShape(100.dp))
             .border(
-                width = 1.dp,
-                color = if (isSubscribed) Primary_Normal else Line_Neutral,
+                width = if (isSubscribed) 0.dp else 1.dp,
+                color = if (isSubscribed) Color.Transparent else Line_Neutral,
                 shape = RoundedCornerShape(100.dp)
             )
             .background(
-                color = if (isSubscribed) Tint80 else Color.White
+                color = if (isSubscribed) Primary_Normal else Color.White
             )
             .padding(horizontal = 10.dp, vertical = 5.dp),
         contentAlignment = Alignment.Center
