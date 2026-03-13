@@ -79,6 +79,7 @@ import kotlinx.coroutines.launch
 fun BookmarkScreen(
     onSearchClick: () -> Unit,
     onArticleClick: (DailyArticleModel) -> Unit,
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
 ) {
@@ -106,6 +107,7 @@ fun BookmarkScreen(
         onArticleClick = onArticleClick,
         onInterestClick = { viewModel.toggleInterest(it) },
         onSortChanged = { viewModel.setSort(it) },
+        isGuestMode = isGuestMode,
         modifier = modifier
     )
 }
@@ -120,6 +122,7 @@ fun BookmarkContent(
     onArticleClick: (DailyArticleModel) -> Unit,
     onInterestClick: (InterestCategory) -> Unit,
     onSortChanged: (ArticleSortCategory) -> Unit,
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -182,7 +185,8 @@ fun BookmarkContent(
                     isRefreshing = false
                 }
             },
-            refreshState = refreshState
+            refreshState = refreshState,
+            isGuestMode = isGuestMode
         )
     }
 }
@@ -274,6 +278,7 @@ fun BookmarkArticleList(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     refreshState: PullToRefreshState,
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     PullToRefreshBox(
@@ -292,7 +297,7 @@ fun BookmarkArticleList(
         },
     ) {
         if (monthlyBookmarkedArticles.isEmpty()) {
-            ArticleEmptyView()
+            ArticleEmptyView(isGuestMode = isGuestMode)
         } else {
             ArticleExistView(
                 articles = monthlyBookmarkedArticles,
@@ -338,6 +343,7 @@ fun ArticleExistView(
 
 @Composable
 fun ArticleEmptyView(
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -361,7 +367,10 @@ fun ArticleEmptyView(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.bookmark_empty_body),
+            text = stringResource(
+                if (isGuestMode) R.string.bookmark_empty_body_guest
+                else R.string.bookmark_empty_body
+            ),
             style = Body2Normal,
             fontWeight = FontWeight.Medium,
             color = Caption_Neutral

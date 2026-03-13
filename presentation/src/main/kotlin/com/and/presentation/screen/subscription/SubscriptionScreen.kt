@@ -60,6 +60,7 @@ import com.and.presentation.util.removeRippleEffect
 @Composable
 fun SubscriptionScreen(
     onSearchClick: () -> Unit,
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
@@ -132,7 +133,7 @@ fun SubscriptionScreen(
             is UiState.Success -> {
                 val list = (uiState as UiState.Success<List<BriefNewsLetterModel>>).data
                 if (list.isEmpty()) {
-                    SubscribedNewsLettersEmptyView()
+                    SubscribedNewsLettersEmptyView(isGuestMode = isGuestMode)
                 } else {
                     val isSubscriptionResumed = (currentTab == SubscriptionTab.ING)
                     SubscribedNewsLettersExistView(
@@ -228,6 +229,7 @@ fun SubscriptionSegmentedTab(
 
 @Composable
 fun SubscribedNewsLettersEmptyView(
+    isGuestMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -251,7 +253,10 @@ fun SubscribedNewsLettersEmptyView(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.subscribe_count_body),
+            text = stringResource(
+                if (isGuestMode) R.string.subscribe_empty_body_guest
+                else R.string.subscribe_count_body
+            ),
             style = Body2Normal,
             fontWeight = FontWeight.Medium,
             color = Caption_Neutral

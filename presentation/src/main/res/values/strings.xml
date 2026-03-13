@@ -166,6 +166,7 @@
     <string name="bookmark_count_title">총 %d개</string>
     <string name="bookmark_empty_title">저장한 아티클이 없어요.</string>
     <string name="bookmark_empty_body">북마크를 눌러 다시 보고 싶은 아티클을 저장해보세요.</string>
+    <string name="bookmark_empty_body_guest">로그인 후 다시 보고 싶은 아티클을 저장해보세요.</string>
 
     <!-- 구독 관리 -->
     <string name="subscription_title">내 구독</string>
@@ -176,6 +177,7 @@
     <string name="subscribe_count_title">총 %d개의 뉴스레터를 구독중이에요</string>
     <string name="subscribe_count_body">구독신청 후 첫 아티클을 수신받으면 내 구독에 추가돼요.</string>
     <string name="subscribe_empty_title">구독 중인 뉴스레터가 없어요.</string>
+    <string name="subscribe_empty_body_guest">로그인 후 뉴스레터를 구독해보세요.</string>
     <string name="subscribe_pause_title">‘%1$s’\n구독 중지</string>
     <string name="subscribe_pause_body">구독을 중지하면 더이상 새로운 아티클을 수신되지 않아요.</string>
     <string name="subscribe_pause_info">구독 재개로 언제든 아티클을 다시 받아볼 수 있어요.</string>

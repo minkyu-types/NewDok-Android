@@ -144,7 +144,8 @@ fun MainFlowScreen(
                 SubscriptionScreen(
                     onSearchClick = {
                         navController.navigate("SearchMain")
-                    }
+                    },
+                    isGuestMode = isGuestMode
                 )
             }
 
@@ -175,7 +176,8 @@ fun MainFlowScreen(
                             ?.savedStateHandle
                             ?.set("article", article)
                         navController.navigate("ArticleDetail")
-                    }
+                    },
+                    isGuestMode = isGuestMode
                 )
             }
 
