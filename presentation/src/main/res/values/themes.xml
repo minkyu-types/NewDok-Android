@@ -9,7 +9,8 @@
         <!-- Secondary brand color. -->
         <item name="colorOnSecondary">@color/neutral_10</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
 
