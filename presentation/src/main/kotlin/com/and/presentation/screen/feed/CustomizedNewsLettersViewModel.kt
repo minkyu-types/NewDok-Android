@@ -45,9 +45,11 @@ class CustomizedNewsLettersViewModel @Inject constructor(
                     async { getRecommendedNewsLettersUseCase(RecommendedNewsLetterType.INTERSECTION) }
                 )
             }.onSuccess { (union, intersection) ->
+                val mappedUnion = union.map { recommendedNewsLetterMapper.mapToPresentation(it) }
+                rawUnion = mappedUnion
                 _customizedNewsLettersUiState.value = UiState.Success(
                     RecommendedNewsLettersModel(
-                        union = union.map { recommendedNewsLetterMapper.mapToPresentation(it) },
+                        union = mappedUnion,
                         intersection = intersection.map { recommendedNewsLetterMapper.mapToPresentation(it) }
                     )
                 )

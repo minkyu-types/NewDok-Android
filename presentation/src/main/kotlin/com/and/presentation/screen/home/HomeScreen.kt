@@ -101,6 +101,7 @@ fun HomeScreen(
             },
             onDateSelected = { date ->
                 currSelectedDate = date
+                showDialog = false
             },
             initialDate = currSelectedDate
         )
