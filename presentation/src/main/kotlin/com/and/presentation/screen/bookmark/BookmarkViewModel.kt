@@ -36,8 +36,13 @@ class BookmarkViewModel @Inject constructor(
     val interestedArticlesUiState: State<UiState<BookmarkedArticlesModel>> =
         _interestedArticlesUiState
 
-    init {
-        fetchAndMergeBookmarkedArticles()
+    private var initialized = false
+
+    fun initialize() {
+        if (!initialized) {
+            initialized = true
+            fetchAndMergeBookmarkedArticles()
+        }
     }
 
     private fun fetchAndMergeBookmarkedArticles() {

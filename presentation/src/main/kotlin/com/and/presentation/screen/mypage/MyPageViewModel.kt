@@ -21,8 +21,13 @@ class MyPageViewModel @Inject constructor(
     private val _userInfoUiState = mutableStateOf<UiState<UserModel>>(UiState.Idle)
     val userInfoUiState: State<UiState<UserModel>> = _userInfoUiState
 
-    init {
-        getUserInfo()
+    private var initialized = false
+
+    fun initialize() {
+        if (!initialized) {
+            initialized = true
+            getUserInfo()
+        }
     }
 
     private fun getUserInfo() {

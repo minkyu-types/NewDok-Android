@@ -277,7 +277,7 @@ fun NewsLetterNameCard(
             when (newsLetter.isSubscribed) {
                 "CONFIRMED" -> {
                     SolidPrimaryButton(
-                        buttonText = stringResource(R.string.subscribe_ing),
+                        buttonText = stringResource(R.string.subscribe_resume),
                         buttonSize = ButtonSize.MEDIUM,
                         onClick = {
                             onSubscribeClick(
@@ -295,6 +295,18 @@ fun NewsLetterNameCard(
                             onSubscribeClick(
                                 newsLetter.brandId,
                                 false
+                            )
+                        }
+                    )
+                }
+                else -> {
+                    SolidPrimaryButton(
+                        buttonText = stringResource(R.string.subscribe_initial),
+                        buttonSize = ButtonSize.MEDIUM,
+                        onClick = {
+                            onSubscribeClick(
+                                newsLetter.brandId,
+                                true
                             )
                         }
                     )

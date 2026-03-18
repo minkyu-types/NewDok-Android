@@ -36,6 +36,7 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -83,6 +84,12 @@ fun BookmarkScreen(
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        if (!isGuestMode) {
+            viewModel.initialize()
+        }
+    }
+
     val selectedInterests = viewModel.selectedInterests
     val currentSort = viewModel.currentSort
     val uiState by viewModel.interestedArticlesUiState

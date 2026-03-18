@@ -136,7 +136,8 @@ fun MainFlowScreen(
                     },
                     onAlarmClick = {
 
-                    }
+                    },
+                    isGuestMode = isGuestMode
                 )
             }
 
@@ -182,29 +183,35 @@ fun MainFlowScreen(
             }
 
             composable("MyPageMain") {
-                MyPageScreen(
-                    onProfileEditClick = {
-                        navController.navigate("ProfileEditMain")
-                    },
-                    onAccountManageClick = {
-                        navController.navigate("AccountManage")
-                    },
-                    onAlarmSettingClick = {
-                        navController.navigate("NotificationSetting")
-                    },
-                    onFaqClick = {
-                        navController.navigate("Faq")
-                    },
-                    onFeedbackClick = {
-                        navController.navigate("ServiceFeedback")
-                    },
-                    onTermClick = {
-                        navController.navigate("Term")
-                    },
-                    onVersionClick = {
-                        // 버전 화면 누락
+                if (isGuestMode) {
+                    LaunchedEffect(Unit) {
+                        onNavigateToLogin()
                     }
-                )
+                } else {
+                    MyPageScreen(
+                        onProfileEditClick = {
+                            navController.navigate("ProfileEditMain")
+                        },
+                        onAccountManageClick = {
+                            navController.navigate("AccountManage")
+                        },
+                        onAlarmSettingClick = {
+                            navController.navigate("NotificationSetting")
+                        },
+                        onFaqClick = {
+                            navController.navigate("Faq")
+                        },
+                        onFeedbackClick = {
+                            navController.navigate("ServiceFeedback")
+                        },
+                        onTermClick = {
+                            navController.navigate("Term")
+                        },
+                        onVersionClick = {
+                            // 버전 화면 누락
+                        }
+                    )
+                }
             }
 
             composable("AccountManage") {

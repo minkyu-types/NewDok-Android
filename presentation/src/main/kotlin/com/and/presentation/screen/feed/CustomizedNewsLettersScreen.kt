@@ -67,6 +67,11 @@ fun CustomizedNewsLettersScreen(
     viewModel: CustomizedNewsLettersViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.initialize()
+    }
+
     val uiState by viewModel.customizedNewsLettersUiState
 
     LaunchedEffect(uiState) {
@@ -146,7 +151,7 @@ fun CustomizedNewsLettersScreen(
                     onClick = { id ->
                         onNewsLetterClick(id)
                     },
-                    onRefreshClick = { viewModel.refreshUnionOnly() }
+                    onRefreshClick = { viewModel.refresh() }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))

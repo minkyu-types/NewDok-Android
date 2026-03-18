@@ -21,7 +21,7 @@ android {
         applicationId = "com.and.newdok"
         minSdk = 28
         targetSdk = 36
-        versionCode = 1
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -103,7 +103,7 @@ dependencies {
     implementation(project(":presentation"))
 
     implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

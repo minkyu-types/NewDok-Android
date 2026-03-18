@@ -9,6 +9,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,13 +35,24 @@ fun FeedScreen(
     onNewsLetterClick: (Int) -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
+    isGuestMode: Boolean = false,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        if (!isGuestMode) {
+            myPageViewModel.initialize()
+        }
+    }
+
     var selectedTab by remember { mutableStateOf(FeedTab.RECOMMEND) }
-    val isProfileRegistered by remember { mutableStateOf(true) }
+    val isProfileRegistered by remember { mutableStateOf(!isGuestMode) }
     val userState = myPageViewModel.userInfoUiState.value
-    val nickname = (userState as? UiState.Success)?.data?.nickname ?: ""
+    val nickname = if (!isGuestMode) {
+        (userState as? UiState.Success)?.data?.nickname ?: ""
+    } else {
+        ""
+    }
 
     Column(
         modifier = Modifier

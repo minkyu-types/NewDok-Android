@@ -12,7 +12,7 @@ data class DailyArticleModel(
     val articleId: Int,
     val status: String
 ): Parcelable {
-    fun isRead() = this.status != "Unread"
+    fun isRead() = this.status == "READ"
 }
 
 fun Article.toDailyArticleModel() = DailyArticleModel(

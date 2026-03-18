@@ -49,7 +49,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
 
     // Retrofit
     implementation(libs.retrofit)

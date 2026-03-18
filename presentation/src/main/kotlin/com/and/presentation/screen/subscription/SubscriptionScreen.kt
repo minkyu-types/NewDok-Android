@@ -82,9 +82,11 @@ fun SubscriptionScreen(
     }
 
     LaunchedEffect(currentTab) {
-        when (currentTab) {
-            SubscriptionTab.ING -> viewModel.getSubscribedNewsLetters()
-            SubscriptionTab.PAUSED -> viewModel.getUnsubscribedNewsLetters()
+        if (!isGuestMode) {
+            when (currentTab) {
+                SubscriptionTab.ING -> viewModel.getSubscribedNewsLetters()
+                SubscriptionTab.PAUSED -> viewModel.getUnsubscribedNewsLetters()
+            }
         }
     }
 
@@ -159,7 +161,7 @@ fun SubscriptionScreen(
                 }
             }
             is UiState.Idle -> {
-                SubscribedNewsLettersEmptyView()
+                SubscribedNewsLettersEmptyView(isGuestMode = isGuestMode)
             }
         }
     }

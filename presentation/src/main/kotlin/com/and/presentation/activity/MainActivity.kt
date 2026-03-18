@@ -32,6 +32,7 @@ class MainActivity: ComponentActivity() {
 
     companion object
 
+    @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         var isLoading = true

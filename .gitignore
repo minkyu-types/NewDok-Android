@@ -123,3 +123,4 @@ fabric.properties
 /gradlew.bat
 =======
 ./.idea
+/androidx/activity/ComponentActivity.kt

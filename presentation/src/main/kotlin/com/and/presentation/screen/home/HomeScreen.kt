@@ -41,10 +41,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.Article
-import com.and.domain.model.type.ArticleStatus
 import com.and.newdok.presentation.R
 import com.and.presentation.component.dialog.CalendarDialog
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body1Normal
@@ -295,7 +294,7 @@ fun HomeArticleListItem(
     onArticleClick: (DailyArticleModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isArticleRead = Article.getIsRead(ArticleStatus.UNREAD)
+    val isArticleRead = article.isRead()
 
     Row(
         modifier = Modifier
@@ -314,8 +313,8 @@ fun HomeArticleListItem(
             )
             .padding(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.img_logo),
+        CommonImage(
+            imageUrl = article.imageUrl ?: "",
             contentDescription = null,
             modifier = Modifier
                 .size(56.dp)

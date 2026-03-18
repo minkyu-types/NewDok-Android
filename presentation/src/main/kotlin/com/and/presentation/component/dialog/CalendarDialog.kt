@@ -73,7 +73,8 @@ fun CalendarDialog(
     onDismiss: () -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
-    initialDate: LocalDate = LocalDate.now()
+    initialDate: LocalDate = LocalDate.now(),
+    eventDays: Set<LocalDate> = emptySet()
 ) {
     val todayYearMonth = YearMonth.of(initialDate.year, initialDate.monthValue)
     var currYearMonth: YearMonth by remember {
@@ -115,16 +116,9 @@ fun CalendarDialog(
                                 selectedDay = date
                                 onDateSelected(date)
                             }
+                            onDismiss()
                         },
-                        eventDays = setOf(
-                            LocalDate.now().minusDays(1),
-                            LocalDate.now().minusDays(2),
-                            LocalDate.now().minusDays(3),
-                            LocalDate.now().minusDays(4),
-                            LocalDate.now().minusDays(5),
-                            LocalDate.now().plusDays(1),
-                            LocalDate.now().plusDays(11),
-                        )
+                        eventDays = eventDays
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -135,6 +129,7 @@ fun CalendarDialog(
                     selectedDay = initialDate
                     onDateSelected(initialDate)
                     currYearMonth = todayYearMonth
+                    onDismiss()
                 },
                 shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(

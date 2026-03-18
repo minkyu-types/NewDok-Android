@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.model.type.RecommendedNewsLetterType
 import com.and.domain.usecase.newsletter.member.GetRecommendedNewsLettersUseCase
-import com.and.domain.util.ApiException
 import com.and.presentation.mapper.RecommendedNewsLetterMapper
-import com.and.presentation.model.RecommendedNewsLetterModel
 import com.and.presentation.model.RecommendedNewsLettersModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +20,6 @@ class CustomizedNewsLettersViewModel @Inject constructor(
     private val getRecommendedNewsLettersUseCase: GetRecommendedNewsLettersUseCase,
     private val recommendedNewsLetterMapper: RecommendedNewsLetterMapper
 ) : ViewModel() {
-    private var rawUnion: List<RecommendedNewsLetterModel> = emptyList()
-
     private val _customizedNewsLettersUiState =
         mutableStateOf<UiState<RecommendedNewsLettersModel>>(UiState.Idle)
     val customizedNewsLettersUiState: State<UiState<RecommendedNewsLettersModel>> =
@@ -33,8 +29,13 @@ class CustomizedNewsLettersViewModel @Inject constructor(
         private const val ERROR_MESSAGE_CUSTOMIZED_NEWSLETTERS = "뉴스레터 조회 중 오류가 발생했습니다"
     }
 
-    init {
-        getCustomizedNewsLetters()
+    private var initialized = false
+
+    fun initialize() {
+        if (!initialized) {
+            initialized = true
+            getCustomizedNewsLetters()
+        }
     }
 
     private fun getCustomizedNewsLetters() {
@@ -46,7 +47,6 @@ class CustomizedNewsLettersViewModel @Inject constructor(
                 )
             }.onSuccess { (union, intersection) ->
                 val mappedUnion = union.map { recommendedNewsLetterMapper.mapToPresentation(it) }
-                rawUnion = mappedUnion
                 _customizedNewsLettersUiState.value = UiState.Success(
                     RecommendedNewsLettersModel(
                         union = mappedUnion,
@@ -60,18 +60,7 @@ class CustomizedNewsLettersViewModel @Inject constructor(
         }
     }
 
-    fun refreshUnionOnly() {
-        val currentState = _customizedNewsLettersUiState.value
-        if (currentState is UiState.Success<*>) {
-            val newUnion = rawUnion
-                .shuffled()
-                .take(6)
-
-            val newData = RecommendedNewsLettersModel(
-                intersection = (currentState.data as RecommendedNewsLettersModel).intersection,
-                union = newUnion
-            )
-            _customizedNewsLettersUiState.value = UiState.Success(newData)
-        }
+    fun refresh() {
+        getCustomizedNewsLetters()
     }
 }
