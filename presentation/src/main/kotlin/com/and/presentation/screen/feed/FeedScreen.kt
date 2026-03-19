@@ -35,6 +35,10 @@ fun FeedScreen(
     onNewsLetterClick: (Int) -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
+    onNavigateToIndustrySelection: () -> Unit = {},
+    onNavigateToInterestSelection: () -> Unit = {},
+    shouldReloadRecommend: Boolean = false,
+    onReloadConsumed: () -> Unit = {},
     isGuestMode: Boolean = false,
     myPageViewModel: MyPageViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -78,6 +82,10 @@ fun FeedScreen(
                         onNewsLetterClick = { id ->
                             onNewsLetterClick(id)
                         },
+                        onNavigateToIndustrySelection = onNavigateToIndustrySelection,
+                        onNavigateToInterestSelection = onNavigateToInterestSelection,
+                        shouldReload = shouldReloadRecommend,
+                        onReloadConsumed = onReloadConsumed,
                         modifier = Modifier.weight(1f)
                     )
                 } else {

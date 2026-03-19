@@ -63,6 +63,10 @@ import com.and.presentation.util.UiState
 fun CustomizedNewsLettersScreen(
     nickname: String,
     onNewsLetterClick: (Int) -> Unit,
+    onNavigateToIndustrySelection: () -> Unit,
+    onNavigateToInterestSelection: () -> Unit,
+    shouldReload: Boolean = false,
+    onReloadConsumed: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: CustomizedNewsLettersViewModel = hiltViewModel()
 ) {
@@ -70,6 +74,25 @@ fun CustomizedNewsLettersScreen(
 
     LaunchedEffect(Unit) {
         viewModel.initialize()
+    }
+
+    LaunchedEffect(shouldReload) {
+        if (shouldReload) {
+            viewModel.resetAndReload()
+            onReloadConsumed()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.industryNotSelectedEvent.collect {
+            onNavigateToIndustrySelection()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.interestNotSelectedEvent.collect {
+            onNavigateToInterestSelection()
+        }
     }
 
     val uiState by viewModel.customizedNewsLettersUiState

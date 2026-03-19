@@ -54,6 +54,9 @@ import com.and.presentation.screen.mypage.account.WithdrawalStep2Screen
 import com.and.presentation.screen.mypage.profile.ProfileEditViewModel
 import com.and.presentation.screen.newsletterdetail.NewsLetterDetailScreen
 import com.and.presentation.screen.preinvestigation.InvestigationStep
+import com.and.presentation.screen.preinvestigation.InvestigationStep1Screen
+import com.and.presentation.screen.preinvestigation.InvestigationStep2Screen
+import com.and.presentation.screen.preinvestigation.InvestigationViewModel
 import com.and.presentation.screen.search.SearchScreen
 import com.and.presentation.screen.subscription.SubscriptionScreen
 import com.and.presentation.ui.Caption_Alternative
@@ -126,7 +129,11 @@ fun MainFlowScreen(
                 )
             }
 
-            composable("FeedMain") {
+            composable("FeedMain") { backStackEntry ->
+                val industrySelected = backStackEntry
+                    .savedStateHandle
+                    .get<Boolean>("industrySelected") == true
+
                 FeedScreen(
                     onNewsLetterClick = { id ->
                         navController.navigate("NewsLetterDetail/${id}")
@@ -137,7 +144,62 @@ fun MainFlowScreen(
                     onAlarmClick = {
 
                     },
+                    onNavigateToIndustrySelection = {
+                        navController.navigate("industry_interest_flow")
+                    },
+                    onNavigateToInterestSelection = {
+                        navController.navigate("InterestSelectionOnly")
+                    },
+                    shouldReloadRecommend = industrySelected,
+                    onReloadConsumed = {
+                        backStackEntry.savedStateHandle.remove<Boolean>("industrySelected")
+                    },
                     isGuestMode = isGuestMode
+                )
+            }
+
+            navigation(
+                route = "industry_interest_flow",
+                startDestination = "IndustrySelection"
+            ) {
+                composable("IndustrySelection") { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("industry_interest_flow")
+                    }
+                    val viewModel: InvestigationViewModel = hiltViewModel(parentEntry)
+                    InvestigationStep1Screen(
+                        onNext = { navController.navigate("InterestSelection") },
+                        onBack = { navController.popBackStack() },
+                        viewModel = viewModel
+                    )
+                }
+                composable("InterestSelection") { backStackEntry ->
+                    val parentEntry = remember(backStackEntry) {
+                        navController.getBackStackEntry("industry_interest_flow")
+                    }
+                    val viewModel: InvestigationViewModel = hiltViewModel(parentEntry)
+                    InvestigationStep2Screen(
+                        onNext = {
+                            navController.getBackStackEntry("FeedMain")
+                                .savedStateHandle["industrySelected"] = true
+                            navController.popBackStack("FeedMain", inclusive = false)
+                        },
+                        onBack = { navController.popBackStack() },
+                        viewModel = viewModel
+                    )
+                }
+            }
+
+            composable("InterestSelectionOnly") {
+                val viewModel: InvestigationViewModel = hiltViewModel()
+                InvestigationStep2Screen(
+                    onNext = {
+                        navController.getBackStackEntry("FeedMain")
+                            .savedStateHandle["industrySelected"] = true
+                        navController.popBackStack("FeedMain", inclusive = false)
+                    },
+                    onBack = { navController.popBackStack() },
+                    viewModel = viewModel
                 )
             }
 
@@ -431,10 +493,13 @@ fun BottomNavigationBar(
             items.forEach { item ->
                 NavigationBarItem(
                     icon = {
+                        val isSelected = currentRoute == item.route
                         Icon(
-                            painter = if (currentRoute == item.route) painterResource(item.selectedIcon)
+                            painter = if (isSelected) painterResource(item.selectedIcon)
                             else painterResource(item.icon),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = if (isSelected) Color.Unspecified
+                            else Caption_Alternative
                         )
                     },
                     label = {

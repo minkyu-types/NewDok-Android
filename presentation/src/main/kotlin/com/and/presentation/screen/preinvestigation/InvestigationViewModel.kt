@@ -19,9 +19,11 @@ import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,13 +64,13 @@ class InvestigationViewModel @Inject constructor(
             }
     }
 
-    fun updateInterests(
+    suspend fun updateInterests(
         interests: Set<Interest>
     ) {
         val categories = interests.mapNotNull { interest ->
             InterestCategory.getInterestById(interest.id)
         }.toSet()
-        viewModelScope.launch {
+        withContext(NonCancellable) {
             updateInterestsUseCase(
                 UpdateUserInterestsUseCase.UpdateUserInterestsParams(
                     categories
@@ -77,11 +79,11 @@ class InvestigationViewModel @Inject constructor(
         }
     }
 
-    fun updateIndustry(
+    suspend fun updateIndustry(
         industry: Industry
     ) {
         selectedIndustry = IndustryCategory.getIndustryById(industry.id) ?: IndustryCategory.DEFAULT
-        viewModelScope.launch {
+        withContext(NonCancellable) {
             updateIndustryUseCase(
                 UpdateUserIndustryUseCase.UpdateUserIndustryParams(
                     industry.id

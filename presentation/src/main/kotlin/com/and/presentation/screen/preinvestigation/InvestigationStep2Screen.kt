@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.removeRippleEffect
+import kotlinx.coroutines.launch
 
 @Composable
 fun InvestigationStep2Screen(
@@ -45,6 +47,7 @@ fun InvestigationStep2Screen(
     modifier: Modifier = Modifier,
     viewModel: InvestigationViewModel
 ) {
+    val scope = rememberCoroutineScope()
     val interestOptions by viewModel.interestOptions.collectAsState()
     val selectedInterests by viewModel.selectedInterests.collectAsState()
 
@@ -90,8 +93,10 @@ fun InvestigationStep2Screen(
         ConditionalNextButton(
             enabled = (selectedInterests.size >= 3),
             onClick = {
-                viewModel.updateInterests(selectedInterests)
-                onNext()
+                scope.launch {
+                    viewModel.updateInterests(selectedInterests)
+                    onNext()
+                }
             },
             modifier = Modifier.padding(24.dp),
         )

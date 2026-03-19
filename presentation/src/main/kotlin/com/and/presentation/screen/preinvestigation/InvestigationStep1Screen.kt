@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.ui.Tint10
+import kotlinx.coroutines.launch
 
 @Composable
 fun InvestigationStep1Screen(
@@ -44,6 +46,7 @@ fun InvestigationStep1Screen(
     modifier: Modifier = Modifier,
     viewModel: InvestigationViewModel
 ) {
+    val scope = rememberCoroutineScope()
     var selectedIndustry: Industry? by rememberSaveable { mutableStateOf(null) }
     val industries by viewModel.industries.collectAsStateWithLifecycle()
 
@@ -90,8 +93,10 @@ fun InvestigationStep1Screen(
             enabled = (selectedIndustry != null),
             onClick = {
                 selectedIndustry?.let { industry ->
-                    viewModel.updateIndustry(industry)
-                    onNext()
+                    scope.launch {
+                        viewModel.updateIndustry(industry)
+                        onNext()
+                    }
                 }
             },
             modifier = Modifier.padding(24.dp),
