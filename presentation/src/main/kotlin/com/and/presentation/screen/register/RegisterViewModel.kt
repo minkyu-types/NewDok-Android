@@ -48,6 +48,14 @@ class RegisterViewModel @Inject constructor(
     val signUpState: State<UiState<UserModel>> = _signUpState
 
     private var issuedAuthCode: String? = null
+    private var authRequestId = 0
+
+    private val _resendCount = mutableStateOf(0)
+    val resendCount: State<Int> = _resendCount
+
+    companion object {
+        const val MAX_RESEND_COUNT = 3
+    }
 
     fun requestSmsAuthCode(
         phoneNumber: String
@@ -60,9 +68,10 @@ class RegisterViewModel @Inject constructor(
                     )
                 )
             }.onSuccess { authCode ->
+                authRequestId++
                 issuedAuthCode = authCode
                 _authVerificationState.value = UiState.Idle
-                _authCodeRequestedState.value = UiState.Success(true to authCode)
+                _authCodeRequestedState.value = UiState.Success(true to "$authCode#$authRequestId")
             }.onFailure { error ->
                 issuedAuthCode = null
                 _authCodeRequestedState.value = UiState.Error(
@@ -100,12 +109,27 @@ class RegisterViewModel @Inject constructor(
         )
     }
 
+    fun onPhoneNumberChanged(newPhoneNumber: String) {
+        setUserPhoneNumber(newPhoneNumber)
+        if (_authCodeRequestedState.value !is UiState.Idle) {
+            _authCodeRequestedState.value = UiState.Idle
+            _authVerificationState.value = UiState.Idle
+            issuedAuthCode = null
+            _resendCount.value = 0
+        }
+    }
+
+    fun incrementResendCount() {
+        _resendCount.value++
+    }
+
     fun expireAuthCodeTimer() {
         if (isAuthVerified()) return
 
         issuedAuthCode = null
         _authCodeRequestedState.value = UiState.Idle
         _authVerificationState.value = UiState.Error("인증 시간이 만료되었습니다. 다시 요청해주세요.")
+        _resendCount.value = 0
         refreshNextEnabled()
     }
 

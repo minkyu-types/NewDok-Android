@@ -26,6 +26,7 @@
     <string name="register">회원가입</string>
     <string name="login">로그인</string>
     <string name="auth_request">인증요청</string>
+    <string name="auth_resend">재전송</string>
     <string name="auth_number">인증번호</string>
     <string name="phone_number_title">휴대폰 번호</string>
     <string name="subscription_email">구독 이메일</string>

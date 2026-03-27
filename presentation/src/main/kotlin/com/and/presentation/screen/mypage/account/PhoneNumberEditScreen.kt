@@ -74,7 +74,9 @@ fun PhoneNumberEditScreen(
     val authRequestUi by viewModel.authCodeRequestedState
     val verifyUi by viewModel.authVerificationState
     val nextEnabled by viewModel.isNextEnabled
-    val isRequestingEnabled = authRequestUi is UiState.Idle
+    val resendCount by viewModel.resendCount
+    val isAuthRequested = authRequestUi is UiState.Success
+    val isAuthVerified = verifyUi is UiState.Success
 
     val isAuthCodeStart: Pair<Boolean, String?> = when (authRequestUi) {
         is UiState.Success -> (authRequestUi as UiState.Success).data
@@ -114,8 +116,9 @@ fun PhoneNumberEditScreen(
             PhoneAuthView(
                 phoneNumber = phoneNumber,
                 authCode = authCode,
-                onPhoneNumberChange = { phoneNum->
+                onPhoneNumberChange = { phoneNum ->
                     phoneNumber = phoneNum
+                    viewModel.onPhoneNumberChanged(phoneNum)
                 },
                 onAuthCodeChange = { code ->
                     authCode = code
@@ -126,10 +129,16 @@ fun PhoneNumberEditScreen(
                     viewModel.expireAuthCodeTimer()
                 },
                 onAuthButtonClick = { phoneNum ->
+                    if (isAuthRequested) {
+                        authCode = ""
+                        viewModel.incrementResendCount()
+                    }
                     viewModel.requestSmsAuthCode(phoneNum)
                 },
                 verifyUi = verifyUi,
-                isRequestingEnabled = isRequestingEnabled
+                isAuthRequested = isAuthRequested,
+                isAuthVerified = isAuthVerified,
+                resendCount = resendCount
             )
         }
 
@@ -154,7 +163,9 @@ fun PhoneAuthView(
     onAuthCodeExpired: () -> Unit,
     onAuthButtonClick: (String) -> Unit,
     verifyUi: UiState<Boolean>,
-    isRequestingEnabled: Boolean,
+    isAuthRequested: Boolean,
+    isAuthVerified: Boolean,
+    resendCount: Int,
     modifier: Modifier = Modifier
 ) {
     PhoneTextField(
@@ -163,7 +174,9 @@ fun PhoneAuthView(
         onAuthButtonClick = { phoneNum ->
             onAuthButtonClick(phoneNum)
         },
-        isRequestingEnabled = isRequestingEnabled,
+        isAuthRequested = isAuthRequested,
+        isAuthVerified = isAuthVerified,
+        resendCount = resendCount,
         modifier = Modifier
             .fillMaxWidth(),
     )
@@ -176,7 +189,8 @@ fun PhoneAuthView(
         isError = false,
         startTimer = startAuthCodeTimer,
         onTimerExpire = onAuthCodeExpired,
-        verifyUi = verifyUi
+        verifyUi = verifyUi,
+        resendCount = resendCount
     )
 }
 
@@ -186,10 +200,12 @@ fun PhoneTextField(
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     onAuthButtonClick: (String) -> Unit,
-    isRequestingEnabled: Boolean
+    isAuthRequested: Boolean,
+    isAuthVerified: Boolean,
+    resendCount: Int
 ) {
-    // 전화번호 정규식 검사
     val isPhoneNumberValid = phoneNumber.phoneNumberValidation()
+    val isButtonEnabled = isPhoneNumberValid && !isAuthVerified && resendCount < RegisterViewModel.MAX_RESEND_COUNT
 
     Column {
         Text(
@@ -216,11 +232,9 @@ fun PhoneTextField(
                     .weight(1f)
             )
             Button(
-                enabled = isPhoneNumberValid && isRequestingEnabled,
+                enabled = isButtonEnabled,
                 onClick = {
-                    val result = onAuthButtonClick(phoneNumber)
-                    // 중복이 아닌 경우 TextField border Primary0으로 색상 변경
-                    // 중복이라면 중복 확인 다시 클릭하도록 error 발생시켜주기
+                    onAuthButtonClick(phoneNumber)
                 },
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
@@ -230,7 +244,7 @@ fun PhoneTextField(
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(5.dp),
-                        color = if (isPhoneNumberValid && isRequestingEnabled) Primary_Normal else Line_Disabled
+                        color = if (isButtonEnabled) Primary_Normal else Line_Disabled
                     ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -240,10 +254,13 @@ fun PhoneTextField(
             )
             {
                 Text(
-                    text = stringResource(R.string.auth_request),
+                    text = stringResource(
+                        if (isAuthRequested) R.string.auth_resend
+                        else R.string.auth_request
+                    ),
                     style = Body2Normal,
                     fontWeight = FontWeight.Bold,
-                    color = if (isPhoneNumberValid && isRequestingEnabled) Primary_Normal else Caption_Disabled,
+                    color = if (isButtonEnabled) Primary_Normal else Caption_Disabled,
                     maxLines = 1
                 )
             }
@@ -257,6 +274,7 @@ fun AuthTextField(
     isError: Boolean,
     startTimer: Pair<Boolean, String?>,
     verifyUi: UiState<Boolean>,
+    resendCount: Int = 0,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
     onTimerExpire: () -> Unit = {}
@@ -317,7 +335,6 @@ fun AuthTextField(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = TextFieldDefaults.colors(
-                // 인증번호 6자리 (숫자만) 입력되면 Primary_Normal 적용
                 focusedIndicatorColor = Primary_Normal,
                 unfocusedIndicatorColor = Line_Alternative,
                 focusedContainerColor = Color.White,
@@ -355,7 +372,12 @@ fun AuthTextField(
             }
             else -> {
                 Text(
-                    text = stringResource(id = R.string.register_phone_auth_number_hint),
+                    text = stringResource(
+                        id = if (resendCount >= RegisterViewModel.MAX_RESEND_COUNT)
+                            R.string.register_phone_auth_retry_desc
+                        else
+                            R.string.register_phone_auth_number_hint
+                    ),
                     style = Label1, color = Caption_Neutral, fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(start = 4.dp)
                 )
