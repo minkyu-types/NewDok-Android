@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,6 +53,7 @@ import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
@@ -133,18 +135,15 @@ fun NewsLetterDetailScreen(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
                     ) {
-                        NewsLetterCard(data)
-                        NewsLetterNameCard(
-                            data,
+                        NewsLetterCard(
+                            newsLetter = data,
                             onSubscribeClick = { id, wasSubscribed ->
                                 coroutineScope.launch {
                                     sheetState.show()
                                 }
-                            },
-                            modifier = Modifier
-                                .offset(y = (-20).dp)
-                                .padding(horizontal = 26.dp)
+                            }
                         )
+                        Spacer(modifier = Modifier.height(16.dp))
                         NewsLetterIntroduction(
                             data,
                             modifier = Modifier.padding(horizontal = 24.dp)
@@ -188,14 +187,58 @@ fun NewsLetterDetailScreen(
 @Composable
 fun NewsLetterCard(
     newsLetter: NewsLetterDetailModel,
+    onSubscribeClick: (Int, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    val imageHeight = 260.dp
+    val overlapHeight = 40.dp
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(bottom = overlapHeight)
+    ) {
+        // 이미지 영역
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(260.dp)
+                .height(imageHeight)
         ) {
+            // 선명한 이미지 (전체)
+            CommonImage(
+                imageUrl = newsLetter.imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp))
+            )
+            // 하단 겹치는 영역에만 블러 적용
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(overlapHeight)
+                    .clip(RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp))
+            ) {
+                CommonImage(
+                    imageUrl = newsLetter.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(imageHeight)
+                        .offset(y = -(imageHeight - overlapHeight))
+                        .blur(
+                            radius = 400.dp,
+                            edgeTreatment = BlurredEdgeTreatment(
+                                RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+                            )
+                        )
+                )
+            }
+            // 관심사 태그
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -206,15 +249,16 @@ fun NewsLetterCard(
                     InterestTag(interest)
                 }
             }
-            CommonImage(
-                imageUrl = newsLetter.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp))
-            )
         }
+        // 네임카드 (이미지 하단에 겹치도록 배치)
+        NewsLetterNameCard(
+            newsLetter = newsLetter,
+            onSubscribeClick = onSubscribeClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .offset(y = overlapHeight)
+                .padding(horizontal = 26.dp)
+        )
     }
 }
 
@@ -231,12 +275,11 @@ fun NewsLetterNameCard(
             .wrapContentHeight(),
         contentAlignment = Alignment.Center
     ) {
-        // 블러 처리된 배경 레이어
+        // 반투명 흰색 배경 레이어 (뒤의 블러된 이미지가 비치도록)
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .blur(16.dp)
-                .background(Color.White.copy(alpha = 0.7f))
+                .background(Color.White.copy(alpha = 0.5f))
         )
         // 선명한 콘텐츠 레이어
         Row(
