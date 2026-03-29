@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.and.newdok.presentation.R
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.util.observer.AirplaneModeObserver
 import com.and.presentation.util.observer.NetworkStatusObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,13 +72,15 @@ class MainActivity: ComponentActivity() {
                     }
                 }
 
-                MainNavGraph(
-                    startDestination = when {
-                        isAutoLogin != null -> ScreenFlow.MAIN.route
-                        isGuest -> ScreenFlow.MAIN.route
-                        else -> ScreenFlow.ON_BOARDING.route
-                    }
-                )
+                DefaultWhiteTheme {
+                    MainNavGraph(
+                        startDestination = when {
+                            isAutoLogin != null -> ScreenFlow.MAIN.route
+                            isGuest -> ScreenFlow.MAIN.route
+                            else -> ScreenFlow.ON_BOARDING.route
+                        }
+                    )
+                }
             }
         }
     }
