@@ -53,6 +53,7 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Line_Neutral
+import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.util.CommonUiEvent
 import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
@@ -137,20 +138,21 @@ fun SubscriptionScreen(
                 if (list.isEmpty()) {
                     SubscribedNewsLettersEmptyView(isGuestMode = isGuestMode)
                 } else {
-                    val isSubscriptionResumed = (currentTab == SubscriptionTab.ING)
                     SubscribedNewsLettersExistView(
                         newsLetters     = list,
                         onSubscribeClick = { brand ->
-                            if (isSubscriptionResumed) {
-                                brandToPause = brand
-                            } else {
-                                viewModel.updateSubscription(
-                                    brand.id,
-                                    false
-                                )
+                            when (brand.subscriptionStatus) {
+                                SubscriptionStatus.CONFIRMED -> {
+                                    brandToPause = brand
+                                }
+                                else -> {
+                                    viewModel.updateSubscription(
+                                        brand.id,
+                                        false
+                                    )
+                                }
                             }
-                        },
-                        isSubscribeResumed = isSubscriptionResumed
+                        }
                     )
                 }
             }
@@ -270,7 +272,6 @@ fun SubscribedNewsLettersEmptyView(
 fun SubscribedNewsLettersExistView(
     newsLetters: List<BriefNewsLetterModel>,
     onSubscribeClick: (BriefNewsLetterModel) -> Unit,
-    isSubscribeResumed: Boolean,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -306,8 +307,7 @@ fun SubscribedNewsLettersExistView(
                 onSubscribeClick = {
                     onSubscribeClick(newsLetter)
                     newsLetter.brandName
-                },
-                isSubscribeResumed = isSubscribeResumed
+                }
             )
         }
     }

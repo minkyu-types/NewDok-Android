@@ -3,7 +3,7 @@ package com.and.presentation.mapper
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.SimpleArticle
 import com.and.presentation.model.NewsLetterDetailModel
-import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.model.SubscriptionStatus
 import java.time.ZoneId
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class NewsLetterDetailMapperImpl @Inject constructor(): NewsLetterDetailMapper {
             publicationCycle = input.publicationCycle,
             subscribeUrl = input.subscribeUrl,
             subscribeCheck = true,
-            isSubscribed = input.isSubscribed
+            subscriptionStatus = SubscriptionStatus.from(input.isSubscribed)
         )
     }
 
@@ -46,7 +46,7 @@ class NewsLetterDetailMapperImpl @Inject constructor(): NewsLetterDetailMapper {
             publicationCycle = input.publicationCycle,
             subscribeUrl = input.subscribeUrl,
             subscriptionCount= 0,
-            isSubscribed = input.isSubscribed
+            isSubscribed = input.subscriptionStatus.name
         )
     }
 }

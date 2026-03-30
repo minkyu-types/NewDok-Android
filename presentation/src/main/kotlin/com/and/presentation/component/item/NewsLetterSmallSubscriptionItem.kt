@@ -31,6 +31,7 @@ import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.NewsLetterSubscriptionModel
+import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
@@ -105,9 +106,9 @@ fun NewsLetterSmallSubscriptionItem(
                         )
                         Spacer(modifier = Modifier.weight(1f))
 
-                        when(newsLetter.isSubscribed) {
-                            "CONFIRMED" -> {
-                                SolidPrimaryButton(
+                        when(newsLetter.subscriptionStatus) {
+                            SubscriptionStatus.CONFIRMED -> {
+                                OutlinedSecondaryButton(
                                     buttonText = stringResource(R.string.subscribe_ing),
                                     buttonSize = ButtonSize.SMALL,
                                     onClick = {
@@ -116,9 +117,19 @@ fun NewsLetterSmallSubscriptionItem(
                                 )
                             }
 
-                            "PAUSED" -> {
+                            SubscriptionStatus.PAUSED -> {
                                 OutlinedSecondaryButton(
-                                    buttonText = stringResource(R.string.subscribe_paused),
+                                    buttonText = stringResource(R.string.subscribe_resume),
+                                    buttonSize = ButtonSize.SMALL,
+                                    onClick = {
+                                        onSubscribeClick(newsLetter)
+                                    }
+                                )
+                            }
+
+                            else -> {
+                                SolidPrimaryButton(
+                                    buttonText = stringResource(R.string.subscribe_initial),
                                     buttonSize = ButtonSize.SMALL,
                                     onClick = {
                                         onSubscribeClick(newsLetter)

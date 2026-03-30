@@ -41,7 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
+import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.ConditionalNextButton
+import com.and.presentation.component.button.OutlinedSecondaryButton
+import com.and.presentation.component.button.SolidPrimaryButton
+import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.component.item.CategoryChip
 import com.and.presentation.model.NewsLetterModel
 import com.and.presentation.ui.Body2Normal
@@ -216,22 +220,28 @@ fun InvestigationNewsLetterItem(
                         )
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .removeRippleEffect { onSubscribeClick(newsLetter) }
-                        .border(
-                            width = 1.dp,
-                            color = Primary_Normal,
-                            shape = RoundedCornerShape(4.dp)
+                when (newsLetter.subscriptionStatus) {
+                    SubscriptionStatus.CONFIRMED -> {
+                        OutlinedSecondaryButton(
+                            buttonText = stringResource(R.string.subscribe_ing),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = { onSubscribeClick(newsLetter) }
                         )
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.subscribe),
-                        style = Body2Normal,
-                        fontWeight = FontWeight.Medium,
-                        color = Primary_Normal
-                    )
+                    }
+                    SubscriptionStatus.PAUSED -> {
+                        OutlinedSecondaryButton(
+                            buttonText = stringResource(R.string.subscribe_resume),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = { onSubscribeClick(newsLetter) }
+                        )
+                    }
+                    else -> {
+                        SolidPrimaryButton(
+                            buttonText = stringResource(R.string.subscribe_initial),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = { onSubscribeClick(newsLetter) }
+                        )
+                    }
                 }
             }
         }

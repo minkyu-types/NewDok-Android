@@ -2,6 +2,7 @@ package com.and.presentation.mapper
 
 import com.and.domain.model.NewsLetter
 import com.and.presentation.model.NewsLetterSubscriptionModel
+import com.and.presentation.model.SubscriptionStatus
 import javax.inject.Inject
 
 class NewsLetterSubscriptionMapperImpl @Inject constructor(): NewsLetterSubscriptionMapper {
@@ -12,7 +13,7 @@ class NewsLetterSubscriptionMapperImpl @Inject constructor(): NewsLetterSubscrip
             profileImageUrl = input.imageUrl,
             interests = input.interests,
             shortDescription = input.shortDescription ?: "",
-            isSubscribed = input.isSubscribed,
+            subscriptionStatus = SubscriptionStatus.from(input.isSubscribed),
             subscriptionCount = input.subscriptionCount ?: 0
         )
     }
@@ -30,7 +31,7 @@ class NewsLetterSubscriptionMapperImpl @Inject constructor(): NewsLetterSubscrip
             publicationCycle = "",
             subscribeUrl = "",
             subscriptionCount = input.subscriptionCount,
-            isSubscribed = input.isSubscribed
+            isSubscribed = input.subscriptionStatus.name
         )
     }
 }

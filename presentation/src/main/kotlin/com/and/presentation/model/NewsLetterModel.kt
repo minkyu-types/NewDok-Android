@@ -9,4 +9,5 @@ data class NewsLetterModel(
     val repeatTerm: String,
     val introduction: String,
     val interests: List<InterestCategory>,
+    val subscriptionStatus: SubscriptionStatus = SubscriptionStatus.INITIAL,
 )

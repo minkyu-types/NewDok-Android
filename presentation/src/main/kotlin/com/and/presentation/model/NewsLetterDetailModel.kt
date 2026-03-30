@@ -15,7 +15,7 @@ data class NewsLetterDetailModel(
     val publicationCycle: String,
     val subscribeUrl: String,
     val subscribeCheck: Boolean,
-    val isSubscribed: String
+    val subscriptionStatus: SubscriptionStatus
 ) {
 
     data class BrandArticleModel (
@@ -25,11 +25,8 @@ data class NewsLetterDetailModel(
     )
 
     companion object {
-        private const val SUBSCRIBE_RESUME = "CONFIRMED"
-        private const val SUBSCRIBE_PAUSED = "PAUSED"
-
         fun getIsSubscribed(newsLetterDetail: NewsLetterDetailModel): Boolean {
-            return (newsLetterDetail.isSubscribed == SUBSCRIBE_RESUME)
+            return (newsLetterDetail.subscriptionStatus == SubscriptionStatus.CONFIRMED)
         }
     }
 }

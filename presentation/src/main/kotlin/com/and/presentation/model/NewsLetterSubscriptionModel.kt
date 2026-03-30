@@ -7,7 +7,7 @@ data class NewsLetterSubscriptionModel(
     val brandName: String,
     val profileImageUrl: String,
     val interests: List<InterestCategory>,
-    val isSubscribed: String,
+    val subscriptionStatus: SubscriptionStatus,
     val shortDescription: String,
     val subscriptionCount: Int,
 )

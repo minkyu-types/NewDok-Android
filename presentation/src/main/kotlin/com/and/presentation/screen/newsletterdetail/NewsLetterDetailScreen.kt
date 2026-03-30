@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.item.InterestTag
 import com.and.presentation.component.topbar.TopBar
@@ -62,6 +63,7 @@ import com.and.newdok.presentation.R
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.component.item.ArticleHistoryItem
 import com.and.presentation.model.NewsLetterDetailModel
+import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Body2Reading
@@ -317,10 +319,10 @@ fun NewsLetterNameCard(
                     )
                 }
             }
-            when (newsLetter.isSubscribed) {
-                "CONFIRMED" -> {
-                    SolidPrimaryButton(
-                        buttonText = stringResource(R.string.subscribe_resume),
+            when (newsLetter.subscriptionStatus) {
+                SubscriptionStatus.CONFIRMED -> {
+                    OutlinedSecondaryButton(
+                        buttonText = stringResource(R.string.subscribe_ing),
                         buttonSize = ButtonSize.MEDIUM,
                         onClick = {
                             onSubscribeClick(
@@ -330,9 +332,9 @@ fun NewsLetterNameCard(
                         }
                     )
                 }
-                "PAUSED" -> {
-                    SolidPrimaryButton(
-                        buttonText = stringResource(R.string.subscribe_paused),
+                SubscriptionStatus.PAUSED -> {
+                    OutlinedSecondaryButton(
+                        buttonText = stringResource(R.string.subscribe_resume),
                         buttonSize = ButtonSize.MEDIUM,
                         onClick = {
                             onSubscribeClick(

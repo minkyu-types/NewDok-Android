@@ -4,5 +4,6 @@ data class BriefNewsLetterModel(
     val id: Int,
     val brandName: String,
     val imageUrl: String,
-    val publicationCycle: String
+    val publicationCycle: String,
+    val subscriptionStatus: SubscriptionStatus = SubscriptionStatus.INITIAL
 )

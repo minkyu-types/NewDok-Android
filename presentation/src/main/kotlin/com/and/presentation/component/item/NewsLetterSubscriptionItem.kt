@@ -30,6 +30,7 @@ import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.model.BriefNewsLetterModel
+import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
@@ -42,7 +43,7 @@ import com.and.presentation.ui.Line_Neutral
 fun NewsLetterSubscriptionItem(
     newsLetter: BriefNewsLetterModel,
     modifier: Modifier = Modifier,
-    isSubscribeResumed: Boolean,
+    subscriptionStatus: SubscriptionStatus = newsLetter.subscriptionStatus,
     subscribeButtonVisible: Boolean = true,
     onSubscribeClick: (BriefNewsLetterModel) -> Unit = { }
 ) {
@@ -111,22 +112,34 @@ fun NewsLetterSubscriptionItem(
                 }
             }
             if (subscribeButtonVisible) {
-                if (isSubscribeResumed) {
-                    SolidPrimaryButton(
-                        buttonText = stringResource(R.string.subscribe_ing),
-                        buttonSize = ButtonSize.SMALL,
-                        onClick = {
-                            onSubscribeClick(newsLetter)
-                        }
-                    )
-                } else {
-                    OutlinedSecondaryButton(
-                        buttonText = stringResource(R.string.subscribe_resume),
-                        buttonSize = ButtonSize.SMALL,
-                        onClick = {
-                            onSubscribeClick(newsLetter)
-                        }
-                    )
+                when (subscriptionStatus) {
+                    SubscriptionStatus.CONFIRMED -> {
+                        OutlinedSecondaryButton(
+                            buttonText = stringResource(R.string.subscribe_ing),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = {
+                                onSubscribeClick(newsLetter)
+                            }
+                        )
+                    }
+                    SubscriptionStatus.PAUSED -> {
+                        OutlinedSecondaryButton(
+                            buttonText = stringResource(R.string.subscribe_resume),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = {
+                                onSubscribeClick(newsLetter)
+                            }
+                        )
+                    }
+                    else -> {
+                        SolidPrimaryButton(
+                            buttonText = stringResource(R.string.subscribe_initial),
+                            buttonSize = ButtonSize.SMALL,
+                            onClick = {
+                                onSubscribeClick(newsLetter)
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -147,7 +160,7 @@ fun NewsLetterSubscriptionItemPreview() {
                 "평일 아침",
                 "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
             ),
-            isSubscribeResumed = true,
+            subscriptionStatus = SubscriptionStatus.CONFIRMED,
             onSubscribeClick = {
 
             }
