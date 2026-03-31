@@ -126,9 +126,10 @@ fun CalendarDialog(
 
             Button(
                 onClick = {
-                    selectedDay = initialDate
-                    onDateSelected(initialDate)
-                    currYearMonth = todayYearMonth
+                    val today = LocalDate.now()
+                    selectedDay = today
+                    onDateSelected(today)
+                    currYearMonth = YearMonth.now()
                     onDismiss()
                 },
                 shape = RoundedCornerShape(4.dp),
