@@ -42,10 +42,9 @@ class MainActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val isAutoLogin: String? = viewModel.getAccessToken()
+            val accessToken: String? = viewModel.getAccessToken()
                 .firstOrNull()
-            val isGuest: Boolean = viewModel.isGuestMode()
-                .firstOrNull() ?: false
+            val hasValidToken = !accessToken.isNullOrBlank()
 
             isLoading = false
 
@@ -74,10 +73,10 @@ class MainActivity: ComponentActivity() {
 
                 DefaultWhiteTheme {
                     MainNavGraph(
-                        startDestination = when {
-                            isAutoLogin != null -> ScreenFlow.MAIN.route
-                            isGuest -> ScreenFlow.MAIN.route
-                            else -> ScreenFlow.ON_BOARDING.route
+                        startDestination = if (hasValidToken) {
+                            ScreenFlow.MAIN.route
+                        } else {
+                            ScreenFlow.ON_BOARDING.route
                         }
                     )
                 }
