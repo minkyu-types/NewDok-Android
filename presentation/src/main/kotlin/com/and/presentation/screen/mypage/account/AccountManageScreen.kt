@@ -42,12 +42,19 @@ fun AccountManageScreen(
     val logoutResult by viewModel.logoutResult
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(logoutResult)
-    {
-        if (logoutResult == true) {
-            onLogout()
+    LaunchedEffect(logoutResult) {
+        when (logoutResult) {
+            true -> {
+                showLogoutDialog = false
+                onLogout()
+                viewModel.consumeLogoutResult()
+            }
+            false -> {
+                showLogoutDialog = false
+                viewModel.consumeLogoutResult()
+            }
+            null -> Unit
         }
-        showLogoutDialog = false
     }
 
     if (showLogoutDialog) {

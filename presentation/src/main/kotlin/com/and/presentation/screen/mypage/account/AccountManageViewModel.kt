@@ -29,4 +29,8 @@ class AccountManageViewModel @Inject constructor(
             }
         }
     }
+
+    fun consumeLogoutResult() {
+        _logoutResult.value = null
+    }
 }
