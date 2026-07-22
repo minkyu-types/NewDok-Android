@@ -2,6 +2,7 @@ package com.and.presentation.screen.bookmark
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.and.presentation.component.image.BrandProfileImage
-import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticleModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -35,13 +35,14 @@ import com.and.presentation.ui.Line_Neutral
 @Composable
 fun BookmarkArticleItem(
     article: BookmarkedArticleModel,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onArticleClick(article.articleId) }
             .border(
                 width = 1.dp,
                 color = Line_Neutral,

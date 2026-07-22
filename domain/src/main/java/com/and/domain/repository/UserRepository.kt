@@ -1,11 +1,13 @@
 package com.and.domain.repository
 
 import com.and.domain.model.Account
+import com.and.domain.model.KakaoLoginResult
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.model.NewsLetter
+import com.and.domain.usecase.auth.Agreement
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -33,5 +35,13 @@ interface UserRepository {
         birthYear: String,
         gender: Gender
     ): String
+    suspend fun kakaoLogin(code: String, redirectUri: String): KakaoLoginResult
+    suspend fun kakaoSignup(
+        signupToken: String,
+        nickname: String,
+        birthYear: String,
+        gender: Gender,
+        agreements: List<Agreement>
+    ): User
     suspend fun withdrawal(): Pair<Boolean, String>
 }

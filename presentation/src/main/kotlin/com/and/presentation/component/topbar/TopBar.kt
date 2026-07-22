@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -83,7 +84,8 @@ fun TopBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White
         ),
-        modifier = Modifier
+        windowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .background(Color.White),

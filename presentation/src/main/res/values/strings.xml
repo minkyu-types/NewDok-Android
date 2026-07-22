@@ -88,6 +88,11 @@
     <string name="login_without_register">비회원으로 이용하기</string>
     <string name="login_find_id_password">아이디/비밀번호 찾기</string>
 
+    <!-- 소셜 로그인 -->
+    <string name="social_login_kakao">카카오로 계속하기</string>
+    <string name="social_login_apple">Apple로 계속하기</string>
+    <string name="social_login_anim_trigger">3초만에 시작하기</string>
+
     <!-- 회원가입 Step1 -->
     <string name="register_phone_auth_title">본인 확인을 위해\n휴대폰 번호를 입력해주세요</string>
     <string name="register_phone_auth_placeholder">- 구분 없이 입력</string>
@@ -154,6 +159,15 @@
 
     <!-- 홈 -->
     <string name="home_daily_article_title">%d개의 아티클이 도착했어요</string>
+    <string name="home_empty_no_article_title">오늘 도착한 아티클이 없어요.</string>
+    <string name="home_empty_no_article_body">구독 신청 이후 수신된 아티클만 볼 수 있어요.</string>
+    <string name="home_empty_no_article_button">발행되는 뉴스레터 보기</string>
+    <string name="home_empty_no_subscription_title">구독 중인 뉴스레터가 없어요.</string>
+    <string name="home_empty_no_subscription_body">뉴스레터를 구독하면\n발행일에 맞춰 여기로 배달드려요.</string>
+    <string name="home_empty_no_subscription_button">내게 필요한 뉴스레터 추천받기</string>
+    <string name="home_empty_guest_title">회원이 되면 뉴스레터를\n간편하게 모아볼 수 있어요!</string>
+    <string name="home_empty_guest_button">회원가입</string>
+    <string name="home_empty_guest_login_desc">이미 계정이 있나요?</string>
 
     <!-- 둘러보기 -->
     <string name="feed_title">둘러보기</string>

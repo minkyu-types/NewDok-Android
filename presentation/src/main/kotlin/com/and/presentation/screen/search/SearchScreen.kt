@@ -66,7 +66,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 fun SearchScreen(
     onBack: () -> Unit,
     onNewsLetterClick: (SearchResultModel.SearchedNewsLetterModel) -> Unit,
-    onArticleClick: (SearchResultModel.SearchedArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     viewModel: SearchViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -156,7 +156,7 @@ fun SearchScreen(
                     ) { article ->
                         SearchArticleItem(
                             article = article,
-                            onArticleClick = onArticleClick
+                            onArticleClick = { onArticleClick(it.id) }
                         )
                     }
                 }

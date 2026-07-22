@@ -13,6 +13,7 @@ import com.and.data.mapper.BookmarkedArticlesMapper
 import com.and.data.mapper.DailyArticleStatusMapper
 import com.and.data.model.request.PatchBookmarkArticleRequestDto
 import com.and.domain.model.Article
+import com.and.domain.model.ArticleDetail
 import com.and.domain.model.BookmarkedArticles
 import com.and.domain.model.DailyArticle
 import com.and.domain.model.DailyArticleStatus
@@ -111,19 +112,21 @@ class ArticleRepositoryImpl @Inject constructor(
      * (1) articleId가 어디서는 String, 어디서는 Int인 이유는?
      * (2) 아티클 리스트 조회와 특정 아티클 조회 응답 객체 구조가 다른 이유는?
      */
-    override suspend fun getArticleById(articleId: Int): Article {
+    override suspend fun getArticleById(articleId: Int): ArticleDetail {
         return handleApiCall(
             apiCall = {
                 getArticleByIdApi.getReadArticle(articleId = articleId.toString())
             },
             mapper = { response ->
-                val data = response.data
-                Article(
-                    brandName = data.brandName,
-                    imageUrl = data.brandImageUrl,
-                    title = data.articleTitle,
-                    articleId = data.articleId.toInt(),
-                    status = ArticleStatus.UNREAD
+                ArticleDetail(
+                    articleId = response.articleid.toInt(),
+                    articleTitle = response.articleTitle,
+                    date = response.date,
+                    brandId = response.brandId,
+                    brandName = response.brandName,
+                    articleHTML = response.articleHTML,
+                    brandImageUrl = response.brandImageUrl,
+                    isBookmarked = response.isBookmarked
                 )
             }
         )

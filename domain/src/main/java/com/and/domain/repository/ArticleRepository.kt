@@ -1,6 +1,7 @@
 package com.and.domain.repository
 
 import com.and.domain.model.Article
+import com.and.domain.model.ArticleDetail
 import com.and.domain.model.BookmarkedArticles
 import com.and.domain.model.DailyArticleStatus
 import com.and.domain.model.type.InterestCategory
@@ -12,7 +13,7 @@ interface ArticleRepository {
 
     suspend fun getBookmarkedArticles(interest: InterestCategory): BookmarkedArticles
     suspend fun getBookmarkedInterests(): List<InterestCategory>
-    suspend fun getArticleById(articleId: Int): Article
+    suspend fun getArticleById(articleId: Int): ArticleDetail
     suspend fun getTodayArticles(): List<Article>
     suspend fun updateBookmark(articleId: Int)
     suspend fun getReceivedArticlesCount(): Int

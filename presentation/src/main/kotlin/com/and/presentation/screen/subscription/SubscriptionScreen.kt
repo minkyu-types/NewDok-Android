@@ -19,6 +19,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,6 +61,7 @@ import com.and.presentation.util.CommonUiEvent
 import com.and.presentation.util.UiState
 import com.and.presentation.util.removeRippleEffect
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SubscriptionScreen(
     onSearchClick: () -> Unit,
@@ -67,8 +71,19 @@ fun SubscriptionScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.subscribedUiState
+    val isRefreshing by viewModel.isRefreshing
     var currentTab by remember { mutableStateOf(SubscriptionTab.ING) }
     var brandToPause by remember { mutableStateOf<BriefNewsLetterModel?>(null) }
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            when (currentTab) {
+                SubscriptionTab.ING -> viewModel.getSubscribedNewsLetters(isRefresh = true)
+                SubscriptionTab.PAUSED -> viewModel.getUnsubscribedNewsLetters(isRefresh = true)
+            }
+        }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.eventChannel.collect { event ->
@@ -139,13 +154,17 @@ fun SubscriptionScreen(
                     SubscribedNewsLettersEmptyView(isGuestMode = isGuestMode)
                 } else {
                     SubscribedNewsLettersExistView(
-                        newsLetters     = list,
+                        newsLetters = list,
+                        currentTab = currentTab,
+                        pullRefreshState = pullRefreshState,
                         onSubscribeClick = { brand ->
-                            when (brand.subscriptionStatus) {
-                                SubscriptionStatus.CONFIRMED -> {
+                            when (currentTab) {
+                                SubscriptionTab.ING -> {
+                                    // 구독 중 → 중지 확인 모달 표시
                                     brandToPause = brand
                                 }
-                                else -> {
+                                SubscriptionTab.PAUSED -> {
+                                    // 일시 중지 → 바로 재구독
                                     viewModel.updateSubscription(
                                         brand.id,
                                         false
@@ -268,9 +287,12 @@ fun SubscribedNewsLettersEmptyView(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SubscribedNewsLettersExistView(
     newsLetters: List<BriefNewsLetterModel>,
+    currentTab: SubscriptionTab,
+    pullRefreshState: androidx.compose.material.pullrefresh.PullRefreshState,
     onSubscribeClick: (BriefNewsLetterModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -280,6 +302,7 @@ fun SubscribedNewsLettersExistView(
         modifier = Modifier
             .fillMaxSize()
             .background(Background_System)
+            .pullRefresh(pullRefreshState)
             .padding(horizontal = 24.dp)
     ) {
         item {
@@ -304,6 +327,10 @@ fun SubscribedNewsLettersExistView(
         items(newsLetters) { newsLetter ->
             NewsLetterSubscriptionItem(
                 newsLetter = newsLetter,
+                subscriptionStatus = when (currentTab) {
+                    SubscriptionTab.ING -> SubscriptionStatus.CONFIRMED
+                    SubscriptionTab.PAUSED -> SubscriptionStatus.PAUSED
+                },
                 onSubscribeClick = {
                     onSubscribeClick(newsLetter)
                     newsLetter.brandName

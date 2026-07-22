@@ -5,6 +5,7 @@ import com.and.data.mapper.BookmarkedArticleMapper
 import com.and.data.mapper.BookmarkedArticlesMapper
 import com.and.data.mapper.BriefNewsLetterMapper
 import com.and.data.mapper.DailyArticleStatusMapper
+import com.and.data.mapper.KakaoProfileMapper
 import com.and.data.mapper.MonthlyBookmarkedArticlesMapper
 import com.and.data.mapper.NewsLetterDetailMapper
 import com.and.data.mapper.NewsLetterMapper
@@ -14,6 +15,7 @@ import com.and.data.mapper.impl.ArticleMapperImpl
 import com.and.data.mapper.impl.BookmarkedArticleMapperImpl
 import com.and.data.mapper.impl.BookmarkedArticlesMapperImpl
 import com.and.data.mapper.impl.DailyArticleStatusMapperImpl
+import com.and.data.mapper.impl.KakaoProfileMapperImpl
 import com.and.data.mapper.impl.MonthlyBookmarkedArticlesMapperImpl
 import com.and.data.mapper.impl.NewsLetterDetailMapperImpl
 import com.and.data.mapper.impl.BriefNewsLetterMapperImpl
@@ -89,4 +91,10 @@ interface MapperModule {
     fun bindsRecommendedNewsLetterMapper(
         recommendedNewsLetterMapperImpl: RecommendedNewsLetterMapperImpl
     ): RecommendedNewsLetterMapper
+
+    @Binds
+    @Singleton
+    fun bindsKakaoProfileMapper(
+        kakaoProfileMapperImpl: KakaoProfileMapperImpl
+    ): KakaoProfileMapper
 }

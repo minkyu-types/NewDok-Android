@@ -2,6 +2,7 @@ package com.and.presentation.component.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,12 +34,14 @@ import com.and.presentation.ui.Line_Neutral
 @Composable
 fun ArticleHistoryItem(
     article: NewsLetterDetailModel.BrandArticleModel,
+    onArticleClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onArticleClick() }
             .background(Color.White)
             .border(
                 width = 1.dp,

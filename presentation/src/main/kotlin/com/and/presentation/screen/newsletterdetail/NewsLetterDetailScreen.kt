@@ -39,8 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,6 +73,7 @@ import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Body2Reading
 import com.and.presentation.ui.Gray700
 import com.and.presentation.util.UiState
+import android.widget.Toast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -78,10 +82,14 @@ import kotlinx.coroutines.launch
 fun NewsLetterDetailScreen(
     id: Int,
     onBack: () -> Unit,
+    onArticleClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: NewsLetterDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.newsLetterDetailUiState
+    val subscribeEmail by viewModel.subscribeEmail
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
@@ -95,7 +103,7 @@ fun NewsLetterDetailScreen(
         }
     )
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
+        skipPartiallyExpanded = true
     )
     val grayAreaHeightDp = (70.dp * pullRefreshState.progress).coerceAtMost(70.dp)
 
@@ -141,6 +149,14 @@ fun NewsLetterDetailScreen(
                         NewsLetterCard(
                             newsLetter = data,
                             onSubscribeClick = { id, wasSubscribed ->
+                                if (subscribeEmail.isNotBlank()) {
+                                    clipboardManager.setText(AnnotatedString(subscribeEmail))
+                                    Toast.makeText(
+                                        context,
+                                        "구독 이메일이 복사되었습니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                                 coroutineScope.launch {
                                     sheetState.show()
                                 }
@@ -152,7 +168,8 @@ fun NewsLetterDetailScreen(
                             modifier = Modifier.padding(horizontal = 24.dp)
                         )
                         NewsLetterHistory(
-                            articles = data.brandArticleList
+                            articles = data.brandArticleList,
+                            onArticleClick = onArticleClick
                         )
                     }
                 }
@@ -381,6 +398,7 @@ fun NewsLetterIntroduction(
 @Composable
 fun NewsLetterHistory(
     articles: List<NewsLetterDetailModel.BrandArticleModel>,
+    onArticleClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -416,7 +434,10 @@ fun NewsLetterHistory(
             }
         } else {
             articles.forEach { article ->
-                ArticleHistoryItem(article)
+                ArticleHistoryItem(
+                    article = article,
+                    onArticleClick = { onArticleClick(article.id) }
+                )
             }
         }
     }

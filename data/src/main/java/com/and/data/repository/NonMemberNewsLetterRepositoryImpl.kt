@@ -25,11 +25,15 @@ class NonMemberNewsLetterRepositoryImpl @Inject constructor(
         industries: List<IndustryCategory>,
         dayIds: List<Int>
     ): List<NewsLetter> {
+        val filteredIndustries = industries
+            .filter { it != IndustryCategory.ALL_INDUSTRIES }
+            .map { it.id.toString() }
+
         return handleApiCall(
             apiCall = {
                 getNewsLettersApi.getNewsLetters(
                     orderOpt = orderOption.value,
-                    industry = industries.map { it.id.toString() },
+                    industry = filteredIndustries,
                     day = dayIds.map { it.toString() }
                 )
             },

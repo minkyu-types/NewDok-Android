@@ -1,16 +1,16 @@
 package com.and.presentation.activity
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -31,7 +33,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.and.domain.model.type.IndustryCategory
-import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.screen.alarm.AlarmScreen
 import com.and.presentation.screen.articledetail.ArticleDetailScreen
 import com.and.presentation.screen.bookmark.BookmarkScreen
@@ -60,7 +61,6 @@ import com.and.presentation.screen.preinvestigation.InvestigationViewModel
 import com.and.presentation.screen.search.SearchScreen
 import com.and.presentation.screen.subscription.SubscriptionScreen
 import com.and.presentation.ui.Caption_Alternative
-import com.and.presentation.ui.Line_Disabled
 import com.and.presentation.ui.Primary_Normal
 
 @Composable
@@ -79,6 +79,7 @@ fun MainFlowScreen(
     )
 
     Scaffold(
+        containerColor = Color.Transparent,
         bottomBar = {
             if (currentRoute in bottomBarRoutes) {
                 BottomNavigationBar(
@@ -93,7 +94,12 @@ fun MainFlowScreen(
         NavHost(
             navController = navController,
             startDestination = "HomeMain",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(
+                PaddingValues(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = 0.dp
+                )
+            )
         ) {
             composable("SearchMain") {
                 SearchScreen(
@@ -101,8 +107,8 @@ fun MainFlowScreen(
                     onNewsLetterClick = {
                         navController.navigate("NewsLetterDetail")
                     },
-                    onArticleClick = { article ->
-
+                    onArticleClick = { articleId ->
+                        navController.navigate("ArticleDetail/$articleId")
                     },
                     viewModel = hiltViewModel()
                 )
@@ -111,11 +117,8 @@ fun MainFlowScreen(
             composable("NotificationMain") {
                 AlarmScreen(
                     onBack = { navController.popBackStack() },
-                    onArticleClick = { article: DailyArticleModel ->
-                        navController.currentBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("article", article)
-                        navController.navigate("ArticleDetail")
+                    onArticleClick = { articleId ->
+                        navController.navigate("ArticleDetail/$articleId")
                     },
                     onActionClick = {
                         navController.navigate("NotificationSetting")
@@ -215,16 +218,25 @@ fun MainFlowScreen(
             composable("HomeMain") {
                 HomeScreen(
                     onArticleClick = { article ->
-                        navController.currentBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("article", article)
-                        navController.navigate("ArticleDetail")
+                        navController.navigate("ArticleDetail/${article.articleId}")
                     },
                     onSearchClick = {
                         navController.navigate("SearchMain")
                     },
                     onAlarmClick = {
 
+                    },
+                    onViewNewsLettersClick = {
+                        // TODO: 뉴스레터 목록 화면으로 이동
+                    },
+                    onRecommendClick = {
+                        // TODO: 뉴스레터 추천 화면으로 이동
+                    },
+                    onSignUpClick = {
+                        // TODO: 회원가입 화면으로 이동
+                    },
+                    onLoginClick = {
+                        // TODO: 로그인 화면으로 이동
                     }
                 )
             }
@@ -234,11 +246,8 @@ fun MainFlowScreen(
                     onSearchClick = {
                         navController.navigate("SearchMain")
                     },
-                    onArticleClick = { article ->
-                        navController.currentBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("article", article)
-                        navController.navigate("ArticleDetail")
+                    onArticleClick = { articleId ->
+                        navController.navigate("ArticleDetail/$articleId")
                     },
                     isGuestMode = isGuestMode
                 )
@@ -423,24 +432,20 @@ fun MainFlowScreen(
                 }
             }
 
-            composable("ArticleDetail") { backStackEntry ->
-                val article = remember(backStackEntry) {
-                    navController
-                        .previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.get<DailyArticleModel>("article")
-                }
-
-                if (article != null) {
-                    ArticleDetailScreen(
-                        article = article,
-                        onBack = { navController.popBackStack() }
-                    )
-                } else {
-                    LaunchedEffect(Unit) {
-                        navController.popBackStack()
+            composable(
+                route = "ArticleDetail/{articleId}",
+                arguments = listOf(
+                    navArgument("articleId") {
+                        type = NavType.IntType
                     }
-                }
+                )
+            ) { backStackEntry ->
+                val articleId = backStackEntry.arguments?.getInt("articleId")
+                    ?: throw IllegalArgumentException("아티클 ID가 존재하지 않습니다")
+                ArticleDetailScreen(
+                    articleId = articleId,
+                    onBack = { navController.popBackStack() }
+                )
             }
 
             composable(
@@ -457,7 +462,10 @@ fun MainFlowScreen(
                     ?: throw IllegalArgumentException("뉴스레터 ID가 존재하지 않습니다")
                 NewsLetterDetailScreen(
                     id = newsLetterId,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onArticleClick = { articleId ->
+                        navController.navigate("ArticleDetail/$articleId")
+                    }
                 )
             }
         }
@@ -480,18 +488,22 @@ fun BottomNavigationBar(
         BottomNavigationItem.MyPage,
     )
 
-    Column {
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Line_Disabled)
-        )
+    Surface(
+        modifier = Modifier
+            .padding(start = 12.dp, end = 12.dp, bottom = 32.dp),
+        shape = RoundedCornerShape(44.dp),
+        shadowElevation = 8.dp,
+        color = Color.White
+    ) {
         NavigationBar(
-            containerColor = Color.White
+            containerColor = Color.White,
+            tonalElevation = 0.dp,
+            windowInsets = WindowInsets(0, 0, 0, 0),
+            modifier = Modifier.padding(horizontal = 10.dp)
         ) {
             items.forEach { item ->
                 NavigationBarItem(
+                    modifier = Modifier.height(56.dp),
                     icon = {
                         val isSelected = currentRoute == item.route
                         Icon(
@@ -503,7 +515,12 @@ fun BottomNavigationBar(
                         )
                     },
                     label = {
-                        Text(text = item.label)
+                        Text(
+                            text = item.label,
+                            maxLines = 1,
+                            fontSize = if (item is BottomNavigationItem.MyPage) 10.sp else 12.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                     },
                     selected = (currentRoute == item.route),
                     alwaysShowLabel = true,

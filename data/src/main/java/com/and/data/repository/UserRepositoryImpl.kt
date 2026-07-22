@@ -1,5 +1,7 @@
 package com.and.data.repository
 
+import com.and.data.api.auth.PostKakaoLoginApi
+import com.and.data.api.auth.PostKakaoSignupApi
 import com.and.data.api.user.DeleteUserApi
 import com.and.data.api.user.GetPreInvestigateNewsLettersApi
 import com.and.data.api.user.GetUserByPhoneNumberApi
@@ -12,8 +14,12 @@ import com.and.data.api.user.PatchUserPasswordApi
 import com.and.data.api.user.PatchUserPhoneNumberApi
 import com.and.data.api.user.PostLoginApi
 import com.and.data.api.user.PostSignUpApi
+import com.and.data.mapper.KakaoProfileMapper
 import com.and.data.mapper.NewsLetterMapper
 import com.and.data.mapper.UserMapper
+import com.and.data.model.request.AgreementDto
+import com.and.data.model.request.KakaoLoginRequestDto
+import com.and.data.model.request.KakaoSignupRequestDto
 import com.and.data.model.request.LoginRequestDto
 import com.and.data.model.request.PatchUserIndustryRequestDto
 import com.and.data.model.request.PatchUserInterestRequestDto
@@ -23,12 +29,14 @@ import com.and.data.model.request.PatchUserPhoneNumberRequestDto
 import com.and.data.model.request.SignUpRequestDto
 import com.and.data.preference.AuthPreferenceStore
 import com.and.domain.model.Account
+import com.and.domain.model.KakaoLoginResult
 import com.and.domain.model.NewsLetter
 import com.and.domain.model.User
 import com.and.domain.model.type.Gender
 import com.and.domain.model.type.IndustryCategory
 import com.and.domain.model.type.InterestCategory
 import com.and.domain.repository.UserRepository
+import com.and.domain.usecase.auth.Agreement
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -44,8 +52,11 @@ class UserRepositoryImpl @Inject constructor(
     private val updateUserPhoneNumberApi: PatchUserPhoneNumberApi,
     private val loginApi: PostLoginApi,
     private val signupApi: PostSignUpApi,
+    private val kakaoLoginApi: PostKakaoLoginApi,
+    private val kakaoSignupApi: PostKakaoSignupApi,
     private val withdrawalApi: DeleteUserApi,
     private val userMapper: UserMapper,
+    private val kakaoProfileMapper: KakaoProfileMapper,
     private val newsLetterMapper: NewsLetterMapper,
     private val authPreferenceStore: AuthPreferenceStore
 ) : UserRepository, BaseRepository() {
@@ -59,8 +70,7 @@ class UserRepositoryImpl @Inject constructor(
                 authPreferenceStore.clearAccessToken()
             },
             mapper = { result ->
-                val a = result
-                true
+                result
             }
         )
     }
@@ -287,6 +297,69 @@ class UserRepositoryImpl @Inject constructor(
                 response.accessToken
             }
         )
+    }
+
+    override suspend fun kakaoLogin(code: String, redirectUri: String): KakaoLoginResult {
+        val response = handleApiCall(
+            apiCall = {
+                kakaoLoginApi.kakaoLogin(
+                    KakaoLoginRequestDto(
+                        code = code,
+                        redirectUri = redirectUri
+                    )
+                )
+            },
+            mapper = { it }
+        )
+
+        return if (response.isRegistered && response.accessToken != null && response.user != null) {
+            // 기존 회원: 액세스 토큰 저장 후 Success 반환
+            authPreferenceStore.saveAccessToken(response.accessToken)
+            authPreferenceStore.saveGuestMode(false)
+            KakaoLoginResult.Success(userMapper.mapToDomain(response.user))
+        } else if (!response.isRegistered && response.signupToken != null && response.profile != null) {
+            // 신규 회원: NeedSignup 반환 (토큰 저장 안함)
+            KakaoLoginResult.NeedSignup(
+                signupToken = response.signupToken,
+                profile = kakaoProfileMapper.mapToDomain(response.profile)
+            )
+        } else {
+            throw IllegalStateException("Invalid Kakao login response")
+        }
+    }
+
+    override suspend fun kakaoSignup(
+        signupToken: String,
+        nickname: String,
+        birthYear: String,
+        gender: Gender,
+        agreements: List<Agreement>
+    ): User {
+        val response = handleApiCall(
+            apiCall = {
+                kakaoSignupApi.kakaoSignup(
+                    KakaoSignupRequestDto(
+                        signupToken = signupToken,
+                        nickname = nickname,
+                        birthYear = birthYear,
+                        gender = gender.value,
+                        agreements = agreements.map {
+                            AgreementDto(
+                                type = it.type.value,
+                                agreed = it.agreed
+                            )
+                        }
+                    )
+                )
+            },
+            mapper = { it }
+        )
+
+        // 토큰 저장
+        authPreferenceStore.saveAccessToken(response.accessToken)
+        authPreferenceStore.saveGuestMode(false)
+
+        return userMapper.mapToDomain(response.user)
     }
 
     override suspend fun withdrawal(): Pair<Boolean, String> {

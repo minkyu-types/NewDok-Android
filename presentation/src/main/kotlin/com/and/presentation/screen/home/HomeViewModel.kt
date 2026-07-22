@@ -6,18 +6,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.article.GetArticlesByDateUseCase
 import com.and.domain.usecase.article.GetMonthlyArticleStatusUseCase
+import com.and.domain.usecase.newsletter.member.GetSubscribedNewsLettersCountUseCase
+import com.and.domain.usecase.user.IsGuestModeUseCase
 import com.and.domain.util.ApiException
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.DailyArticleStatusModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMonthlyArticleStatusUseCase: GetMonthlyArticleStatusUseCase,
-    private val getArticlesByDateUseCase: GetArticlesByDateUseCase
+    private val getArticlesByDateUseCase: GetArticlesByDateUseCase,
+    private val isGuestModeUseCase: IsGuestModeUseCase,
+    private val getSubscribedNewsLettersCountUseCase: GetSubscribedNewsLettersCountUseCase
 ): ViewModel() {
 
     private val _monthlyArticleStateUiState = mutableStateOf<UiState<List<DailyArticleStatusModel>>>(UiState.Idle)
@@ -25,6 +30,29 @@ class HomeViewModel @Inject constructor(
 
     private val _articlesUiState = mutableStateOf<UiState<List<DailyArticleModel>>>(UiState.Idle)
     val articlesUiState: State<UiState<List<DailyArticleModel>>> = _articlesUiState
+
+    private val _isGuestMode = mutableStateOf(false)
+    val isGuestMode: State<Boolean> = _isGuestMode
+
+    private val _subscribedNewsLettersCount = mutableStateOf(0)
+    val subscribedNewsLettersCount: State<Int> = _subscribedNewsLettersCount
+
+    init {
+        loadUserState()
+    }
+
+    private fun loadUserState() {
+        viewModelScope.launch {
+            _isGuestMode.value = isGuestModeUseCase(Unit).first()
+        }
+        viewModelScope.launch {
+            runCatching {
+                getSubscribedNewsLettersCountUseCase(Unit)
+            }.onSuccess { count ->
+                _subscribedNewsLettersCount.value = count
+            }
+        }
+    }
 
     fun getArticleStatusByYearMonth(
         year: Int,

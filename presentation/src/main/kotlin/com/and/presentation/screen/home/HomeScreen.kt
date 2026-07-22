@@ -38,10 +38,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.newdok.presentation.R
+import com.and.presentation.component.button.ButtonSize
+import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.dialog.CalendarDialog
 import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.DailyArticleModel
@@ -59,17 +63,29 @@ import com.and.presentation.util.removeRippleEffect
 import com.and.presentation.util.toLocalDateWithKRFormat
 import java.time.LocalDate
 
+sealed class HomeEmptyType {
+    data object Guest : HomeEmptyType()
+    data object NoSubscription : HomeEmptyType()
+    data object NoArticleToday : HomeEmptyType()
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     onArticleClick: (DailyArticleModel) -> Unit,
     onSearchClick: () -> Unit,
     onAlarmClick: () -> Unit,
+    onViewNewsLettersClick: () -> Unit,
+    onRecommendClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val dailyArticleState by viewModel.monthlyArticleStateUiState
     val articlesByDateState by viewModel.articlesUiState
+    val isGuestMode by viewModel.isGuestMode
+    val subscribedCount by viewModel.subscribedNewsLettersCount
 
     var showDialog by remember { mutableStateOf(false) }
     var currSelectedDate: LocalDate by remember { mutableStateOf(LocalDate.now()) }
@@ -125,22 +141,40 @@ fun HomeScreen(
             }
         )
         Spacer(modifier = Modifier.height(8.dp))
-        HomeArticleList(
-            articles = when (articlesByDateState) {
-                is UiState.Success<List<DailyArticleModel>> -> {
-                    (articlesByDateState as UiState.Success).data
-                }
 
-                else -> emptyList()
-            },
-            onRefreshClick = {
-                // 아티클 리스트 갱신
-                // 갱신 시 오늘 날짜로 다시 조회하도록 수정
-            },
-            onItemClick = {
-                onArticleClick(it)
-            },
-        )
+        val homeArticles = when (articlesByDateState) {
+            is UiState.Success<List<DailyArticleModel>> -> {
+                (articlesByDateState as UiState.Success).data
+            }
+
+            else -> emptyList()
+        }
+        
+        if (homeArticles.isEmpty()) {
+            val emptyType = when {
+                isGuestMode -> HomeEmptyType.Guest
+                subscribedCount == 0 -> HomeEmptyType.NoSubscription
+                else -> HomeEmptyType.NoArticleToday
+            }
+            HomeScreenEmptyView(
+                emptyType = emptyType,
+                onViewNewsLettersClick = onViewNewsLettersClick,
+                onRecommendClick = onRecommendClick,
+                onSignUpClick = onSignUpClick,
+                onLoginClick = onLoginClick
+            )
+        } else {
+            HomeArticleList(
+                articles = homeArticles,
+                onRefreshClick = {
+                    // 아티클 리스트 갱신
+                    // 갱신 시 오늘 날짜로 다시 조회하도록 수정
+                },
+                onItemClick = {
+                    onArticleClick(it)
+                },
+            )
+        }
     }
 }
 
@@ -218,7 +252,9 @@ fun HomeCalendarBar(
             )
             Icon(
                 painter = painterResource(R.drawable.ic_calendar),
-                contentDescription = null
+                contentDescription = null,
+                tint = Caption_Strong,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -362,6 +398,106 @@ fun HomeArticleListItem(
     }
 }
 
+@Composable
+fun HomeScreenEmptyView(
+    emptyType: HomeEmptyType,
+    onViewNewsLettersClick: () -> Unit,
+    onRecommendClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val imageRes = when (emptyType) {
+        HomeEmptyType.NoArticleToday -> R.drawable.img_home_empty_article
+        HomeEmptyType.NoSubscription -> R.drawable.img_empty_newsletter
+        HomeEmptyType.Guest -> R.drawable.img_empty_article_nonmember
+    }
+
+    val titleText = when (emptyType) {
+        HomeEmptyType.NoArticleToday -> stringResource(R.string.home_empty_no_article_title)
+        HomeEmptyType.NoSubscription -> stringResource(R.string.home_empty_no_subscription_title)
+        HomeEmptyType.Guest -> stringResource(R.string.home_empty_guest_title)
+    }
+
+    val bodyText = when (emptyType) {
+        HomeEmptyType.NoArticleToday -> stringResource(R.string.home_empty_no_article_body)
+        HomeEmptyType.NoSubscription -> stringResource(R.string.home_empty_no_subscription_body)
+        HomeEmptyType.Guest -> null
+    }
+
+    val buttonText = when (emptyType) {
+        HomeEmptyType.NoArticleToday -> stringResource(R.string.home_empty_no_article_button)
+        HomeEmptyType.NoSubscription -> stringResource(R.string.home_empty_no_subscription_button)
+        HomeEmptyType.Guest -> stringResource(R.string.home_empty_guest_button)
+    }
+
+    val onButtonClick = when (emptyType) {
+        HomeEmptyType.NoArticleToday -> onViewNewsLettersClick
+        HomeEmptyType.NoSubscription -> onRecommendClick
+        HomeEmptyType.Guest -> onSignUpClick
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(color = Color.White)
+            .padding(vertical = 40.dp, horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(imageRes),
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = titleText,
+            style = Body1Normal,
+            fontWeight = FontWeight.Bold,
+            color = Caption_Strong,
+            textAlign = TextAlign.Center
+        )
+        if (bodyText != null) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = bodyText,
+                style = Body2Normal,
+                fontWeight = FontWeight.Medium,
+                color = Caption_Neutral,
+                textAlign = TextAlign.Center
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        SolidPrimaryButton(
+            buttonText = buttonText,
+            buttonSize = ButtonSize.MEDIUM,
+            onClick = onButtonClick
+        )
+        if (emptyType is HomeEmptyType.Guest) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.home_empty_guest_login_desc),
+                    style = Caption,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Neutral
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.login),
+                    style = Caption,
+                    fontWeight = FontWeight.Medium,
+                    color = Caption_Strong,
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable { onLoginClick() }
+                )
+            }
+        }
+    }
+}
+
 @Preview(
     name = "HomeScreen Preview",
     showBackground = true
@@ -370,15 +506,13 @@ fun HomeArticleListItem(
 fun HomeScreenPreview() {
     DefaultWhiteTheme {
         HomeScreen(
-            onArticleClick = {
-
-            },
-            onSearchClick = {
-
-            },
-            onAlarmClick = {
-
-            }
+            onArticleClick = {},
+            onSearchClick = {},
+            onAlarmClick = {},
+            onViewNewsLettersClick = {},
+            onRecommendClick = {},
+            onSignUpClick = {},
+            onLoginClick = {}
         )
     }
 }

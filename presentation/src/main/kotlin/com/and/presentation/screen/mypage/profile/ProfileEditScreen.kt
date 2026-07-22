@@ -219,6 +219,7 @@ fun InterestTags(
             ) {
                 Text(
                     text = interest.value,
+                    style = Body2Normal,
                     modifier = Modifier
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     color = Caption_Strong,
@@ -235,6 +236,7 @@ fun InterestTags(
         ) {
             Text(
                 text = stringResource(R.string.add),
+                style = Body2Normal,
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 color = Primary_Normal,

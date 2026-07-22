@@ -228,7 +228,8 @@ fun RegisterBirthYear(
             onYearSelect = { year ->
                 onSelect(year)
                 dropdownExpanded = false
-            }
+            },
+            onDismiss = { dropdownExpanded = false }
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
@@ -249,6 +250,7 @@ fun BirthYearDropDown(
     boxSize: Size,
     years: List<String>,
     onYearSelect: (String) -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CompositionLocalProvider(
@@ -256,9 +258,7 @@ fun BirthYearDropDown(
     ) {
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = {
-
-            },
+            onDismissRequest = onDismiss,
             modifier = Modifier
                 .width(
                     with(LocalDensity.current) {

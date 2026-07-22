@@ -57,7 +57,6 @@ import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.item.SelectableInterestTag
 import com.and.presentation.component.topbar.MainTopBar
-import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticleModel
 import com.and.presentation.model.bookmarkedarticle.BookmarkedArticlesModel
 import com.and.presentation.model.bookmarkedarticle.MonthlyBookmarkedArticlesModel
@@ -79,7 +78,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BookmarkScreen(
     onSearchClick: () -> Unit,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     isGuestMode: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
@@ -126,7 +125,7 @@ fun BookmarkContent(
     articleCount: Int,
     monthlyArticles: List<MonthlyBookmarkedArticlesModel>,
     onSearchClick: () -> Unit,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     onInterestClick: (InterestCategory) -> Unit,
     onSortChanged: (ArticleSortCategory) -> Unit,
     isGuestMode: Boolean = false,
@@ -281,7 +280,7 @@ fun BookmarkResultBar(
 @Composable
 fun BookmarkArticleList(
     monthlyBookmarkedArticles: List<MonthlyBookmarkedArticlesModel>,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     refreshState: PullToRefreshState,
@@ -317,7 +316,7 @@ fun BookmarkArticleList(
 @Composable
 fun ArticleExistView(
     articles: List<MonthlyBookmarkedArticlesModel>,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

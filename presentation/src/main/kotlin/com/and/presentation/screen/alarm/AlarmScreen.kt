@@ -31,7 +31,6 @@ import com.and.presentation.component.item.NewsLetterSimpleItem
 import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.NewsLetterModel
-import com.and.presentation.screen.feed.FeedTab
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Alternative
 import com.and.presentation.ui.Caption_Neutral
@@ -43,7 +42,7 @@ import java.time.LocalDate
 @Composable
 fun AlarmScreen(
     onBack: () -> Unit,
-    onArticleClick: (DailyArticleModel) -> Unit,
+    onArticleClick: (Int) -> Unit,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

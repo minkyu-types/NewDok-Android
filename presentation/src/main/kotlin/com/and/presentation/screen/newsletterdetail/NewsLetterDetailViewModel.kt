@@ -6,24 +6,43 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.newsletter.member.GetNewsLetterByIdUseCase
 import com.and.domain.usecase.newsletter.member.UpdateSubscriptionUseCase
+import com.and.domain.usecase.user.GetUserInfoUseCase
 import com.and.domain.util.ApiException
 import com.and.presentation.mapper.NewsLetterDetailMapper
 import com.and.presentation.model.NewsLetterDetailModel
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class NewsLetterDetailViewModel @Inject constructor(
     private val getNewsLetterByIdUseCase: GetNewsLetterByIdUseCase,
     private val updateSubscriptionUseCase: UpdateSubscriptionUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val newsLetterDetailMapper: NewsLetterDetailMapper
 ): ViewModel() {
     private val _newsLetterDetailUiState = mutableStateOf<UiState<NewsLetterDetailModel>>(UiState.Idle)
     val newsLetterDetailUiState: State<UiState<NewsLetterDetailModel>> = _newsLetterDetailUiState
+
+    private val _subscribeEmail = mutableStateOf("")
+    val subscribeEmail: State<String> = _subscribeEmail
+
+    init {
+        loadSubscribeEmail()
+    }
+
+    private fun loadSubscribeEmail() {
+        viewModelScope.launch {
+            runCatching {
+                getUserInfoUseCase(Unit)
+            }.onSuccess { user ->
+                _subscribeEmail.value = user.subscribeEmail
+            }.onFailure { error ->
+                error.printStackTrace()
+            }
+        }
+    }
 
     fun getNewsLetterDetail(
         id: Int

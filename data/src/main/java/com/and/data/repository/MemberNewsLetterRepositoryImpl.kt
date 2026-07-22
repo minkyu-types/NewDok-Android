@@ -47,11 +47,15 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
         industries: List<IndustryCategory>,
         dayIds: List<Int>
     ): List<NewsLetter> {
+        val filteredIndustries = industries
+            .filter { it != IndustryCategory.ALL_INDUSTRIES }
+            .map { it.id.toString() }
+
         return handleApiCall(
             apiCall = {
                 getNewsLettersApi.getAllNewsLetters(
                     orderOpt = orderOption.value,
-                    industry = industries.map { it.id.toString() },
+                    industry = filteredIndustries,
                     day = dayIds.map { it.toString() }
                 )
             },
@@ -103,7 +107,7 @@ class MemberNewsLetterRepositoryImpl @Inject constructor(
             mapper = { response ->
                 response.map { newsLetter ->
                     recommendedNewsLetterMapper.mapToDomain(newsLetter)
-                }
+                }.take(5)
             }
         )
     }

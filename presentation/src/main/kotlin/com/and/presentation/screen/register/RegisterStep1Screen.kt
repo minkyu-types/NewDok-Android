@@ -330,7 +330,7 @@ fun AuthTextField(
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .height(56.dp),
             colors = TextFieldDefaults.colors(
                 // 인증번호 6자리 (숫자만) 입력되면 Primary_Normal 적용
                 focusedIndicatorColor = Primary_Normal,

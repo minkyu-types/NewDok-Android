@@ -34,6 +34,9 @@ class SubscriptionViewModel @Inject constructor(
     private val _subscribedUiState = mutableStateOf<UiState<List<BriefNewsLetterModel>>>(UiState.Idle)
     val subscribedUiState: State<UiState<List<BriefNewsLetterModel>>> = _subscribedUiState
 
+    private val _isRefreshing = mutableStateOf(false)
+    val isRefreshing: State<Boolean> = _isRefreshing
+
     fun updateSubscription(
         newsLetterId: Int,
         wasSubscribed: Boolean
@@ -61,9 +64,13 @@ class SubscriptionViewModel @Inject constructor(
         }
     }
 
-    fun getSubscribedNewsLetters() {
+    fun getSubscribedNewsLetters(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _subscribedUiState.value = UiState.Loading
+            if (isRefresh) {
+                _isRefreshing.value = true
+            } else {
+                _subscribedUiState.value = UiState.Loading
+            }
 
             runCatching {
                 val newsLetters = getSubscribedNewsLettersUseCase(Unit)
@@ -76,13 +83,21 @@ class SubscriptionViewModel @Inject constructor(
                 error.printStackTrace()
                 val message = (error as? ApiException)?.message ?: error.localizedMessage
                 _subscribedUiState.value = UiState.Error(message)
+            }.also {
+                if (isRefresh) {
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun getUnsubscribedNewsLetters() {
+    fun getUnsubscribedNewsLetters(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _subscribedUiState.value = UiState.Loading
+            if (isRefresh) {
+                _isRefreshing.value = true
+            } else {
+                _subscribedUiState.value = UiState.Loading
+            }
 
             runCatching {
                 val newsLetters = getUnSubscribedNewsLettersUseCase(Unit)
@@ -95,6 +110,10 @@ class SubscriptionViewModel @Inject constructor(
                 error.printStackTrace()
                 val message = (error as? ApiException)?.message ?: error.localizedMessage
                 _subscribedUiState.value = UiState.Error(message)
+            }.also {
+                if (isRefresh) {
+                    _isRefreshing.value = false
+                }
             }
         }
     }

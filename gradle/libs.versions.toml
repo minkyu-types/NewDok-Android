@@ -64,7 +64,8 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 navigation-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "navigation-hilt" }
 pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "pager-indicator" }
 
-kakao-login = { group = "com.kakao.sdk", name = "v2-all", version.ref = "kakao-login" }
+kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-login" }
+kakao-auth = { group = "com.kakao.sdk", name = "v2-auth", version.ref = "kakao-login" }
 naver-login = { group = "com.navercorp.nid", name = "oauth", version.ref = "naver-oauth" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }

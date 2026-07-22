@@ -21,10 +21,20 @@ android {
         applicationId = "com.and.newdok"
         minSdk = 28
         targetSdk = 36
-        versionCode = 4
+        versionCode = 7
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Kakao Native App Key from local.properties
+        val props = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            props.load(FileInputStream(localPropertiesFile))
+        }
+        val kakaoNativeAppKey = props.getProperty("KAKAO_NATIVE_APP_KEY") ?: ""
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"$kakaoNativeAppKey\"")
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoNativeAppKey
     }
 
     signingConfigs {
@@ -101,6 +111,9 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":presentation"))
+
+    // Kakao SDK
+    implementation(libs.kakao.login)
 
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)

@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
@@ -22,6 +25,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        // Kakao Native App Key from local.properties
+        val props = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            props.load(FileInputStream(localPropertiesFile))
+        }
+        val kakaoNativeAppKey = props.getProperty("KAKAO_NATIVE_APP_KEY") ?: ""
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"$kakaoNativeAppKey\"")
     }
 
     buildTypes {
@@ -86,6 +98,10 @@ dependencies {
 
     // Ted permission
     implementation(libs.ted.permission)
+
+    // Kakao Login
+    implementation(libs.kakao.login)
+    implementation(libs.kakao.auth)
 
     implementation(libs.constraintlayout)
     // Ktx
