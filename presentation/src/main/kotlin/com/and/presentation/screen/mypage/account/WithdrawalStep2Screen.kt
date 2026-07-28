@@ -58,6 +58,20 @@ fun WithdrawalStep2Screen(
     val isAnyChecked = isReason1Checked || isReason2Checked || isReason3Checked || isReasonGuitarChecked
     val withdrawalUiState by viewModel.userWithdrawalUiState
 
+    LaunchedEffect(withdrawalUiState) {
+        when (withdrawalUiState) {
+            is UiState.Success<Boolean> -> {
+                viewModel.consumeWithdrawalResult()
+                onWithdrawal()
+            }
+            is UiState.Error -> {
+                Toast.makeText(context, "회원탈퇴에 실패했습니다", Toast.LENGTH_SHORT).show()
+                viewModel.consumeWithdrawalResult()
+            }
+            else -> Unit
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -120,17 +134,9 @@ fun WithdrawalStep2Screen(
             }
             Spacer(modifier = Modifier.weight(1f))
             ConditionalNextButton(
-                enabled = isAnyChecked,
+                enabled = isAnyChecked && withdrawalUiState !is UiState.Loading,
                 onClick = {
                     viewModel.withdrawal()
-
-                    when (withdrawalUiState) {
-                        is UiState.Success<Boolean> -> onWithdrawal()
-                        is UiState.Error -> Toast.makeText(context, "회원탈퇴에 실패했습니다", Toast.LENGTH_SHORT).show()
-                        else -> {
-
-                        }
-                    }
                 },
                 buttonText = stringResource(R.string.withdrawal_button),
             )

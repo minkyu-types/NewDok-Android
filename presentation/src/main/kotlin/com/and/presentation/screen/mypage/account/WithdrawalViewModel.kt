@@ -10,6 +10,7 @@ import com.and.domain.usecase.user.DeleteUserUseCase
 import com.and.domain.usecase.user.GetUserInfoUseCase
 import com.and.presentation.mapper.UserMapper
 import com.and.presentation.model.UserModel
+import com.and.presentation.util.KakaoLoginHelper
 import com.and.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -44,6 +45,12 @@ class WithdrawalViewModel @Inject constructor(
             _userWithdrawalUiState.value = UiState.Loading
 
             try {
+                KakaoLoginHelper.unlink()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            try {
                 deleteUserUseCase(Unit)
                 _userWithdrawalUiState.value = UiState.Success(true)
             } catch (e: Exception) {
@@ -53,6 +60,10 @@ class WithdrawalViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun consumeWithdrawalResult() {
+        _userWithdrawalUiState.value = UiState.Idle
     }
 
     private fun getUserInfo() {
