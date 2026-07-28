@@ -85,7 +85,6 @@ fun MainNavGraph(
                     coroutineScope.launch {
                         try {
                             val authCode = KakaoLoginHelper.login(context)
-                            // TODO: redirectUri를 실제 값으로 변경 (카카오 디벨로퍼스에 등록한 값)
                             val redirectUri = "kakao${com.and.newdok.presentation.BuildConfig.KAKAO_NATIVE_APP_KEY}://oauth"
                             socialLoginViewModel.kakaoLogin(authCode, redirectUri)
                         } catch (e: Exception) {
