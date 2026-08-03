@@ -16,6 +16,14 @@
 -keep interface com.squareup.moshi.** { *; }
 -keep class * extends com.squareup.moshi.JsonAdapter { *; }
 
+# 어노테이션 메서드 방식 커스텀 어댑터(@FromJson/@ToJson)는
+# Moshi가 리플렉션으로만 호출하므로 R8 full mode에서 제거되지 않도록 보존
+# (제거되면 Moshi.Builder().add() 시점에 IllegalArgumentException으로 크래시)
+-keepclassmembers class * {
+    @com.squareup.moshi.FromJson <methods>;
+    @com.squareup.moshi.ToJson <methods>;
+}
+
 # DTO/Response/Request 모델 클래스 보존 (data 모듈)
 -keep class com.and.data.model.** { *; }
 

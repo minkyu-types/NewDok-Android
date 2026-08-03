@@ -37,6 +37,14 @@
     @com.squareup.moshi.Json <fields>;
 }
 
+# 어노테이션 메서드 방식 커스텀 어댑터(@FromJson/@ToJson)는
+# Moshi가 리플렉션으로만 호출하므로 R8 full mode에서 제거되지 않도록 보존
+# (제거되면 Moshi.Builder().add() 시점에 IllegalArgumentException으로 크래시)
+-keepclassmembers class * {
+    @com.squareup.moshi.FromJson <methods>;
+    @com.squareup.moshi.ToJson <methods>;
+}
+
 # DTO 모델 보존 (직렬화/역직렬화 대상)
 -keep class com.and.data.model.** { *; }
 -keep class com.and.domain.model.** { *; }
