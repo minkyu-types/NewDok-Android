@@ -50,7 +50,7 @@ class SubscriptionViewModel @Inject constructor(
                     )
                 )
             }.onSuccess {
-                _eventChannel.send(CommonUiEvent.ShowToast("북마크 변경 완료"))
+                _eventChannel.send(CommonUiEvent.ShowToast("구독 상태가 변경되었습니다"))
                 withContext(Dispatchers.Main) {
                     val currentState = _subscribedUiState.value
                     if (currentState is UiState.Success) {
@@ -60,6 +60,7 @@ class SubscriptionViewModel @Inject constructor(
                 }
             }.onFailure { error ->
                 error.printStackTrace()
+                _eventChannel.send(CommonUiEvent.ShowToast("구독 상태 변경에 실패했습니다"))
             }
         }
     }

@@ -20,15 +20,19 @@ object KakaoLoginHelper {
      * 카카오 로그인을 수행하고 Access Token을 반환합니다.
      *
      * @param context Android Context
-     * @return Access Token (카카오 액세스 토큰)
+     * @return Access Token (카카오 액세스 토큰), 사용자가 로그인을 취소한 경우 null
      * @throws Exception 로그인 실패 시 예외 발생
      */
-    suspend fun login(context: Context): String = suspendCancellableCoroutine { continuation ->
+    suspend fun login(context: Context): String? = suspendCancellableCoroutine { continuation ->
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             when {
                 error != null -> {
                     if (continuation.isActive) {
-                        continuation.resumeWithException(error)
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                            continuation.resume(null)
+                        } else {
+                            continuation.resumeWithException(error)
+                        }
                     }
                 }
                 token != null -> {
@@ -54,7 +58,10 @@ object KakaoLoginHelper {
                     if (error != null) {
                         // 사용자가 카카오톡 로그인을 취소한 경우
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                            // 취소된 경우 아무것도 하지 않음
+                            // 취소 시 null을 반환해 호출 측 코루틴이 대기 상태로 남지 않도록 함
+                            if (continuation.isActive) {
+                                continuation.resume(null)
+                            }
                             return@loginWithKakaoTalk
                         }
 

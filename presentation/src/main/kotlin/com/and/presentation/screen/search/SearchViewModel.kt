@@ -54,9 +54,17 @@ class SearchViewModel @Inject constructor(
                         newsLetter = newsLetter,
                         articles = articles
                     )
+                }.catch { e ->
+                    // catch를 쿼리별 내부 flow에 두어야 상위 스트림이 종료되지 않고
+                    // 이후 검색어 입력이 계속 동작한다
+                    e.printStackTrace()
+                    emit(
+                        SearchResultModel.MemberSearchResultModel.EMPTY.copy(
+                            message = "검색 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
+                        )
+                    )
                 }
             }
-            .catch { /* error silently consumed — search will show no results */ }
 
     init {
         viewModelScope.launch {

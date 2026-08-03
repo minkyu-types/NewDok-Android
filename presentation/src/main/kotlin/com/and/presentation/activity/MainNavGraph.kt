@@ -84,7 +84,8 @@ fun MainNavGraph(
                 onKakaoLoginClick = {
                     coroutineScope.launch {
                         try {
-                            val authCode = KakaoLoginHelper.login(context)
+                            // 사용자가 로그인을 취소한 경우 null 반환 → 조용히 종료
+                            val authCode = KakaoLoginHelper.login(context) ?: return@launch
                             val redirectUri = "kakao${com.and.newdok.presentation.BuildConfig.KAKAO_NATIVE_APP_KEY}://oauth"
                             socialLoginViewModel.kakaoLogin(authCode, redirectUri)
                         } catch (e: Exception) {
@@ -107,7 +108,9 @@ fun MainNavGraph(
         composable(ScreenFlow.LOGIN.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    navController.navigate(ScreenFlow.MAIN.route)
+                    navController.navigate(ScreenFlow.MAIN.route) {
+                        popUpTo(ScreenFlow.ON_BOARDING.route) { inclusive = true }
+                    }
                 },
                 onLoginWithoutSignUp = {
                     coroutineScope.launch {
@@ -159,15 +162,11 @@ fun MainNavGraph(
                     }
                 },
                 onLogout = {
-                    android.util.Log.d("MainNavGraph", "onLogout callback called")
                     coroutineScope.launch {
-                        android.util.Log.d("MainNavGraph", "Setting guest mode to false")
                         viewModel.setGuestMode(false)
-                        android.util.Log.d("MainNavGraph", "Navigating to ON_BOARDING")
                         navController.navigate(ScreenFlow.ON_BOARDING.route) {
                             popUpTo(ScreenFlow.MAIN.route) { inclusive = true }
                         }
-                        android.util.Log.d("MainNavGraph", "Navigation completed")
                     }
                 }
             )

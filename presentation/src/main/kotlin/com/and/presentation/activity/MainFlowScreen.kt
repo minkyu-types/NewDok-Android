@@ -104,8 +104,8 @@ fun MainFlowScreen(
             composable("SearchMain") {
                 SearchScreen(
                     onBack = { navController.popBackStack() },
-                    onNewsLetterClick = {
-                        navController.navigate("NewsLetterDetail")
+                    onNewsLetterClick = { newsLetter ->
+                        navController.navigate("NewsLetterDetail/${newsLetter.id}")
                     },
                     onArticleClick = { articleId ->
                         navController.navigate("ArticleDetail/$articleId")
@@ -227,17 +227,15 @@ fun MainFlowScreen(
 
                     },
                     onViewNewsLettersClick = {
-                        // TODO: 뉴스레터 목록 화면으로 이동
+                        navController.navigateToBottomTab("FeedMain")
                     },
                     onRecommendClick = {
-                        // TODO: 뉴스레터 추천 화면으로 이동
+                        navController.navigateToBottomTab("FeedMain")
                     },
                     onSignUpClick = {
-                        // TODO: 회원가입 화면으로 이동
+                        rootNavController.navigate(ScreenFlow.SOCIAL_LOGIN.route)
                     },
-                    onLoginClick = {
-                        // TODO: 로그인 화면으로 이동
-                    }
+                    onLoginClick = onNavigateToLogin
                 )
             }
 
@@ -469,6 +467,16 @@ fun MainFlowScreen(
                 )
             }
         }
+    }
+}
+
+private fun NavController.navigateToBottomTab(route: String) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 

@@ -123,6 +123,11 @@ class RegisterViewModel @Inject constructor(
         _resendCount.value++
     }
 
+    fun resetAuthVerification() {
+        _authVerificationState.value = UiState.Idle
+        refreshNextEnabled()
+    }
+
     fun expireAuthCodeTimer() {
         if (isAuthVerified()) return
 

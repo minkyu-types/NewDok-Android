@@ -65,7 +65,7 @@ fun TermsScreen(
             .background(color = Color.White)
     ) {
         TopBar(
-            title = stringResource(R.string.service_feedback),
+            title = stringResource(R.string.terms),
             onNavigationIconClick = onBack,
         )
         Column(

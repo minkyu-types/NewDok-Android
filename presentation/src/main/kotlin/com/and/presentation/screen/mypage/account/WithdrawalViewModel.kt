@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.usecase.article.GetReceivedArticlesCountUseCase
 import com.and.domain.usecase.newsletter.member.GetSubscribedNewsLettersCountUseCase
+import com.and.domain.usecase.user.DeleteUserAccessTokenUseCase
 import com.and.domain.usecase.user.DeleteUserUseCase
 import com.and.domain.usecase.user.GetUserInfoUseCase
 import com.and.presentation.mapper.UserMapper
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class WithdrawalViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val deleteUserAccessTokenUseCase: DeleteUserAccessTokenUseCase,
     private val getSubscribedNewsLettersCountUseCase: GetSubscribedNewsLettersCountUseCase,
     private val getReceivedArticlesCountUseCase: GetReceivedArticlesCountUseCase,
     private val userMapper: UserMapper
@@ -52,6 +54,9 @@ class WithdrawalViewModel @Inject constructor(
 
             try {
                 deleteUserUseCase(Unit)
+                // 서버 탈퇴 후 로컬 토큰을 지우지 않으면 다음 실행 시 탈퇴한 계정으로 자동로그인됨
+                runCatching { deleteUserAccessTokenUseCase(Unit) }
+                    .onFailure { it.printStackTrace() }
                 _userWithdrawalUiState.value = UiState.Success(true)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -68,20 +73,34 @@ class WithdrawalViewModel @Inject constructor(
 
     private fun getUserInfo() {
         viewModelScope.launch {
-            val userInfo = getUserInfoUseCase(Unit).run {
-                userMapper.mapToPresentation(this)
-            }
+            try {
+                val userInfo = getUserInfoUseCase(Unit).run {
+                    userMapper.mapToPresentation(this)
+                }
 
-            _userInfoUiState.value = UiState.Success(userInfo)
+                _userInfoUiState.value = UiState.Success(userInfo)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _userInfoUiState.value = UiState.Error(
+                    message = e.message ?: "사용자 정보를 불러오지 못했습니다."
+                )
+            }
         }
     }
 
     private fun getUserCountData() {
         viewModelScope.launch {
-            val newsLetterCount = async { getSubscribedNewsLettersCountUseCase(Unit) }
-            val articlesCount = async { getReceivedArticlesCountUseCase(Unit) }
+            try {
+                val newsLetterCount = async { getSubscribedNewsLettersCountUseCase(Unit) }
+                val articlesCount = async { getReceivedArticlesCountUseCase(Unit) }
 
-            _userCountInfoUiState.value = UiState.Success(Pair(newsLetterCount.await(), articlesCount.await()))
+                _userCountInfoUiState.value = UiState.Success(Pair(newsLetterCount.await(), articlesCount.await()))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _userCountInfoUiState.value = UiState.Error(
+                    message = e.message ?: "구독 정보를 불러오지 못했습니다."
+                )
+            }
         }
     }
 }

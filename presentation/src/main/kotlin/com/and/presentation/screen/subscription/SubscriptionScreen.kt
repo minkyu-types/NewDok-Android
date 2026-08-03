@@ -129,9 +129,7 @@ fun SubscriptionScreen(
     ) {
         MainTopBar(
             title = stringResource(R.string.subscription_title),
-            onSearchClick = {
-
-            },
+            onSearchClick = onSearchClick,
             onAlarmClick = {
 
             }

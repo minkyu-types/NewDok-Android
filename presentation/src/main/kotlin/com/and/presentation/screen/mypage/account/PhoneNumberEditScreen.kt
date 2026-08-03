@@ -89,10 +89,11 @@ fun PhoneNumberEditScreen(
             body = stringResource(R.string.auth_fail_body),
             buttonText = stringResource(R.string.auth_fail_button),
             onClick = {
-
+                // 상태를 리셋하지 않으면 리컴포지션마다 다이얼로그가 다시 떠서 화면이 잠김
+                viewModel.resetAuthVerification()
             },
             onDismiss = {
-
+                viewModel.resetAuthVerification()
             }
         )
     }
