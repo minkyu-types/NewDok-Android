@@ -20,7 +20,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "BASE_URL_DEV", "\"https://api-dev.newdok.store/api/\"")
+        // 모든 API 인터페이스가 절대경로("/...")를 사용하므로 base URL은 호스트만 의미가 있다
+        buildConfigField("String", "BASE_URL_DEV", "\"https://api-dev.newdok.store/\"")
         buildConfigField("String", "BASE_URL_PRODUCT", "\"https://newdok.shop/\"")
     }
 
