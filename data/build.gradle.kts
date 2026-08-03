@@ -20,8 +20,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "BASE_URL_DEV", "\"https://api-dev.newdok.store/\"")
-        buildConfigField("String", "BASE_URL_PRODUCT", "\"https://api-dev.newdok.store/api/\"")
+        buildConfigField("String", "BASE_URL_DEV", "\"https://api-dev.newdok.store/api/\"")
+        buildConfigField("String", "BASE_URL_PRODUCT", "\"https://newdok.shop/\"")
     }
 
     buildTypes {

@@ -6,7 +6,4 @@
             <certificates src="system" />
         </trust-anchors>
     </debug-overrides>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">3.38.79.19</domain>
-    </domain-config>
 </network-security-config>
