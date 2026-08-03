@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -92,6 +94,10 @@ android {
             signingConfigs.findByName("release")?.let {
                 signingConfig = it
             }
+
+            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+                mappingFileUploadEnabled = true
+            }
         }
     }
 
@@ -114,6 +120,11 @@ dependencies {
 
     // Kakao SDK
     implementation(libs.kakao.login)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)

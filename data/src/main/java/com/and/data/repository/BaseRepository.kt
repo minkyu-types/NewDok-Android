@@ -1,6 +1,7 @@
 package com.and.data.repository
 
 import com.and.domain.util.ApiException
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,13 +34,18 @@ abstract class BaseRepository(
             val msg = runCatching {
                 JSONObject(rawErrorBody).optString("message", e.message())
             }.getOrDefault(e.message())
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(e.code(), msg)
         }  catch (e: IOException) {
             if (e.message?.contains("Canceled", ignoreCase = true) == true) {
                 throw CancellationException("OkHttp call canceled", e)
             }
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(-1, "네트워크 오류")
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(-1, e.message)
         }
     }
@@ -56,13 +62,18 @@ abstract class BaseRepository(
             val msg = runCatching {
                 JSONObject(rawErrorBody).optString("message", e.message())
             }.getOrDefault(e.message())
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(e.code(), msg)
         } catch (e: IOException) {
             if (e.message?.contains("Canceled", ignoreCase = true) == true) {
                 return@flow
             }
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(-1, "네트워크 오류")
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw ApiException(-1, e.message)
         }
     }

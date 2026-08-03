@@ -39,6 +39,9 @@ ted-permission = "3.3.0"
 pager-indicator = "0.32.0"
 coil = "3.1.0"
 splash = "1.0.1"
+firebase-bom = "33.5.1"
+google-services = "4.4.2"
+firebase-crashlytics-plugin = "3.0.2"
 
 [libraries]
 com-google-devtools-ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "com-google-devtools-ksp-gradle-plugin" }
@@ -96,6 +99,9 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -105,6 +111,8 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 
 [bundles]
 

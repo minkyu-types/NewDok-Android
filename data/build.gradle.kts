@@ -62,6 +62,10 @@ dependencies {
     // DataStore
     implementation(libs.datastore.preferences)
 
+    // Firebase Crashlytics (recordException in BaseRepository)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
     // Paging3
     implementation(libs.paging.runtime)
     implementation(libs.paging.common)
