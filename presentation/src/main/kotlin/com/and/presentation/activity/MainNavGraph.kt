@@ -1,5 +1,6 @@
 package com.and.presentation.activity
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
@@ -10,15 +11,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.and.presentation.screen.login.KakaoLoginState
 import com.and.presentation.screen.login.LoginScreen
 import com.and.presentation.screen.login.SocialLoginScreen
 import com.and.presentation.screen.login.SocialLoginViewModel
 import com.and.presentation.screen.onboarding.OnboardingScreen
 import com.and.presentation.screen.preinvestigation.InvestigationFlowScreen
+import com.and.presentation.screen.register.KakaoRegisterFlowScreen
 import com.and.presentation.screen.register.RegisterFlowScreen
 import com.and.presentation.util.KakaoLoginHelper
 import kotlinx.coroutines.launch
@@ -67,10 +71,13 @@ fun MainNavGraph(
                         }
                     }
                     is KakaoLoginState.NeedSignup -> {
-                        // TODO: 회원가입 화면으로 이동 (signupToken과 profile 전달)
-                        Toast.makeText(context, "회원가입이 필요합니다.", Toast.LENGTH_SHORT).show()
                         socialLoginViewModel.resetState()
-                        // navController.navigate(ScreenFlow.KAKAO_REGISTER.route + "/${state.signupToken}")
+                        val encodedToken = Uri.encode(state.signupToken)
+                        val encodedNickname = Uri.encode(state.profile.nickname ?: "")
+                        navController.navigate(
+                            ScreenFlow.KAKAO_REGISTER.route +
+                                    "/$encodedToken?nickname=$encodedNickname"
+                        )
                     }
                     is KakaoLoginState.Error -> {
                         Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
@@ -136,6 +143,28 @@ fun MainNavGraph(
             RegisterFlowScreen(
                 onFlowFinished = {
                     navController.navigate(ScreenFlow.PRE_INVESTIGATION.route)
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = ScreenFlow.KAKAO_REGISTER.route + "/{signupToken}?nickname={nickname}",
+            arguments = listOf(
+                navArgument("signupToken") { type = NavType.StringType },
+                navArgument("nickname") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            KakaoRegisterFlowScreen(
+                onFlowFinished = {
+                    navController.navigate(ScreenFlow.PRE_INVESTIGATION.route) {
+                        popUpTo(ScreenFlow.ON_BOARDING.route) { inclusive = true }
+                    }
                 },
                 onBack = {
                     navController.popBackStack()

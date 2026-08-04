@@ -5,6 +5,7 @@ enum class ScreenFlow(val route: String) {
     SOCIAL_LOGIN("socialLoginFlow"),
     LOGIN("loginFlow"),
     REGISTER("registerFlow"),
+    KAKAO_REGISTER("kakaoRegisterFlow"),
     PRE_INVESTIGATION("investigationFlow"),
     MAIN("mainFlow")
 }
