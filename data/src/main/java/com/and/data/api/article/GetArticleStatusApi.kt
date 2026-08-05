@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface GetArticleStatusApi {
 
-    @GET("/articles")
+    @GET("articles")
     suspend fun getArticles(
         @Query("year") year: String,
         @Query("publicationMonth") month: String

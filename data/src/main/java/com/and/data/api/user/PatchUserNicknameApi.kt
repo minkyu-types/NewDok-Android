@@ -7,7 +7,7 @@ import retrofit2.http.PATCH
 
 interface PatchUserNicknameApi {
 
-    @PATCH("/users/mypage/nickname")
+    @PATCH("users/mypage/nickname")
     suspend fun patchUserNickname(
         @Body request: PatchUserNicknameRequestDto
     ): PatchUserNicknameResponseDto

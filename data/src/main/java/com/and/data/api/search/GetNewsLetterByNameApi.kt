@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface GetNewsLetterByNameApi {
 
-    @GET("/newsletters/brandName")
+    @GET("newsletters/brandName")
     suspend fun getNewsLetterByName(
         @Query("brandName") brandName: String
     ): GetSearchedNewsLetterResponseDto

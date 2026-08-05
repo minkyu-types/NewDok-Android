@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 interface GetUnSubscribedNewsLettersApi {
 
-    @GET("/newsletters/subscription/paused")
+    @GET("newsletters/subscription/paused")
     suspend fun getUnSubscribedNewsLetters(
 
     ): List<BriefNewsLetterDto>

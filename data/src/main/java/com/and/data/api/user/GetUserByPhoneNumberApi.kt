@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface GetUserByPhoneNumberApi {
 
-    @GET("/users/check/phoneNumber")
+    @GET("users/check/phoneNumber")
     suspend fun getUserByPhoneNumber(
         @Query("phoneNumber") phoneNumber: String
     ): GetUserByPhoneNumberResponseDto

@@ -8,7 +8,7 @@ import retrofit2.http.PATCH
  */
 interface DeleteUserApi {
 
-    @PATCH("/users/withdraw")
+    @PATCH("users/withdraw")
     suspend fun deleteUser(
 
     ): DeleteUserResponseDto

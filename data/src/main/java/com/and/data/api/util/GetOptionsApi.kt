@@ -8,7 +8,7 @@ import retrofit2.http.GET
  */
 interface GetOptionsApi {
 
-    @GET("/options")
+    @GET("options")
     suspend fun getOptions(
 
     ): GetOptionsResponseDto

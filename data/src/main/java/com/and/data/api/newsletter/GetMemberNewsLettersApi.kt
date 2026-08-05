@@ -9,7 +9,7 @@ import retrofit2.http.Query
  */
 interface GetMemberNewsLettersApi {
 
-    @GET("/newsletters")
+    @GET("newsletters")
     suspend fun getAllNewsLetters(
         @Query("orderOpt") orderOpt: String,
         @Query("industry") industry: List<String>,

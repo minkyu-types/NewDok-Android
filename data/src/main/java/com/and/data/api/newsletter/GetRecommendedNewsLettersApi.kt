@@ -8,13 +8,13 @@ import retrofit2.http.GET
 interface GetRecommendedNewsLettersApi {
 
     // 교집합
-    @GET("/newsletters/recommend/intersection")
+    @GET("newsletters/recommend/intersection")
     suspend fun getIntersectionNewsLetters(
 
     ): List<RecommendedNewsLetterDto>
 
     // 합집합
-    @GET("/newsletters/recommend/union")
+    @GET("newsletters/recommend/union")
     suspend fun getUnionNewsLetters(
 
     ): List<RecommendedNewsLetterDto>

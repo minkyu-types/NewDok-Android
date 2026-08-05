@@ -12,7 +12,7 @@ import retrofit2.http.Path
  */
 interface GetMemberNewsLetterByIdApi {
 
-    @GET("/newsletters/{id}")
+    @GET("newsletters/{id}")
     suspend fun getNewsLettersById(
         @Path("id") id: String
     ): GetNewsLetterByIdResponseDto

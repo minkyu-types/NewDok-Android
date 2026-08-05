@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface GetArticlesByKeywordApi {
 
-    @GET("/search/article")
+    @GET("search/article")
     suspend fun getArticlesByName(
         @Query("keyword") keyword: String
     ): GetSearchedArticlesResponseDto

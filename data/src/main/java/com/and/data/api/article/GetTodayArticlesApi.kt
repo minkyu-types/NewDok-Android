@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface GetTodayArticlesApi {
 
-    @GET("/articles/today")
+    @GET("articles/today")
     suspend fun getTodayArticles(
 
     ): GetTodayArticlesResponseDto

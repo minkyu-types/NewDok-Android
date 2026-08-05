@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface GetSubscribedNewsLettersCountApi {
 
-    @GET("/newsletters/subscription/count")
+    @GET("newsletters/subscription/count")
     suspend fun getSubscribedNewsLetters(
 
     ): GetSubscribedNewsLettersCountResponseDto

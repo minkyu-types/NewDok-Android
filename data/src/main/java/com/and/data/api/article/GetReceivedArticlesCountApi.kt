@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface GetReceivedArticlesCountApi {
 
-    @GET("/articles/received/count")
+    @GET("articles/received/count")
     suspend fun getArticles(
 
     ): GetArticlesCountResponseDto

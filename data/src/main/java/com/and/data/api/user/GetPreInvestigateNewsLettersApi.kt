@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface GetPreInvestigateNewsLettersApi {
 
-    @GET("/users/preInvestigate")
+    @GET("users/preInvestigate")
     suspend fun getPreInvestigateNewsLetters(
         @Query("industry") industry: String,
         @Query("interest") interests: List<String>

@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface GetUserInfoApi {
 
-    @GET("/users/my")
+    @GET("users/my")
     suspend fun getUserInfo(
 
     ): UserInfoDto

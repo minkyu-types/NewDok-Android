@@ -11,7 +11,7 @@ import retrofit2.http.Path
  */
 interface GetNonMemberNewsLetterByIdApi {
 
-    @GET("/newsletters/{id}/non-member")
+    @GET("newsletters/{id}/non-member")
     suspend fun getNewsLettersById(
         @Path("id") id: String
     ): GetNewsLetterByIdResponseDto

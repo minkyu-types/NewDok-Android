@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface GetBookmarkedInterestsApi {
 
-    @GET("/articles/bookmark/interest")
+    @GET("articles/bookmark/interest")
     suspend fun getBookmarkedInterests(
 
     ): GetBookmarkedInterestResponseDto
