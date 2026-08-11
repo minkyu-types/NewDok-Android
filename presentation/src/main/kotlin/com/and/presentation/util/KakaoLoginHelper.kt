@@ -1,6 +1,7 @@
 package com.and.presentation.util
 
 import android.content.Context
+import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -115,14 +116,22 @@ object KakaoLoginHelper {
 
     /**
      * 카카오 로그아웃
+     *
+     * 카카오 토큰이 없으면(이메일 가입자, 게스트 등) SDK 호출 없이 정상 종료한다.
      */
-    suspend fun logout(): Unit = suspendCancellableCoroutine { continuation ->
-        UserApiClient.instance.logout { error ->
-            if (continuation.isActive) {
-                if (error != null) {
-                    continuation.resumeWithException(error)
-                } else {
-                    continuation.resume(Unit)
+    suspend fun logout() {
+        if (!AuthApiClient.instance.hasToken()) return
+
+        suspendCancellableCoroutine { continuation ->
+            UserApiClient.instance.logout { error ->
+                if (continuation.isActive) {
+                    if (error != null && !error.isTokenNotFound()) {
+                        continuation.resumeWithException(error)
+                    } else {
+                        // 토큰이 이미 없는 상태(TokenNotFound)는 로그아웃 목적이
+                        // 달성된 것이므로 정상 종료로 취급한다
+                        continuation.resume(Unit)
+                    }
                 }
             }
         }
@@ -130,18 +139,27 @@ object KakaoLoginHelper {
 
     /**
      * 카카오 연결 해제 (탈퇴)
+     *
+     * 카카오 토큰이 없으면(이메일 가입자, 게스트 등) SDK 호출 없이 정상 종료한다.
      */
-    suspend fun unlink(): Unit = suspendCancellableCoroutine { continuation ->
-        UserApiClient.instance.unlink { error ->
-            if (continuation.isActive) {
-                if (error != null) {
-                    continuation.resumeWithException(error)
-                } else {
-                    continuation.resume(Unit)
+    suspend fun unlink() {
+        if (!AuthApiClient.instance.hasToken()) return
+
+        suspendCancellableCoroutine { continuation ->
+            UserApiClient.instance.unlink { error ->
+                if (continuation.isActive) {
+                    if (error != null && !error.isTokenNotFound()) {
+                        continuation.resumeWithException(error)
+                    } else {
+                        continuation.resume(Unit)
+                    }
                 }
             }
         }
     }
+
+    private fun Throwable.isTokenNotFound(): Boolean =
+        this is ClientError && reason == ClientErrorCause.TokenNotFound
 }
 
 data class KakaoUserInfo(
