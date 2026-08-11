@@ -9,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.appdistribution)
 }
 
 kotlin {
@@ -110,6 +111,23 @@ android {
     }
     kotlinOptions {
         jvmTarget = "21"
+    }
+}
+
+// Firebase App Distribution — 테스터에게 빌드 직접 배포
+// 사용법: ./gradlew assembleRelease appDistributionUploadRelease
+//        (debug 배포는 assembleDebug appDistributionUploadDebug)
+// 인증: firebase login(로컬) 또는 FIREBASE_SERVICE_CREDENTIALS_FILE 환경변수(CI)에
+//       서비스 계정 JSON 경로 지정. appId는 google-services.json에서 자동 인식.
+firebaseAppDistribution {
+    artifactType = "APK"
+    // Firebase 콘솔 > App Distribution > 테스터 및 그룹에서 만든 그룹 별칭
+    groups = "testers"
+    // 배포마다 내용을 바꾸려면 이 파일을 수정하거나 태스크 실행 전 덮어쓰면 된다
+    releaseNotesFile = rootProject.file("distribution-release-notes.txt").absolutePath
+
+    System.getenv("FIREBASE_SERVICE_CREDENTIALS_FILE")?.let {
+        serviceCredentialsFile = it
     }
 }
 

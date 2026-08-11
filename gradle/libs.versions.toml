@@ -42,6 +42,7 @@ splash = "1.0.1"
 firebase-bom = "33.5.1"
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.2"
+firebase-appdistribution-plugin = "5.1.1"
 
 [libraries]
 com-google-devtools-ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "com-google-devtools-ksp-gradle-plugin" }
@@ -113,6 +114,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution-plugin" }
 
 [bundles]
 
