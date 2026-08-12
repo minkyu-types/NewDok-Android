@@ -1,0 +1,50 @@
+# local.properties 템플릿
+#
+# local.properties 는 .gitignore 대상이라 clone 해도 따라오지 않는다.
+# 새 개발 머신에서는 이 파일을 local.properties 로 복사한 뒤 실제 값을 채운다.
+#
+#   cp local.properties.example local.properties
+#
+# 실제 값(비밀번호·키·경로)은 절대 커밋하지 않는다.
+
+# -----------------------------
+# Android SDK
+# -----------------------------
+# Android Studio 로 프로젝트를 열면 자동으로 채워진다. 수동 작성 시 예시:
+#   macOS   : /Users/<사용자명>/Library/Android/sdk
+#   Windows : C\:\\Users\\<사용자명>\\AppData\\Local\\Android\\Sdk
+sdk.dir=
+
+# -----------------------------
+# Kakao SDK
+# -----------------------------
+# 카카오 개발자 콘솔 > 내 애플리케이션 > 앱 키 > 네이티브 앱 키
+# BuildConfig.KAKAO_NATIVE_APP_KEY 와 매니페스트 placeholder 로 주입된다.
+KAKAO_NATIVE_APP_KEY=
+
+# -----------------------------
+# Release 서명 (signed App Bundle / APK 빌드용)
+# -----------------------------
+# release 빌드 태스크를 실행할 때만 사용된다. debug 빌드만 할 거라면 비워둬도 된다.
+#
+# keystore 파일(.jks)은 저장소에 없다. 기존 업로드 키 파일을 안전한 경로
+# (1Password, 암호화된 USB 등)로 받아온 뒤 그 절대경로를 지정한다.
+# Android Studio 의 "Create new..." 로 새 keystore 를 만들면 서명키가 바뀌어
+# Play Console 업로드가 거부되고 카카오/Firebase 인증서 지문도 전부 어긋난다.
+#
+# 값을 확인하는 방법:
+#   keytool -list -v -keystore <keystore 경로>
+#   → Alias name 이 KS_ALIAS_NEWDOK, 입력한 비밀번호가 KS_PASS_NEWDOK
+
+# keystore 파일의 절대경로.
+# 상대경로를 쓰면 file() 이 app/ 모듈 기준으로 해석하므로 절대경로를 권장한다.
+KS_PATH_NEWDOK=
+
+# keystore(스토어) 비밀번호
+KS_PASS_NEWDOK=
+
+# 키 별칭
+KS_ALIAS_NEWDOK=
+
+# 키 비밀번호. 보통 스토어 비밀번호와 동일하다.
+KS_KEY_PASS_NEWDOK=
