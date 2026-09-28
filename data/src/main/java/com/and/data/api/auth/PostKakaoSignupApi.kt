@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface PostKakaoSignupApi {
 
-    @POST("auth/kakao/signup")
+    @POST("auth/social-login/signup")
     suspend fun kakaoSignup(
         @Body request: KakaoSignupRequestDto
     ): KakaoSignupResponseDto

@@ -1,6 +1,8 @@
 package com.and.data.model.request
 
 data class KakaoLoginRequestDto(
-    val code: String,
-    val redirectUri: String
+    val provider: String,
+    val platform: String,
+    val idToken: String,
+    val authorizationCode: String
 )
