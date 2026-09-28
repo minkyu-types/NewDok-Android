@@ -23,14 +23,18 @@ class SocialLoginViewModel @Inject constructor(
     /**
      * 카카오 로그인 수행
      *
-     * @param authorizationCode 카카오 인가 코드. 서버가 카카오와 교환한다.
+     * @param authorizationCode 카카오 인가 코드
+     * @param idToken 카카오 ID 토큰. 서버가 필수로 요구한다.
      */
-    fun kakaoLogin(authorizationCode: String) {
+    fun kakaoLogin(authorizationCode: String, idToken: String) {
         viewModelScope.launch {
             _kakaoLoginState.value = KakaoLoginState.Loading
             runCatching {
                 kakaoLoginUseCase(
-                    KakaoLoginParams(authorizationCode = authorizationCode)
+                    KakaoLoginParams(
+                        authorizationCode = authorizationCode,
+                        idToken = idToken
+                    )
                 )
             }.onSuccess { result ->
                 when (result) {
