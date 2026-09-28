@@ -73,10 +73,8 @@ fun MainNavGraph(
                     is KakaoLoginState.NeedSignup -> {
                         socialLoginViewModel.resetState()
                         val encodedToken = Uri.encode(state.signupToken)
-                        val encodedNickname = Uri.encode(state.profile.nickname ?: "")
                         navController.navigate(
-                            ScreenFlow.KAKAO_REGISTER.route +
-                                    "/$encodedToken?nickname=$encodedNickname"
+                            ScreenFlow.KAKAO_REGISTER.route + "/$encodedToken"
                         )
                     }
                     is KakaoLoginState.Error -> {
@@ -92,9 +90,9 @@ fun MainNavGraph(
                     coroutineScope.launch {
                         try {
                             // 사용자가 로그인을 취소한 경우 null 반환 → 조용히 종료
-                            val authCode = KakaoLoginHelper.login(context) ?: return@launch
-                            val redirectUri = "kakao${com.and.newdok.presentation.BuildConfig.KAKAO_NATIVE_APP_KEY}://oauth"
-                            socialLoginViewModel.kakaoLogin(authCode, redirectUri)
+                            val authorizationCode =
+                                KakaoLoginHelper.getAuthorizationCode(context) ?: return@launch
+                            socialLoginViewModel.kakaoLogin(authorizationCode)
                         } catch (e: Exception) {
                             Toast.makeText(context, "카카오 로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                             e.printStackTrace()
@@ -151,13 +149,9 @@ fun MainNavGraph(
         }
 
         composable(
-            route = ScreenFlow.KAKAO_REGISTER.route + "/{signupToken}?nickname={nickname}",
+            route = ScreenFlow.KAKAO_REGISTER.route + "/{signupToken}",
             arguments = listOf(
-                navArgument("signupToken") { type = NavType.StringType },
-                navArgument("nickname") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
+                navArgument("signupToken") { type = NavType.StringType }
             )
         ) {
             KakaoRegisterFlowScreen(

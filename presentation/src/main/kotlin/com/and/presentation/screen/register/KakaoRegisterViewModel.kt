@@ -26,9 +26,6 @@ class KakaoRegisterViewModel @Inject constructor(
 
     private val signupToken: String = savedStateHandle.get<String>("signupToken") ?: ""
 
-    /** 카카오 프로필에서 가져온 닉네임 (입력 필드 초기값) */
-    val initialNickname: String = savedStateHandle.get<String>("nickname") ?: ""
-
     private var nickname: String = ""
     private var birthYear: String = ""
     private var gender: Gender? = null

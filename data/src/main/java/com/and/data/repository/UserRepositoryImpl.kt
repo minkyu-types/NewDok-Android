@@ -14,7 +14,6 @@ import com.and.data.api.user.PatchUserPasswordApi
 import com.and.data.api.user.PatchUserPhoneNumberApi
 import com.and.data.api.user.PostLoginApi
 import com.and.data.api.user.PostSignUpApi
-import com.and.data.mapper.KakaoProfileMapper
 import com.and.data.mapper.NewsLetterMapper
 import com.and.data.mapper.UserMapper
 import com.and.data.model.request.AgreementDto
@@ -56,7 +55,6 @@ class UserRepositoryImpl @Inject constructor(
     private val kakaoSignupApi: PostKakaoSignupApi,
     private val withdrawalApi: DeleteUserApi,
     private val userMapper: UserMapper,
-    private val kakaoProfileMapper: KakaoProfileMapper,
     private val newsLetterMapper: NewsLetterMapper,
     private val authPreferenceStore: AuthPreferenceStore
 ) : UserRepository, BaseRepository() {
@@ -141,15 +139,16 @@ class UserRepositoryImpl @Inject constructor(
             mapper = { response ->
                 User(
                     id = response.id,
-                    loginId = response.loginId,
-                    password = response.password,
-                    phoneNumber = response.phoneNumber,
+                    // 소셜 로그인 회원은 이메일 가입 전용 필드가 없다. 빈 문자열로 채운다.
+                    loginId = response.loginId ?: "",
+                    password = response.password ?: "",
+                    phoneNumber = response.phoneNumber ?: "",
                     nickname = response.nickname,
                     birthYear = response.birthYear,
                     gender = Gender.getGender(response.gender),
-                    emailIndex = response.emailIndex,
+                    emailIndex = response.emailIndex ?: "",
                     subscribeEmail = response.subscribeEmail,
-                    subscribePassword = response.subscribePassword,
+                    subscribePassword = response.subscribePassword ?: "",
                     createdAt = response.createdAt,
                     industryId = response.industryId,
                     interests = response.interests.mapNotNull {
@@ -299,32 +298,32 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun kakaoLogin(code: String, redirectUri: String): KakaoLoginResult {
+    override suspend fun kakaoLogin(authorizationCode: String, idToken: String?): KakaoLoginResult {
         val response = handleApiCall(
             apiCall = {
                 kakaoLoginApi.kakaoLogin(
                     KakaoLoginRequestDto(
-                        code = code,
-                        redirectUri = redirectUri
+                        provider = PROVIDER_KAKAO,
+                        platform = PLATFORM_ANDROID,
+                        idToken = idToken,
+                        authorizationCode = authorizationCode
                     )
                 )
             },
             mapper = { it }
         )
 
-        return if (response.isRegistered && response.accessToken != null && response.user != null) {
-            // 기존 회원: 액세스 토큰 저장 후 Success 반환
+        return if (response.isRegistered) {
+            // 기존 회원: accessToken은 서비스 액세스 토큰이다
+            val user = response.user
+                ?: throw IllegalStateException("isRegistered=true인데 user가 없습니다")
             authPreferenceStore.saveAccessToken(response.accessToken)
             authPreferenceStore.saveGuestMode(false)
-            KakaoLoginResult.Success(userMapper.mapToDomain(response.user))
-        } else if (!response.isRegistered && response.signupToken != null && response.profile != null) {
-            // 신규 회원: NeedSignup 반환 (토큰 저장 안함)
-            KakaoLoginResult.NeedSignup(
-                signupToken = response.signupToken,
-                profile = kakaoProfileMapper.mapToDomain(response.profile)
-            )
+            KakaoLoginResult.Success(userMapper.mapToDomain(user))
         } else {
-            throw IllegalStateException("Invalid Kakao login response")
+            // 신규 회원: accessToken 필드에 signupToken이 담겨 온다.
+            // 이 값을 저장하면 인증 헤더로 나가 이후 모든 API가 깨지므로 절대 저장하지 않는다.
+            KakaoLoginResult.NeedSignup(signupToken = response.accessToken)
         }
     }
 
@@ -371,5 +370,11 @@ class UserRepositoryImpl @Inject constructor(
                 Pair(true, response.message)
             }
         )
+    }
+
+    companion object {
+        /** 서버가 값을 바꾸면 이 두 상수만 수정하면 된다 */
+        private const val PROVIDER_KAKAO = "KAKAO"
+        private const val PLATFORM_ANDROID = "ANDROID"
     }
 }

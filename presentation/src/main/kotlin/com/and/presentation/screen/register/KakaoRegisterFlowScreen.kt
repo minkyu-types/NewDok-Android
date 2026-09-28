@@ -156,7 +156,7 @@ fun KakaoRegisterStep1Screen(
     viewModel: KakaoRegisterViewModel,
     modifier: Modifier = Modifier
 ) {
-    var userNickname by rememberSaveable { mutableStateOf(viewModel.initialNickname) }
+    var userNickname by rememberSaveable { mutableStateOf("") }
     val isNicknameValid = userNickname.nicknameValidation()
     val years = (1970..LocalDate.now().year.minus(12)).map { it.toString() }
     var userGender by rememberSaveable { mutableStateOf<Gender?>(null) }
