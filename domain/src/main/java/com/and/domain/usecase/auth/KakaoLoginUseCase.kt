@@ -16,5 +16,5 @@ class KakaoLoginUseCase @Inject constructor(
 
 data class KakaoLoginParams(
     val authorizationCode: String,
-    val idToken: String? = null
+    val idToken: String
 )

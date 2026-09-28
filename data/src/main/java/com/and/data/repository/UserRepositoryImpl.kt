@@ -298,7 +298,7 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun kakaoLogin(authorizationCode: String, idToken: String?): KakaoLoginResult {
+    override suspend fun kakaoLogin(authorizationCode: String, idToken: String): KakaoLoginResult {
         val response = handleApiCall(
             apiCall = {
                 kakaoLoginApi.kakaoLogin(

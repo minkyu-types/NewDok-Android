@@ -90,9 +90,11 @@ fun MainNavGraph(
                     coroutineScope.launch {
                         try {
                             // 사용자가 로그인을 취소한 경우 null 반환 → 조용히 종료
-                            val authorizationCode =
-                                KakaoLoginHelper.getAuthorizationCode(context) ?: return@launch
-                            socialLoginViewModel.kakaoLogin(authorizationCode)
+                            val kakaoAuth = KakaoLoginHelper.login(context) ?: return@launch
+                            socialLoginViewModel.kakaoLogin(
+                                authorizationCode = kakaoAuth.authorizationCode,
+                                idToken = kakaoAuth.idToken
+                            )
                         } catch (e: Exception) {
                             Toast.makeText(context, "카카오 로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                             e.printStackTrace()
