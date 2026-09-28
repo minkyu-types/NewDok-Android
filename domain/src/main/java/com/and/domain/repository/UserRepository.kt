@@ -35,7 +35,7 @@ interface UserRepository {
         birthYear: String,
         gender: Gender
     ): String
-    suspend fun kakaoLogin(code: String, redirectUri: String): KakaoLoginResult
+    suspend fun kakaoLogin(authorizationCode: String, idToken: String? = null): KakaoLoginResult
     suspend fun kakaoSignup(
         signupToken: String,
         nickname: String,

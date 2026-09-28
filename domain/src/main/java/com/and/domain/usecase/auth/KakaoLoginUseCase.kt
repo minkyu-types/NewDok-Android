@@ -10,11 +10,11 @@ class KakaoLoginUseCase @Inject constructor(
 ) : BaseSuspendUseCase<KakaoLoginParams, KakaoLoginResult> {
 
     override suspend fun invoke(parameter: KakaoLoginParams): KakaoLoginResult {
-        return repository.kakaoLogin(parameter.code, parameter.redirectUri)
+        return repository.kakaoLogin(parameter.authorizationCode, parameter.idToken)
     }
 }
 
 data class KakaoLoginParams(
-    val code: String,
-    val redirectUri: String
+    val authorizationCode: String,
+    val idToken: String? = null
 )

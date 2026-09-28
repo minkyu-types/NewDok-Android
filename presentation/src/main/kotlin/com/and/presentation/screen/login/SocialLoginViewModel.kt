@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.model.KakaoLoginResult
-import com.and.domain.model.KakaoProfile
 import com.and.domain.usecase.auth.KakaoLoginParams
 import com.and.domain.usecase.auth.KakaoLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,18 +23,14 @@ class SocialLoginViewModel @Inject constructor(
     /**
      * 카카오 로그인 수행
      *
-     * @param code 카카오 Authorization Code (또는 accessToken)
-     * @param redirectUri 리다이렉트 URI
+     * @param authorizationCode 카카오 인가 코드. 서버가 카카오와 교환한다.
      */
-    fun kakaoLogin(code: String, redirectUri: String) {
+    fun kakaoLogin(authorizationCode: String) {
         viewModelScope.launch {
             _kakaoLoginState.value = KakaoLoginState.Loading
             runCatching {
                 kakaoLoginUseCase(
-                    KakaoLoginParams(
-                        code = code,
-                        redirectUri = redirectUri
-                    )
+                    KakaoLoginParams(authorizationCode = authorizationCode)
                 )
             }.onSuccess { result ->
                 when (result) {
@@ -44,8 +39,7 @@ class SocialLoginViewModel @Inject constructor(
                     }
                     is KakaoLoginResult.NeedSignup -> {
                         _kakaoLoginState.value = KakaoLoginState.NeedSignup(
-                            signupToken = result.signupToken,
-                            profile = result.profile
+                            signupToken = result.signupToken
                         )
                     }
                 }
@@ -66,6 +60,6 @@ sealed class KakaoLoginState {
     object Idle : KakaoLoginState()
     object Loading : KakaoLoginState()
     data class Success(val userName: String) : KakaoLoginState()
-    data class NeedSignup(val signupToken: String, val profile: KakaoProfile) : KakaoLoginState()
+    data class NeedSignup(val signupToken: String) : KakaoLoginState()
     data class Error(val message: String) : KakaoLoginState()
 }

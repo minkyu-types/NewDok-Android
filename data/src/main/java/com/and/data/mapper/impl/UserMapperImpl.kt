@@ -33,9 +33,10 @@ class UserMapperImpl @Inject constructor(): UserMapper {
     override fun mapToDomain(input: UserDto): User {
         return User(
             id = input.id,
-            input.loginId,
+            // 소셜 로그인 회원은 서버가 null을 내려준다. 이 모듈의 기존 관례대로 빈 문자열로 채운다.
+            input.loginId ?: "",
             "",
-            input.phoneNumber,
+            input.phoneNumber ?: "",
             input.nickname,
             input.birthYear,
             Gender.getGender(input.gender),
