@@ -92,6 +92,11 @@
     <string name="social_login_kakao">카카오로 계속하기</string>
     <string name="social_login_anim_trigger">3초만에 시작하기</string>
 
+    <!-- 키 해시 확인용. 디버그 빌드에서만 노출된다 -->
+    <string name="social_login_copy_key_hash">키 해시 복사하기</string>
+    <string name="social_login_key_hash_copied">키 해시가 복사되었습니다.\n%1$s</string>
+    <string name="social_login_key_hash_failed">키 해시를 가져오지 못했습니다.</string>
+
     <!-- 회원가입 Step1 -->
     <string name="register_phone_auth_title">본인 확인을 위해\n휴대폰 번호를 입력해주세요</string>
     <string name="register_phone_auth_placeholder">- 구분 없이 입력</string>
