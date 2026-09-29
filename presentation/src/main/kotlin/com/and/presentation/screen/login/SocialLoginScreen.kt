@@ -1,5 +1,7 @@
 package com.and.presentation.screen.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -28,13 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.and.newdok.presentation.BuildConfig
 import com.and.newdok.presentation.R
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body2Normal
@@ -42,6 +48,7 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Label1
 import com.and.presentation.util.removeRippleEffect
+import com.kakao.sdk.common.util.Utility
 
 private val KakaoYellow = Color(0xFFFEE500)
 private val KakaoTextColor = Color(0xFF161616)
@@ -80,6 +87,14 @@ fun SocialLoginScreen(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // 키 해시 확인용. 디버그 빌드에서만 노출된다
+            if (BuildConfig.DEBUG) {
+                DebugKeyHashCopyText()
+                // SocialLoginButtons의 "3초만에 시작하기" 배지가 버튼 위쪽 28dp를
+                // 침범하므로, 그보다 넉넉한 여백을 둬 겹치지 않게 한다
+                Spacer(modifier = Modifier.height(36.dp))
+            }
+
             // SNS Login Buttons with AnimTrigger badge
             SocialLoginButtons(
                 onKakaoLoginClick = onKakaoLoginClick
@@ -114,6 +129,51 @@ private fun SocialLoginLogo(
             modifier = Modifier.height(48.dp)
         )
     }
+}
+
+/**
+ * 카카오 키 해시를 클립보드에 복사하는 디버그 전용 텍스트.
+ *
+ * SDK가 서버로 실제 전송하는 값을 그대로 보여주므로, keytool로 계산한 값과
+ * 어긋나 `Android keyHash validation failed`가 날 때 원인을 바로 확인할 수 있다.
+ *
+ * 에뮬레이터는 호스트와의 클립보드 공유가 불안정할 때가 있어
+ * 토스트와 logcat에도 값을 함께 남긴다.
+ */
+@Composable
+private fun DebugKeyHashCopyText(
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
+    Text(
+        text = stringResource(id = R.string.social_login_copy_key_hash),
+        style = Body2Normal,
+        fontWeight = FontWeight.Medium,
+        color = Caption_Neutral,
+        textAlign = TextAlign.Center,
+        modifier = modifier.removeRippleEffect {
+            // SDK 미초기화 등으로 던질 수 있어 방어한다
+            val keyHash = runCatching { Utility.getKeyHash(context) }.getOrNull()
+
+            if (keyHash.isNullOrBlank()) {
+                Toast.makeText(
+                    context,
+                    R.string.social_login_key_hash_failed,
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Log.d("KeyHash", keyHash)
+                clipboardManager.setText(AnnotatedString(keyHash))
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.social_login_key_hash_copied, keyHash),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    )
 }
 
 @Composable
