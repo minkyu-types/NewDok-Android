@@ -33,8 +33,6 @@ import com.and.presentation.ui.Label1
 @Composable
 fun AccountManageScreen(
     onBack: () -> Unit,
-    onPhoneNumChange: () -> Unit,
-    onPasswordChange: () -> Unit,
     onLogout: () -> Unit,
     onTryWithdrawal: () -> Unit,
     modifier: Modifier = Modifier,
@@ -91,18 +89,6 @@ fun AccountManageScreen(
                 .padding(horizontal = 24.dp)
         ) {
             MyPageItem(
-                text = stringResource(R.string.account_manage_phone),
-                onClick = {
-                    onPhoneNumChange()
-                },
-            )
-            MyPageItem(
-                text = stringResource(R.string.account_manage_password),
-                onClick = {
-                    onPasswordChange()
-                }
-            )
-            MyPageItem(
                 text = stringResource(R.string.account_manage_logout),
                 onClick = {
                     showLogoutDialog = true
@@ -132,12 +118,6 @@ fun AccountManagerScreenPreview() {
     DefaultWhiteTheme {
         AccountManageScreen(
             onBack = {
-
-            },
-            onPhoneNumChange = {
-
-            },
-            onPasswordChange = {
 
             },
             onLogout = {

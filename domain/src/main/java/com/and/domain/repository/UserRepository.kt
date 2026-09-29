@@ -24,8 +24,6 @@ interface UserRepository {
     suspend fun updateUserIndustry(industryId: Int)
     suspend fun updateUserInterests(interestIds: List<Int>)
     suspend fun updateUserNickname(nickname: String): Boolean
-    suspend fun updateUserPassword(loginId: String, prevPassword: String, password: String): Boolean
-    suspend fun updateUserPhoneNumber(phoneNumber: String): Boolean
     suspend fun login(loginId: String, password: String): User
     suspend fun signUp(
         loginId: String,

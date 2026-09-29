@@ -10,8 +10,6 @@ import com.and.data.api.user.GetUserInfoApi
 import com.and.data.api.user.PatchUserIndustryApi
 import com.and.data.api.user.PatchUserInterestsApi
 import com.and.data.api.user.PatchUserNicknameApi
-import com.and.data.api.user.PatchUserPasswordApi
-import com.and.data.api.user.PatchUserPhoneNumberApi
 import com.and.data.api.user.PostLoginApi
 import com.and.data.api.user.PostSignUpApi
 import dagger.Module
@@ -32,14 +30,6 @@ object UserApiModule {
     @Provides
     @Singleton
     fun providesPostLoginApi(retrofit: Retrofit): PostLoginApi = retrofit.create(PostLoginApi::class.java)
-
-    @Provides
-    @Singleton
-    fun providesPatchUserPhoneNumberApi(retrofit: Retrofit): PatchUserPhoneNumberApi = retrofit.create(PatchUserPhoneNumberApi::class.java)
-
-    @Provides
-    @Singleton
-    fun providesPatchUserPasswordApi(retrofit: Retrofit): PatchUserPasswordApi = retrofit.create(PatchUserPasswordApi::class.java)
 
     @Provides
     @Singleton
