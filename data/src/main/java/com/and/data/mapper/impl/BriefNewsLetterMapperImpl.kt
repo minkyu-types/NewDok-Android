@@ -22,7 +22,7 @@ class BriefNewsLetterMapperImpl @Inject constructor(
         return BriefNewsLetter(
             id = input.id,
             brandName = input.brandName,
-            imageUrl = input.imageUrl ?: "",
+            imageUrl = input.imageUrl,
             publicationCycle = input.publicationCycle
         )
     }
