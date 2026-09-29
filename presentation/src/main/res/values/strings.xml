@@ -62,10 +62,6 @@
     <string name="snackbar_password_edit_success">비밀번호가 재설정되었습니다.</string>
 
     <!-- 다이얼로그 -->
-    <string name="auth_fail_title">인증 실패</string>
-    <string name="auth_fail_body">인증 횟수를 초과했습니다.\n처음부터 다시 진행해주세요</string>
-    <string name="auth_fail_button">처음으로</string>
-
     <string name="auth_request_fail_title">이미 가입된 정보입니다</string>
     <string name="auth_request_fail_body">한 번호로 최대 3개의 계정을 만들 수 있어요</string>
     <string name="auth_request_fail_button_left">계속 진행하기</string>
@@ -233,17 +229,8 @@
     <string name="my_page_customer_service_item4">버전</string>
 
     <!-- 계정 관리-->
-    <string name="account_manage_phone">휴대폰 번호 변경</string>
-    <string name="account_manage_password">비밀번호 변경</string>
     <string name="account_manage_logout">로그아웃</string>
     <string name="account_manage_logout_question">로그아웃 할까요?</string>
-
-    <!-- 비밀번호 변경-->
-    <string name="password_edit_current_error">현재 비밀번호가 일치하지 않습니다</string>
-    <string name="password_edit_current_title">현재 비밀번호</string>
-    <string name="password_edit_new_title">새 비밀번호</string>
-    <string name="password_edit_new_confirm_title">새 비밀번호 확인</string>
-    <string name="password_edit_current_body">현재 비밀번호 입력</string>
 
     <!-- 회원 탈퇴-->
     <string name="withdrawal_title">\'%s\'님 정말 떠나시나요?</string>
