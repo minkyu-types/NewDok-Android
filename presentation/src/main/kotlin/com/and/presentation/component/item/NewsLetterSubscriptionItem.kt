@@ -1,6 +1,5 @@
 package com.and.presentation.component.item
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +28,7 @@ import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.BriefNewsLetterModel
 import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.ui.Body2Normal
@@ -69,9 +69,10 @@ fun NewsLetterSubscriptionItem(
                 )
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_logo),
+            CommonImage(
+                imageUrl = newsLetter.imageUrl,
                 contentDescription = null,
+                placeholderRes = R.drawable.img_logo,
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(10.dp))
@@ -155,10 +156,11 @@ fun NewsLetterSubscriptionItemPreview() {
     DefaultWhiteTheme {
         NewsLetterSubscriptionItem(
             newsLetter = BriefNewsLetterModel(
-                0,
-                "",
-                "평일 아침",
-                "뉴스레터 간단 소개글은 최대 25자까지 작성할 수 있습니다",
+                id = 0,
+                brandName = "뉴스레터 이름",
+                // 이미지가 없는 경우 기본 이미지로 대체되는 것을 확인하기 위해 null
+                imageUrl = null,
+                publicationCycle = "평일 아침",
             ),
             subscriptionStatus = SubscriptionStatus.CONFIRMED,
             onSubscribeClick = {
