@@ -54,7 +54,7 @@ class NonMemberNewsLetterRepositoryImpl @Inject constructor(
                 NewsLetter(
                     brandId = response.brandId,
                     brandName = response.brandName,
-                    imageUrl = response.imageUrl,
+                    imageUrl = response.imageUrl ?: "",
                     interests = response.interests.mapNotNull {
                         InterestCategory.getInterestByValue(it.name)
                     },

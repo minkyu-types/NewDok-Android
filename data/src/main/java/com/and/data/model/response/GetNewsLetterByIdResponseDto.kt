@@ -6,7 +6,7 @@ import com.and.data.model.data.SimpleArticleDto
 data class GetNewsLetterByIdResponseDto(
     val brandId: Int,
     val brandName: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val interests: List<InterestDto>,
     val brandArticleList: List<SimpleArticleDto>,
     val detailDescription: String,

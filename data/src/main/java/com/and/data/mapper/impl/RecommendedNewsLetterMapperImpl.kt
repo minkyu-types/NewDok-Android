@@ -43,7 +43,7 @@ class RecommendedNewsLetterMapperImpl @Inject constructor(): RecommendedNewsLett
             secondDescription = input.secondDescription,
             publicationCycle = input.publicationCycle,
             subscribeUrl = input.subscribeUrl,
-            imageUrl = input.imageUrl,
+            imageUrl = input.imageUrl ?: "",
             createdAt = input.createdAt,
             updatedAt = input.updatedAt,
             industries = input.industries.mapNotNull { industry ->

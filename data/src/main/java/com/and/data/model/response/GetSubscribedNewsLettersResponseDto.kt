@@ -8,7 +8,7 @@ data class GetSubscribedNewsLettersResponseDto(
     data class BriefNewsLetterDto(
         val id: Int,
         val brandName: String,
-        val imageUrl: String,
+        val imageUrl: String?,
         val publicationCycle: String
     )
 }

@@ -8,7 +8,7 @@ data class GetNewsLettersResponseDto(
     data class NewsLetterDetailDto(
         val brandId: Int,
         val brandName: String,
-        val imageUrl: String,
+        val imageUrl: String?,
         val interests: List<InterestDto>,
         val isSubscribed: String? = null,
         val shortDescription: String? = null,
