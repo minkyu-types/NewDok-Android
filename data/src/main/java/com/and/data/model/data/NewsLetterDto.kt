@@ -9,7 +9,7 @@ data class NewsLetterDto(
     val secondDescription: String,
     val publicationCycle: String,
     val subscribeUrl: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val createdAt: Instant,
     val updatedAt: Instant,
     val industries: List<IndustryDto>,

@@ -73,7 +73,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 it.map { article ->
                     Article(
                         brandName = article.newsletter.brandName,
-                        imageUrl = article.newsletter.imageUrl,
+                        imageUrl = article.newsletter.imageUrl ?: "",
                         title = article.title,
                         articleId = article.id,
                         status = ArticleStatus.UNREAD

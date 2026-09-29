@@ -35,7 +35,7 @@ class NewsLetterDetailMapperImpl @Inject constructor(
         return NewsLetter(
             brandId = input.brandId,
             brandName = input.brandName,
-            imageUrl = input.imageUrl,
+            imageUrl = input.imageUrl ?: "",
             interests = input.interests.mapNotNull { interest ->
                 InterestCategory.getInterestById(interest.id)
             },
