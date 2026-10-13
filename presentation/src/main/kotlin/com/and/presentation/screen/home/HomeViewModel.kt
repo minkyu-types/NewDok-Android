@@ -34,8 +34,8 @@ class HomeViewModel @Inject constructor(
     private val _isGuestMode = mutableStateOf(false)
     val isGuestMode: State<Boolean> = _isGuestMode
 
-    private val _subscribedNewsLettersCount = mutableStateOf(0)
-    val subscribedNewsLettersCount: State<Int> = _subscribedNewsLettersCount
+    private val _subscribedNewsLettersCount = mutableStateOf<Int?>(null)
+    val subscribedNewsLettersCount: State<Int?> = _subscribedNewsLettersCount
 
     init {
         loadUserState()

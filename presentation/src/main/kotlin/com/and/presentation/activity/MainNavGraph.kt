@@ -17,7 +17,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.and.presentation.screen.login.KakaoLoginState
-import com.and.presentation.screen.login.LoginScreen
 import com.and.presentation.screen.login.SocialLoginScreen
 import com.and.presentation.screen.login.SocialLoginViewModel
 import com.and.presentation.screen.onboarding.OnboardingScreen
@@ -45,9 +44,6 @@ fun MainNavGraph(
             OnboardingScreen(
                 onRegisterClick = {
                     navController.navigate(ScreenFlow.SOCIAL_LOGIN.route)
-                },
-                onLoginClick = {
-                    navController.navigate(ScreenFlow.LOGIN.route)
                 },
                 onAutoLogin = {
                     navController.navigate(ScreenFlow.MAIN.route)
@@ -112,33 +108,6 @@ fun MainNavGraph(
             )
         }
 
-        composable(ScreenFlow.LOGIN.route) {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(ScreenFlow.MAIN.route) {
-                        popUpTo(ScreenFlow.ON_BOARDING.route) { inclusive = true }
-                    }
-                },
-                onLoginWithoutSignUp = {
-                    coroutineScope.launch {
-                        viewModel.setGuestMode(true)
-                        navController.navigate(ScreenFlow.MAIN.route) {
-                            popUpTo(ScreenFlow.ON_BOARDING.route) { inclusive = true }
-                        }
-                    }
-                },
-                onRegister = {
-                    navController.navigate(ScreenFlow.SOCIAL_LOGIN.route)
-                },
-                onFindIdPassword = {
-                    // 아이디/비밀번호 찾기로 이동
-                },
-                onBack = {
-                    navController.popBackStack()
-                }
-            )
-        }
-
         composable(ScreenFlow.REGISTER.route) {
             RegisterFlowScreen(
                 onFlowFinished = {
@@ -183,7 +152,7 @@ fun MainNavGraph(
                 onNavigateToLogin = {
                     coroutineScope.launch {
                         viewModel.setGuestMode(false)
-                        navController.navigate(ScreenFlow.LOGIN.route)
+                        navController.navigate(ScreenFlow.SOCIAL_LOGIN.route)
                     }
                 },
                 onLogout = {

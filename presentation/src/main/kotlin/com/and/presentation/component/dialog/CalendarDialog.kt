@@ -48,7 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.and.newdok.presentation.R
-import com.and.presentation.screen.login.LoginTheme
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Background_System
 import com.and.presentation.ui.Blue100
 import com.and.presentation.ui.Blue900
@@ -387,7 +387,7 @@ private fun getDaysByYearMonth(
 )
 @Composable
 private fun CalendarDialogPreview() {
-    LoginTheme {
+    DefaultWhiteTheme {
 //        DayGridItem(
 //            date = LocalDate.now(),
 //            isSelected = true,

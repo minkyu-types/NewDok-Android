@@ -146,10 +146,9 @@ fun HomeScreen(
             is UiState.Success<List<DailyArticleModel>> -> {
                 (articlesByDateState as UiState.Success).data
             }
-
             else -> emptyList()
         }
-        
+
         if (homeArticles.isEmpty()) {
             val emptyType = when {
                 isGuestMode -> HomeEmptyType.Guest

@@ -15,8 +15,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.and.newdok.presentation.R
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Caption_Heavy
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,9 +37,8 @@ fun BottomSheetDialog(
     content: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val mySheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false,
+        skipPartiallyExpanded = true,
     )
 
     ModalBottomSheet(
@@ -53,11 +49,6 @@ fun BottomSheetDialog(
             BottomSheetDefaults.DragHandle()
         }
     ) {
-        LaunchedEffect(Unit) {
-            coroutineScope.launch {
-                mySheetState.expand()
-            }
-        }
         Column {
             Box(
                 modifier = Modifier

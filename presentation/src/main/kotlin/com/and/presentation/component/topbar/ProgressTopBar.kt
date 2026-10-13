@@ -12,7 +12,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.presentation.screen.login.LoginTheme
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Primary_Normal
 
 @Composable
@@ -78,7 +78,7 @@ fun LinearProgressBar(
 )
 @Composable
 fun ProgressTopBarPreview() {
-    LoginTheme {
+    DefaultWhiteTheme {
         ProgressTopBar(
             title = "회원가입",
             currentProgress = 1,

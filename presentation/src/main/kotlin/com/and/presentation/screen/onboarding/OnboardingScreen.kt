@@ -42,12 +42,10 @@ import com.and.presentation.ui.Caption_Neutral
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Heading1
 import com.and.presentation.ui.Primary_Normal
-import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun OnboardingScreen(
     onRegisterClick: () -> Unit,
-    onLoginClick: () -> Unit,
     onAutoLogin: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnboardingViewModel = hiltViewModel()
@@ -62,7 +60,6 @@ fun OnboardingScreen(
 
     OnboardingContent(
         onRegisterClick = onRegisterClick,
-        onLoginClick = onLoginClick,
         modifier = modifier
     )
 }
@@ -70,7 +67,6 @@ fun OnboardingScreen(
 @Composable
 fun OnboardingContent(
     onRegisterClick: () -> Unit,
-    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState() { 3 }
@@ -79,7 +75,7 @@ fun OnboardingContent(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 100.dp, bottom = 16.dp),
+            .padding(top = 100.dp, bottom = 48.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -101,12 +97,7 @@ fun OnboardingContent(
                 enabled = true,
                 onClick = onRegisterClick,
                 modifier = Modifier.padding(horizontal = 24.dp),
-                buttonText = stringResource(R.string.register)
-            )
-            OnBoardingLoginText(
-                onClick = onLoginClick,
-                modifier = Modifier
-                    .padding(top = 16.dp)
+                buttonText = "시작하기"
             )
         }
     }
@@ -212,34 +203,6 @@ fun OnboardingImageViewPager(
     }
 }
 
-@Composable
-fun OnBoardingLoginText(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(54.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.onboarding_login_desc),
-            style = Body2Normal,
-            fontWeight = FontWeight.Normal,
-            color = Caption_Assistive
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(id = R.string.login),
-            style = Body2Normal,
-            fontWeight = FontWeight.Normal,
-            color = Primary_Normal,
-            modifier = Modifier
-                .removeRippleEffect { onClick() }
-        )
-    }
-}
 
 @Preview(
     name = "OnboardingScreen Preview",
@@ -249,8 +212,7 @@ fun OnBoardingLoginText(
 fun OnboardingScreenPreview() {
     DefaultWhiteTheme {
         OnboardingContent(
-            onRegisterClick = { },
-            onLoginClick = { }
+            onRegisterClick = { }
         )
     }
 }

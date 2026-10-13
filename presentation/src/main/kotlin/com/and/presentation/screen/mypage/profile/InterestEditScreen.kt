@@ -11,7 +11,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.and.domain.model.Interest
+import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.InvestigationInterestList
 import com.and.presentation.component.button.ConditionalNextButton
@@ -27,6 +30,7 @@ import com.and.presentation.component.topbar.TopBar
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Headline
+import com.and.presentation.util.UiState
 
 @Composable
 fun InterestEditScreen(
@@ -35,7 +39,23 @@ fun InterestEditScreen(
     viewModel: ProfileEditViewModel
 ) {
     val interestOptions by viewModel.interestOptions.collectAsState()
+    val userInfoUiState by viewModel.userInfoUiState
     val selectedInterests = rememberSaveable { mutableStateOf(emptySet<Interest>()) }
+    var isInitialLoadComplete by remember { mutableStateOf(false) }
+
+    // 사용자의 현재 관심사를 즉시 설정 (딜레이 없이)
+    LaunchedEffect(userInfoUiState) {
+        if (userInfoUiState is UiState.Success && !isInitialLoadComplete) {
+            val userInterests = (userInfoUiState as UiState.Success).data.interests
+            val initialInterests = userInterests.mapNotNull { category ->
+                InterestCategory.getInterestById(category.id)?.let { interestCategory ->
+                    Interest(id = interestCategory.id, name = interestCategory.value)
+                }
+            }.toSet()
+            selectedInterests.value = initialInterests
+            isInitialLoadComplete = true
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.getInterests()

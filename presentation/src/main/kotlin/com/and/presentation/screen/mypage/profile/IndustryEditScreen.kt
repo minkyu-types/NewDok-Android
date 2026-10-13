@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,11 +30,32 @@ import com.and.presentation.ui.DefaultWhiteTheme
 fun IndustryEditScreen(
     industry: IndustryCategory?,
     onBack: () -> Unit,
+    viewModel: ProfileEditViewModel,
     modifier: Modifier = Modifier,
-    viewModel: ProfileEditViewModel
 ) {
     val industries by viewModel.industries.collectAsStateWithLifecycle()
-    var currIndustry: Industry? by remember { mutableStateOf(industries.first()) }
+    val userInfoUiState by viewModel.userInfoUiState
+    var currIndustry: Industry? by remember { mutableStateOf(null) }
+    var initialIndustry: Industry? by remember { mutableStateOf(null) }
+
+    // 사용자의 현재 종사산업을 즉시 설정 (딜레이 없이)
+    LaunchedEffect(userInfoUiState) {
+        if (userInfoUiState is com.and.presentation.util.UiState.Success && initialIndustry == null) {
+            val userIndustryId = (userInfoUiState as com.and.presentation.util.UiState.Success).data.industryId
+            if (userIndustryId != null) {
+                val industryCategory = IndustryCategory.getIndustryById(userIndustryId)
+                if (industryCategory != null) {
+                    val userIndustry = Industry(id = industryCategory.id, name = industryCategory.value)
+                    currIndustry = userIndustry
+                    initialIndustry = userIndustry
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getIndustries()
+    }
 
     Column(
         modifier = modifier
@@ -49,6 +71,7 @@ fun IndustryEditScreen(
             onSelect = { industry ->
                 currIndustry = industry
             },
+            initialSelectedItem = initialIndustry,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )

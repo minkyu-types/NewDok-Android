@@ -59,8 +59,8 @@ fun ProfileEditScreen(
     onNickNameClick: () -> Unit,
     onIndustryClick: (IndustryCategory) -> Unit,
     onInterestClick: (List<InterestCategory>) -> Unit,
+    viewModel: ProfileEditViewModel,
     modifier: Modifier = Modifier,
-    viewModel: ProfileEditViewModel
 ) {
     val uiState by viewModel.userInfoUiState
 
@@ -105,7 +105,7 @@ fun ProfileEditScreen(
             )
             ProfileEditBox(
                 title = stringResource(R.string.industry_category),
-                value = IndustryCategory.getIndustryById(industryId ?: -1)?.value,
+                value = IndustryCategory.getIndustryById(industryId ?: -1)?.value ?: "선택",
                 placeHolder = stringResource(R.string.profile_edit_industry_placeholder),
                 onClick = {
                     onIndustryClick(IndustryCategory.getIndustryById(industryId ?: -1) ?: IndustryCategory.DEFAULT)

@@ -2,7 +2,9 @@ package com.and.data.repository
 
 import com.and.data.api.search.GetArticlesByKeywordApi
 import com.and.data.api.search.GetNewsLetterByNameApi
+import com.and.data.api.search.GetPopularKeywordsApi
 import com.and.data.model.response.toDomain
+import com.and.domain.model.PopularKeywordResult
 import com.and.domain.model.SearchResult
 import com.and.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
     private val getSearchedNewsLettersApi: GetNewsLetterByNameApi,
-    private val getSearchedArticlesApi: GetArticlesByKeywordApi
+    private val getSearchedArticlesApi: GetArticlesByKeywordApi,
+    private val getPopularKeywordsApi: GetPopularKeywordsApi
 ): SearchRepository, BaseRepository() {
     override fun getNewsLetterSearchResult(keyword: String): Flow<SearchResult.SearchedNewsLetter> {
         return handleApiFlow(
@@ -40,6 +43,20 @@ class SearchRepositoryImpl @Inject constructor(
             },
             mapper = { response ->
                 response?.map { it.toDomain() } ?: emptyList()
+            }
+        )
+    }
+
+    override fun getPopularKeywords(): Flow<PopularKeywordResult> {
+        return handleApiFlow(
+            apiCall = {
+                getPopularKeywordsApi.getPopularKeywords();
+            },
+            mapper = { response ->
+                PopularKeywordResult(
+                    updatedDate = response.updatedDate,
+                    keywords = response.keywords.map { it.keyword }
+                )
             }
         )
     }

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,11 +54,19 @@ import com.and.presentation.util.removeRippleEffect
 fun IndustryDropDown(
     industries: List<Industry>,
     onSelect: (Industry) -> Unit,
-    modifier: Modifier = Modifier
+    initialSelectedItem: Industry? = null,
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem: Industry? by rememberSaveable { mutableStateOf(null) }
+    var selectedItem: Industry? by rememberSaveable { mutableStateOf(initialSelectedItem) }
     var industryBoxSize by remember { mutableStateOf(Size.Zero) }
+
+    // initialSelectedItem이 변경될 때 selectedItem 업데이트
+    LaunchedEffect(initialSelectedItem) {
+        if (initialSelectedItem != null && selectedItem == null) {
+            selectedItem = initialSelectedItem
+        }
+    }
 
     Column(
         modifier = modifier

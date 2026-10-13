@@ -309,7 +309,7 @@ fun MainFlowScreen(
                         navController.popBackStack()
                     },
                     onWithdrawal = {
-                        rootNavController.navigate(ScreenFlow.LOGIN.route) {
+                        rootNavController.navigate(ScreenFlow.ON_BOARDING.route) {
                             popUpTo(rootNavController.graph.startDestinationId) {
                                 inclusive = true
                             }

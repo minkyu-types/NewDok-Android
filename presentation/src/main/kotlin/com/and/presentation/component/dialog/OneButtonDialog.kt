@@ -21,7 +21,7 @@ import androidx.compose.ui.window.Dialog
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.SolidPrimaryButton
-import com.and.presentation.screen.login.LoginTheme
+import com.and.presentation.ui.DefaultWhiteTheme
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Neutral
@@ -94,7 +94,7 @@ fun OneButtonDialog(
 )
 @Composable
 fun OneButtonDialogPreview() {
-    LoginTheme {
+    DefaultWhiteTheme {
         OneButtonDialog(
             onDismiss = {
 
