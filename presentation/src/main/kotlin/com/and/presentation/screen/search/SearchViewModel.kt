@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.and.domain.repository.SearchRepository
 import com.and.domain.usecase.search.GetPopularKeywordsUseCase
+import com.and.presentation.model.PopularKeywordModel
 import com.and.presentation.model.SearchResultModel
 import com.and.presentation.model.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,10 @@ class SearchViewModel @Inject constructor(
 
     private val _searchResult = mutableStateOf<SearchResultModel.MemberSearchResultModel?>(null)
     val searchResult: State<SearchResultModel.MemberSearchResultModel?> = _searchResult
+
+    /** 조회 전이거나 실패한 경우 null. 화면은 이때 인기 검색어 영역을 그리지 않는다 */
+    private val _popularKeywords = mutableStateOf<PopularKeywordModel?>(null)
+    val popularKeywords: State<PopularKeywordModel?> = _popularKeywords
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private val searchResultFlow: Flow<SearchResultModel.MemberSearchResultModel> =
@@ -73,6 +78,22 @@ class SearchViewModel @Inject constructor(
             searchResultFlow.collectLatest { result ->
                 _searchResult.value = result
             }
+        }
+        getPopularKeywords()
+    }
+
+    private fun getPopularKeywords() {
+        viewModelScope.launch {
+            getPopularKeywordsUseCase(Unit)
+                .map { it.toPresentation() }
+                .catch { e ->
+                    // 인기 검색어는 부가 정보이므로, 실패해도 검색 자체는 계속 쓸 수 있도록
+                    // 상태를 null로 두고 넘어간다
+                    e.printStackTrace()
+                }
+                .collectLatest { result ->
+                    _popularKeywords.value = result
+                }
         }
     }
 

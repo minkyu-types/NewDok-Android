@@ -45,6 +45,7 @@ import com.and.presentation.component.button.OutlinedPrimaryButton
 import com.and.presentation.component.item.SearchArticleItem
 import com.and.presentation.component.item.SearchedNewsLetterItem
 import com.and.presentation.model.DailyArticleModel
+import com.and.presentation.model.PopularKeywordModel
 import com.and.presentation.model.SearchResultModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body1Reading
@@ -74,6 +75,7 @@ fun SearchScreen(
     val searchResult: SearchResultModel.MemberSearchResultModel? by viewModel.searchResult
     val newsLetter = searchResult?.newsLetter
     val articles = searchResult?.articles ?: emptyList()
+    val popularKeywords: PopularKeywordModel? by viewModel.popularKeywords
 
     Column(
         modifier = Modifier
@@ -94,18 +96,14 @@ fun SearchScreen(
                 .height(1.dp)
         )
         if (query.isEmpty()) {
-            SearchPopularQueries(
-                updatedDate = "11/21",
-                popularQueries = listOf(
-                    "뉴닉",
-                    "데일리바이트",
-                    "트렌드",
-                    "콘텐츠",
-                    "재테크",
-                    "IT",
-                ),
-                modifier = Modifier.weight(1f)
-            )
+            // 조회 전이거나 실패한 경우 영역 자체를 그리지 않는다
+            popularKeywords?.let { keywords ->
+                SearchPopularQueries(
+                    updatedDate = keywords.updatedDate,
+                    popularQueries = keywords.keywords,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         } else {
             LazyColumn(
                 modifier = Modifier.padding(24.dp),

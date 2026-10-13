@@ -2,6 +2,7 @@ package com.and.data.di
 
 import com.and.data.api.search.GetArticlesByKeywordApi
 import com.and.data.api.search.GetNewsLetterByNameApi
+import com.and.data.api.search.GetPopularKeywordsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +23,9 @@ object SearchApiModule {
     @Singleton
     fun providesGetTodayArticlesApi(retrofit: Retrofit): GetArticlesByKeywordApi = retrofit.create(
         GetArticlesByKeywordApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGetPopularKeywordsApi(retrofit: Retrofit): GetPopularKeywordsApi = retrofit.create(
+        GetPopularKeywordsApi::class.java)
 }
