@@ -3,8 +3,9 @@ package com.and.data.repository
 import com.and.data.api.search.GetArticlesByKeywordApi
 import com.and.data.api.search.GetNewsLetterByNameApi
 import com.and.data.api.search.GetPopularKeywordsApi
+import com.and.data.model.data.toDomain
 import com.and.data.model.response.toDomain
-import com.and.domain.model.PopularKeywordResult
+import com.and.domain.model.PopularKeywordsResult
 import com.and.domain.model.SearchResult
 import com.and.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
@@ -47,15 +48,15 @@ class SearchRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun getPopularKeywords(): Flow<PopularKeywordResult> {
+    override fun getPopularKeywords(): Flow<PopularKeywordsResult> {
         return handleApiFlow(
             apiCall = {
                 getPopularKeywordsApi.getPopularKeywords();
             },
             mapper = { response ->
-                PopularKeywordResult(
+                PopularKeywordsResult(
                     updatedDate = response.updatedDate,
-                    keywords = response.keywords.map { it.keyword }
+                    keywords = response.keywords.map { it.toDomain() }
                 )
             }
         )

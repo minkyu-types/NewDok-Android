@@ -46,6 +46,7 @@ import com.and.presentation.component.item.SearchArticleItem
 import com.and.presentation.component.item.SearchedNewsLetterItem
 import com.and.presentation.model.DailyArticleModel
 import com.and.presentation.model.PopularKeywordModel
+import com.and.presentation.model.PopularKeywordsModel
 import com.and.presentation.model.SearchResultModel
 import com.and.presentation.ui.Body1Normal
 import com.and.presentation.ui.Body1Reading
@@ -75,7 +76,7 @@ fun SearchScreen(
     val searchResult: SearchResultModel.MemberSearchResultModel? by viewModel.searchResult
     val newsLetter = searchResult?.newsLetter
     val articles = searchResult?.articles ?: emptyList()
-    val popularKeywords: PopularKeywordModel? by viewModel.popularKeywords
+    val popularKeywords: PopularKeywordsModel? by viewModel.popularKeywords
 
     Column(
         modifier = Modifier
@@ -247,7 +248,7 @@ private fun SearchTopBar(
 @Composable
 private fun SearchPopularQueries(
     updatedDate: String,
-    popularQueries: List<String>,
+    popularQueries: List<PopularKeywordModel>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -272,7 +273,9 @@ private fun SearchPopularQueries(
             )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        popularQueries.forEachIndexed { index, query ->
+        popularQueries
+            .sortedBy { it.rank }
+            .forEachIndexed { index, query ->
             PopularQueryItem(index + 1, query)
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -282,7 +285,7 @@ private fun SearchPopularQueries(
 @Composable
 private fun PopularQueryItem(
     rank: Int,
-    query: String,
+    keyword: PopularKeywordModel,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -297,7 +300,7 @@ private fun PopularQueryItem(
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = query,
+            text = keyword.keyword,
             style = Body2Normal,
             fontWeight = FontWeight.Medium,
             color = Caption_Neutral
