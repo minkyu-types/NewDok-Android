@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SplashScreen 아이콘 캔버스(288dp) 중앙에 마스크 원(192dp) 안으로 로고 배치 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp">
+
+    <item
+        android:width="180dp"
+        android:height="34dp"
+        android:drawable="@drawable/img_splash_logo"
+        android:gravity="center" />
+
+</layer-list>

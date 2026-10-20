@@ -16,8 +16,7 @@
 
     <style name="Theme.NewDok.Splash"  parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/neutral_0</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/img_logo</item>
-        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="postSplashScreenTheme">@style/Theme.NewDok</item>
     </style>
