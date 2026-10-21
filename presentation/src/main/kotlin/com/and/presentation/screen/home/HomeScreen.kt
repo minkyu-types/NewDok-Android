@@ -190,7 +190,7 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(R.drawable.img_logo),
+            painter = painterResource(R.drawable.img_splash_logo),
             contentDescription = null
         )
         Spacer(modifier = Modifier.weight(1f))

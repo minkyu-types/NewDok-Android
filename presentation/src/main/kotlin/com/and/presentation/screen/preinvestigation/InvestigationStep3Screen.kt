@@ -1,10 +1,8 @@
 package com.and.presentation.screen.preinvestigation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +26,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,12 +37,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
 import com.and.presentation.component.button.ButtonSize
 import com.and.presentation.component.button.ConditionalNextButton
 import com.and.presentation.component.button.OutlinedSecondaryButton
 import com.and.presentation.component.button.SolidPrimaryButton
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.SubscriptionStatus
 import com.and.presentation.component.item.CategoryChip
 import com.and.presentation.model.NewsLetterModel
@@ -59,9 +56,7 @@ import com.and.presentation.ui.Heading2
 import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Neutral
 import com.and.presentation.ui.Neutral90
-import com.and.presentation.ui.Primary_Normal
 import com.and.presentation.util.UiState
-import com.and.presentation.util.removeRippleEffect
 
 @Composable
 fun InvestigationStep3Screen(
@@ -177,9 +172,10 @@ fun InvestigationNewsLetterItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.img_logo),
+                CommonImage(
+                    imageUrl = newsLetter.profileImageUrl,
                     contentDescription = null,
+                    placeholderRes = R.drawable.img_warning,
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(10.dp))

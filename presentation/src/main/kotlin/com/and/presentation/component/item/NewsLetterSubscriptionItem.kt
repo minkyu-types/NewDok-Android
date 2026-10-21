@@ -72,7 +72,7 @@ fun NewsLetterSubscriptionItem(
             CommonImage(
                 imageUrl = newsLetter.imageUrl,
                 contentDescription = null,
-                placeholderRes = R.drawable.img_logo,
+                placeholderRes = R.drawable.img_warning,
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(10.dp))

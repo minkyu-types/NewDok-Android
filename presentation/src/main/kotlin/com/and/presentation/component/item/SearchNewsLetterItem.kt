@@ -25,16 +25,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.and.domain.model.type.InterestCategory
 import com.and.newdok.presentation.R
-import com.and.presentation.model.NewsLetterModel
+import com.and.presentation.component.image.CommonImage
 import com.and.presentation.model.SearchResultModel
 import com.and.presentation.ui.Body2Normal
 import com.and.presentation.ui.Caption_Assistive
 import com.and.presentation.ui.Caption_Heavy
 import com.and.presentation.ui.Caption_Strong
 import com.and.presentation.ui.DefaultWhiteTheme
-import com.and.presentation.ui.Label1
 import com.and.presentation.ui.Line_Neutral
 
 @Composable
@@ -66,9 +64,10 @@ fun SearchedNewsLetterItem(
                 )
                 .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_logo),
+            CommonImage(
+                imageUrl = newsLetter.imageUrl,
                 contentDescription = null,
+                placeholderRes = R.drawable.img_warning,
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(10.dp))

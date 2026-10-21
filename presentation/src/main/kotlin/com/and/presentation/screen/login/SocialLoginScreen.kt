@@ -88,12 +88,12 @@ fun SocialLoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // 키 해시 확인용. 디버그 빌드에서만 노출된다
-            if (BuildConfig.DEBUG) {
+//            if (BuildConfig.DEBUG) {
                 DebugKeyHashCopyText()
                 // SocialLoginButtons의 "3초만에 시작하기" 배지가 버튼 위쪽 28dp를
                 // 침범하므로, 그보다 넉넉한 여백을 둬 겹치지 않게 한다
                 Spacer(modifier = Modifier.height(36.dp))
-            }
+//            }
 
             // SNS Login Buttons with AnimTrigger badge
             SocialLoginButtons(
@@ -124,7 +124,7 @@ private fun SocialLoginLogo(
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(id = R.drawable.img_logo),
+            painter = painterResource(id = R.drawable.splash_logo),
             contentDescription = stringResource(id = R.string.logo_image),
             modifier = Modifier.height(48.dp)
         )
