@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SplashScreen 아이콘 캔버스(288dp) 중앙에 마스크 원(192dp) 안으로 로고 배치 -->
+<!-- SplashScreen 아이콘은 확대된 뒤 원형으로 마스킹되므로(실측 약 1.85배, 노출 영역 지름 약 104dp),
+     로고가 잘리지 않게 캔버스(288dp) 중앙에 96dp 폭으로 배치. 화면상 약 170dp 폭으로 보인다 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="288dp"
     android:height="288dp">
 
     <item
-        android:width="180dp"
-        android:height="34dp"
+        android:width="96dp"
+        android:height="18dp"
         android:drawable="@drawable/img_splash_logo"
         android:gravity="center" />
 
